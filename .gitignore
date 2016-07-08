@@ -1,0 +1,95 @@
+############################
+##### OSX System Files #####
+############################
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+################################
+##### Windows System Files #####
+################################
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+
+#########################
+##### Vagrant Files #####
+#########################
+.vagrant*
+Vagrantfile
+puppet/
+
+
+##############################################
+##### ExpressionEngine Application Files #####
+##############################################
+**/config/database.php
+# Images
+info/images/
+info/uploads/
+info/guides/
+images/made/
+
+# Caches
+sized/
+thumbs/
+_thumbs/
+**/expressionengine/cache/*
+
+
+#####################################
+##### Magento Application Files #####
+#####################################
+app/etc/local.xml
+dev/
+downloader/
+media/
+var/
+
+
+######################
+##### Root Files #####
+######################
+robots.txt
+sitemap.xml
+adminer.*
+info.php
