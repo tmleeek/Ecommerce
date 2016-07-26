@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {mage:head}
+</head>
+<body id="pages">
+
+    {mage:after_body_start}
+    {mage:header}
+
+    {exp:channel:entries channel="pages"}
+
+      {sub_header}
+        <div class="subheader" style="background-image: {exp:ce_img:pair src='{sub_header:image}' max_width='1920' max_height='527' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+             <h1>{title}</h1>
+             <p>{sub_header:byline}</p>
+        </div>
+      {/sub_header}
+
+    <div class="container">
+
+        <div class="layout layout-2-cols">
+
+           {embed=_includes/page-sidenav}
+
+            <div role="main" class="content">
+                  <div class="breadcrumb">{exp:structure:breadcrumb here_as_title="yes" separator="|"}</div>
+               {top_content}
+                  {section}
+                    <h2 class="title">{text}</h2>
+                  {/section}
+
+                  {full_image}
+                    <div class="full-image">
+                        {exp:ce_img:pair src="{photo}" width="838" height="481" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                    </div>
+                  {/full_image}
+
+                  {page_content}
+                     {content}
+                  {/page_content}
+
+                  {gallery}
+                    <div class="gallery-image">
+                        {images}
+                           {exp:ce_img:pair src="{url}" width="273" height="176" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                        {/images}
+                    </div>
+                  {/gallery}
+
+                  {columns}
+                    <div class="columns clearfix">
+                      <div class="left">
+                         {left}
+                      </div>
+                      <div class="right">
+                         {right}
+                      </div>
+                    </div>
+                  {/columns}
+
+               {/top_content}
+
+               {form}
+
+            </div><!-- end of main -->
+        </div>
+    </div><!-- END OF CONTAINER -->
+
+    {middle_banner}
+         <section class="banner" style="background-image: {exp:ce_img:pair src='{middle_banner:image}' max_width='1900' max_height='700' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};" class="clearfix">
+                {middle_banner:text}
+         </section>
+    {/middle_banner}
+
+     <div class="container content">
+       {bottom_content}
+
+          {section}
+             <h2 class="title">{text}</h2>
+          {/section}
+
+           {page_content}
+               {content}
+           {/page_content}
+
+         {callout}
+           <section class="listings">
+               <div class="pic">
+                    {exp:ce_img:pair src="{image}" width="480" height="300" crop="yes|center,center"}<a href="{link}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+               </div>
+
+              <h2><a href="{link}">{title}</a></h2>
+              {text}
+              <a href="{link}">Read More</a>
+           </section>
+         {/callout}
+
+        {/bottom_content}
+    </div>
+
+    {/exp:channel:entries}
+    {mage:footer}
+    {mage:before_body_end}
+
+</body>
+</html>

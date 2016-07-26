@@ -1,0 +1,42 @@
+<div class="main-new-section">
+    <div class="container">
+        <div class="news-main">
+            <div class="products-head">
+                <h1>Our News</h1>
+                <p>The latest from Lund International</p>
+            </div>
+            <div class="filter-brand">
+                <div class="filter-menu">
+                    <ul>
+                        <li class="hover"><a href="javascript:void(0)">Filter by Brand... <span class="drop-right-icon"> <img src="/media/wysiwyg/drop-icon.png"/></span></a>
+                            <ul>
+                            {exp:channel:categories channel="news" style="linear" show_empty="no" category_group="2"}
+                                <li><a href="{path=news}">{category_name}</a></li>
+                            {/exp:channel:categories}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="news-box">
+                {exp:channel:entries channel="news" dynamic="no" limit="3" disable="categories|category_fields|member_data|pagination" site="default_site|lund|avs"}
+                    <div class="news-main-box">
+                        <div class="more-news">
+                            <div class="news-pic-main">
+                                {if blog_image}
+                                    {exp:ce_img:pair src="{blog_image}" width="370" height="240" crop="yes|center,center"}<a href="{url_title_path=news/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+                                {if:else}
+                                    <a href="{url_title_path=news/post}"><img src="/info/assets/images/placeholder.png" width="370" height="240" alt=""></a>
+                                 {/if}
+                            </div>
+                            <div class="more-news-head"><a href="{url_title_path=news/post}">{title}</a></div>
+                            <p>{sentence_summary}</p>
+                            <p><a href="{url_title_path=news/post}">Read More</a></p>
+                        </div>
+                    </div>
+                {/exp:channel:entries}
+            </div>
+        </div>
+    </div>
+</div>

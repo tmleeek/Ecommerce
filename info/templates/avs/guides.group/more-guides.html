@@ -1,0 +1,16 @@
+ {exp:channel:entries channel="guides" category="{category_id}" dynamic="no" limit="6" paginate="bottom"}
+    <div class="item">
+       {exp:ce_img:pair src="{guide_image}" width="190" height="127" crop="yes|center,center"}<a href="{guide}" target="_blank"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+       <h3><a href="{guide}" target="_blank">{title}</a></h3>
+       <p>{guide_sentence_summary}</p>
+   </div>
+
+   {paginate}
+       {pagination_links}
+            {next_page}
+               <div class="paginate"> <a href="{pagination_url}" class="button">Load More</a> </div>
+            {/next_page}
+        {/pagination_links}
+   {/paginate}
+
+{/exp:channel:entries}

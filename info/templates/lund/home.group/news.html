@@ -1,0 +1,21 @@
+<div class="news-bg clearfix">
+  <div class="container">
+    <h2 class="title">News</h2>
+    <ul class="clearfix">
+    {exp:channel:entries channel="news" dynamic="no" limit="3" disable="categories|category_fields|member_data|pagination"}
+      <li>
+        <div class="image">
+          {if blog_image}
+            {exp:ce_img:pair src="{blog_image}" width="370" height="240" crop="yes|center,center"}<a href="{url_title_path=news/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+          {if:else}
+            <a href="{url_title_path=news/post}"><img src="/info/assets/images/avs-placeholder.png" width="370" height="240" alt=""></a>
+          {/if}
+        </div>
+        <h3>{title}</h3>
+        <p>{sentence_summary}</p>
+        <a class="read-more" href="{url_title_path=news/post}">READ MORE</a>
+      </li>
+    {/exp:channel:entries}
+    </ul>
+  </div>
+</div>

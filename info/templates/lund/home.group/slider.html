@@ -1,0 +1,18 @@
+<div class="home-main-slider">
+    <ul class="home-slider">
+         {exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+          {home_slider}
+            <li>
+            	<div class="container">
+                <div class="text {if home_slider:text_align == "Right"} text-right-align {/if} {if home_slider:text_align == "Left"} text-left-align {/if} ">
+                
+                    <div>{home_slider:copy}</div>
+                    {if home_slider:link}<div class="ban-button"><a href="{home_slider:link}" class="video-btn"><span>{home_slider:link_text}</span></a></div>{/if}
+                </div>
+                </div>
+                {exp:ce_img:pair src="{home_slider:image}" width="1900" height="940" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+            </li>
+          {/home_slider}
+         {/exp:channel:entries}
+    </ul>
+</div>

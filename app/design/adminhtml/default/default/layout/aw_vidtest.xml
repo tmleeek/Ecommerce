@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    /**
+     * aheadWorks Co.
+     *
+     * NOTICE OF LICENSE
+     *
+     * This source file is subject to the EULA
+     * that is bundled with this package in the file LICENSE.txt.
+     * It is also available through the world-wide-web at this URL:
+     * http://ecommerce.aheadworks.com/LICENSE-M1.txt
+     *
+     * @category   AW
+     * @package    AW_Vidtest
+     * @copyright  Copyright (c) 2010 aheadWorks Co. (http://www.aheadworks.com)
+     * @license    http://ecommerce.aheadworks.com/LICENSE-M1.txt
+     */
+-->
+<layout version="0.1.0">
+    <adminhtml_catalog_product_edit>
+        <reference name="product_tabs">
+            <action method="addTab">
+                <name>vidtest</name>
+                <block>vidtest/adminhtml_catalog_product_edit_tab_vidtest</block>
+            </action>
+            <action method="bindShadowTabs">
+                <first>vidtest</first>
+                <second>customer_options</second>
+            </action>
+        </reference>
+    </adminhtml_catalog_product_edit>
+</layout>

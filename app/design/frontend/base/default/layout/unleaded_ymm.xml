@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<layout version="0.0.1">
+
+    <unleaded_ymm_index_index translate="label">
+        <label>Search Result</label>
+        <update handle="page_two_columns_right" />
+        <!-- Mage_Catalogsearch -->
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="left">
+            <block type="amshopby/search_layer" name="amshopby.navleft" before="-" template="catalog/layer/view.phtml"/>
+        </reference>
+        <remove name="breadcrumbs" />
+        <reference name="content">
+            <block type="vehicle/result" name="vehicle_search_result" as="vehicle.search.result" template="ulvehicle/search/result.phtml">
+                <block type="catalog/product_list" name="search_result_list" template="catalog/product/list.phtml">
+                    <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                        <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                    </block>
+                    <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                    <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                </block>
+                <action method="setListOrders"/>
+                <action method="setListModes"/>
+                <action method="setListCollection"/>
+            </block>
+            
+            <block type="amshopby/search_layer_top" name="amshopby.navtop" before="vehicle.search.result" template="amasty/amshopby/view_top.phtml"/>
+            <block type="core/template" name="amshopby.bottom" after="-" template="amasty/amshopby/bottom.phtml">
+                <action method="setBlockId"><id>amshopby-filters-bottom-cms</id></action>
+            </block>
+        </reference>
+    </unleaded_ymm_index_index>
+
+    <catalog_category_default translate="label">
+        <reference name="content">
+            <block type="unleaded_ymm/catalog_category_grid" name="category_grid" template="catalog/category/child-category-grid.phtml"></block>
+        </reference>
+        <reference name="catalog.leftnav">
+            <action method="setTemplate">
+                <template>catalog/navigation/category-list.phtml</template>
+            </action>
+        </reference>
+        <remove name="product_list"/>
+    </catalog_category_default>
+</layout>

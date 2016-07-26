@@ -1,0 +1,8 @@
+{exp:low_search:results limit="100" channel="online_retailers"}
+    <div class="store">
+        {exp:ce_img:pair src="{store_logo}" max_width="168" crop="yes|center,center"}<a href="{store_website}" target="_blank"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+    </div>
+    {if no_results}
+   		<p>No retailers matching your search.</p>
+    {/if}
+{/exp:low_search:results}

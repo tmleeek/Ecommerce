@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Unleaded_Common>
+            <version>0.0.4</version>
+        </Unleaded_Common>
+    </modules>
+    <global>
+        <resources>
+            <unleaded_common>
+                <setup>
+                    <module>Unleaded_Common</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </unleaded_common>
+            <unleaded_common_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </unleaded_common_write>
+            <unleaded_common_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </unleaded_common_read>
+        </resources>
+    </global>
+</config>

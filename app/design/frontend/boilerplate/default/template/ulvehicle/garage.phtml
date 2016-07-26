@@ -1,0 +1,65 @@
+<?php $garage = $this->getGarageVehicles(); ?>
+
+<?php echo $this->__("Your Vehicle: ") ?>
+<?php if (count($garage) >= 1): ?>
+    <?php if ($this->getSelectedVehicle() && $this->getSelectedVehicle() != 0): ?>
+        <?php $vehicleId = $this->getSelectedVehicle() ?>
+    <?php else: ?>
+        <?php $vehicleId = $garage[0] ?>
+    <?php endif; ?>
+    <?php $vehicle = Mage::getModel('vehicle/ulymm')->load($vehicleId) ?>
+
+    <div class="current-vehicle">
+        <?php echo $vehicle->getYear() . " " . $vehicle->getMake() . " " . $vehicle->getModel() ?>
+    </div>
+
+    <div class="additional-vehicles">
+        <div class="ul-vehicles">
+            <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                <div class="vehicle-title"><?php echo $this->__("Stored Vehicles") ?></div>
+            <?php else: ?>
+                <div class="vehicle-title"><?php echo $this->__("Login to Save Your Vehicles") ?></div>
+            <?php endif; ?>
+            <ul class="vehicle-list">
+                <?php foreach ($garage as $vehicleId) : ?>
+                    <?php $_vehicle = Mage::getModel('vehicle/ulymm')->load($vehicleId) ?>
+                    <?php $searchUrl = $this->getSearchQuery($_vehicle); ?>
+                    <li class="vehicle-item">
+                        <span class="remove-vehicle">X</span>
+                        <input type="hidden" value="<?php echo $_vehicle->getId() ?>" />
+                        <div class="vehicle-name">
+                            <?php echo $_vehicle->getYear() . " " . $_vehicle->getMake() . " " . $_vehicle->getModel() ?>
+                        </div>
+                        <div class="view-products">
+                            <a class="search-vehicle-products" href="<?php echo $searchUrl ?>"><?php echo $this->__('View Products') ?></a>
+                        </div>
+                    </li>
+                    <?php if (!Mage::getSingleton('customer/session')->isLoggedIn()) break; ?>
+                <?php endforeach; ?>
+                <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                    <li class="add-vehicle-item">
+                        <button class="button add-vehicle" type="button">
+                            <span>
+                                <span>
+                                    <?php echo $this->__('Add Vehicle') ?>
+                                </span>
+                            </span>
+                        </button>
+                    </li>
+                <?php endif; ?>
+                <li class="clear-all">
+                    <a href="javascript:void(0)" class="clear-garage"><span>X</span><?php echo $this->__('Clear All') ?></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+<?php else: ?>
+    <button class="button add-vehicle" type="button">
+        <span>
+            <span>
+                <?php echo $this->__('Add Vehicle') ?>
+            </span>
+        </span>
+    </button>
+<?php endif; ?>

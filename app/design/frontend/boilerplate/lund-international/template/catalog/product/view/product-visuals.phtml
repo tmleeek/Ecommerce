@@ -1,0 +1,24 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = Mage::registry('current_product'); ?>
+
+<?php $drillinRequirement = $_product->getDrillingRequired(); ?>
+<?php $oversizeShippingRequirement = $_product->getOversizeShippingRequired(); ?>
+<?php $countryOfOrigin = $_product->getUscountryOrigin(); ?>
+
+<div class="easy-logo-main">
+    <ul>
+        <?php if ($drillinRequirement): ?>
+            <li><img src="<?php echo $this->getSkinUrl("drilling-required.png") ?>" /></li>
+        <?php else: ?>
+            <li><img src="<?php echo $this->getSkinUrl("images/legend-icons/drilling-not-required.png") ?>" /></li>
+        <?php endif; ?>
+        <?php if ($oversizeShippingRequirement): ?>
+            <li><img src="<?php echo $this->getSkinUrl("images/legend-icons/oversized-shipping.png") ?>" /></li>
+        <?php else: ?>
+            <?php /* <li><img src="<?php echo $this->getSkinUrl("images/legend-icons/easy-install-green.png") ?>" /></li> */ ?>
+        <?php endif; ?>
+        <?php /* if ($countryOfOrigin != ''): ?>   
+          <li><img src="<?php echo $this->getSkinUrl("images/legend-icons/easy-install-blue.png") ?>" /></li>
+          <?php endif; */ ?>
+    </ul>
+</div>

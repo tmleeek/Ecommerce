@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Unleaded_Integratee>
+			<version>0.1.0</version>
+		</Unleaded_Integratee>
+	</modules>
+
+	<global>
+		<helpers>
+			<ulintegratee>
+				<class>Unleaded_Integratee_Helper</class>
+			</ulintegratee>
+		</helpers>
+	</global>
+</config>

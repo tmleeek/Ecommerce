@@ -1,0 +1,66 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento enterprise edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Vidtest
+ * @version    1.5.3
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php
+?>
+<?php $_product = $this->getProduct() ?>
+<div class="fieldset">
+    <table cellspacing="0" class="form-list">
+        <tbody>
+            <tr class="headings">
+                <td class="label"><label for="name"><?php echo Mage::helper('vidtest')->__('Allow video upload from frontend for this product') ?></label>
+                </td>
+                <td class="value">
+                    <select id="vidtest_enabled" class="input-text" name="product[vidtest_enabled]" onchange="needSave();">
+                        <?php foreach (Mage::getSingleton('vidtest/system_config_source_noyes')->toOptionArray() as $option): ?>
+                            '<option value="<?php echo $option['value']; ?>" <?php
+                        if (($_product->getVidtestEnabled() == $option['value'])) {
+                            echo "selected";
+                        }
+                            ?>><?php echo $option['label']; ?></option>'+
+                                 <?php endforeach; ?>
+                    </select>
+                </td>
+                <td class="scope-label"><?php if (!Mage::app()->isSingleStoreMode()): ?>[STORE VIEW]<?php endif; ?></td>
+                <td class="value use-default">
+                    <?php if ($_product->getStoreId()): ?>
+                        <input id="vidtest_enabled_default" type="checkbox" name="use_default[]" value="vidtest_enabled" onclick="toggleValueElements(this, this.parentNode.parentNode)" <?php echo $this->getUsedDefault() ? 'checked="checked"' : '' ?> />
+                        <label class="normal" for="vidtest_enabled_default"><?php echo $this->__('Use Default Value'); ?></label>
+                    <?php endif; ?>
+                </td>
+            </tr>           
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    //<![CDATA[>
+    var needSave = function(){
+        $('product_info_tabs_vidtest').addClassName('changed');
+    };
+<?php if ($_product->getStoreId()): ?>
+        toggleValueElements($('vidtest_enabled_default'), $('vidtest_enabled_default').parentNode.parentNode)
+<?php endif; ?>
+    //]]>
+</script>

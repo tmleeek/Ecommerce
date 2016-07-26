@@ -1,0 +1,12 @@
+ {exp:channel:entries channel="blog" {if segment_2=='category'}  {if:else}dynamic="no" limit="3" offset="6"{/if} }
+            <div class="post {switch='|middle|'}">
+               {if blog_image}
+                {exp:ce_img:pair src="{blog_image}" width="230" height="149" crop="yes|center,center"}<a href="{url_title_path=blog/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+               {if:else}
+                <a href="{url_title_path=blog/post}"><img src="/info/assets/images/placeholder.png" width="230" height="149" alt=""></a>
+               {/if}
+                 <h3><a href="{url_title_path=blog/post}">{title}</a></h3>
+                 <p>{sentence_summary}</p>
+                 <p><a href="{url_title_path=blog/post}">Read More</a></p>
+            </div>
+{/exp:channel:entries}

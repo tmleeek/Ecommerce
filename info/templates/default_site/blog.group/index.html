@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {mage:head}
+</head>
+<body id="blog">
+
+    {mage:header}
+   {exp:channel:entries channel="blog" dynamic="no" limit="1" search:main_featured="y"}
+        <div class="subheader" style="background-image: {exp:ce_img:pair src='{main_featured_image}' width='1900' height='475' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+          <div class="container">
+             <div class="featured">
+                     <p>Featured Article <span></span></p>
+                     <h1>{exp:ce_str:ing word_limit="7"}{title}{/exp:ce_str:ing}</h1>
+                     <a href="{url_title_path=blog/post}" class="button">Read More</a>
+             </div>
+          </div>
+        </div>
+   {/exp:channel:entries}
+
+    {embed='blog/filter'}
+{if segment_2!="category"}
+    <div class="container">
+        <div class="layout layout-1-col">
+            <div role="main">
+                <h2 class="title">Our Blog</h2>
+                {exp:channel:entries channel="blog" dynamic="no" limit="6"}
+                    <div class="post {switch='|middle|'}">
+                       {if blog_image}
+                        {exp:ce_img:pair src="{blog_image}" width="230" height="149" crop="yes|center,center"}<a href="{url_title_path=blog/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+                       {if:else}
+                        <a href="{url_title_path=blog/post}"><img src="/info/assets/images/placeholder.png" width="230" height="149" alt=""></a>
+                       {/if}
+                         <h3><a href="{url_title_path=blog/post}">{title}</a></h3>
+                         <p>{sentence_summary}</p>
+                         <p><a href="{url_title_path=blog/post}">Read More</a></p>
+                    </div>
+                {/exp:channel:entries}
+            </div>
+        </div>
+    </div><!-- end of container -->
+
+   {exp:channel:entries channel="blog" dynamic="no" limit="1" search:middle_featured="y"}
+    <div class="subheader" style="background-image: {exp:ce_img:pair src='{middle_featured_image}' width='1900' height='475' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+      <div class="container">
+         <div class="featured">
+                 <p>Featured Article <span></span></p>
+                 <h2>{exp:ce_str:ing word_limit="7"}{title}{/exp:ce_str:ing}</h2>
+                 <a href="{url_title_path=blog/post}" class="button">Read More</a>
+         </div>
+      </div>
+    </div>
+   {/exp:channel:entries}
+
+{/if}
+
+    <div class="container container2">
+       {exp:channel:category_heading channel="blog"}
+           <h2 class="title">Our Blog<br>{category_name}</h2>
+       {/exp:channel:category_heading}
+       {exp:channel:entries channel="blog" {if segment_2=='category'} limit="6" {if:else}dynamic="no" limit="3" offset="6"{/if} paginate="bottom" }
+            <div class="post {switch='|middle|'}">
+               {if blog_image}
+                {exp:ce_img:pair src="{blog_image}" width="230" height="149" crop="yes|center,center"}<a href="{url_title_path=blog/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+               {if:else}
+                <a href="{url_title_path=blog/post}"><img src="/info/assets/images/placeholder.png" width="230" height="149" alt=""></a>
+               {/if}
+                 <h3><a href="{url_title_path=blog/post}">{title}</a></h3>
+                 <p>{sentence_summary}</p>
+                 <p><a href="{url_title_path=blog/post}">Read More</a></p>
+            </div>
+             {paginate}
+               {pagination_links}
+                {next_page}
+                   <div class="more"><a href="{exp:ce_str:ing replace='info/blog|info/blog/more'}{pagination_url}{/exp:ce_str:ing}" class="button">Show More</a></div>
+                {/next_page}
+              {/pagination_links}
+            {/paginate}
+        {/exp:channel:entries}
+    </div>
+
+    {mage:footer}
+
+
+</body>
+</html>

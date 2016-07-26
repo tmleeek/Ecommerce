@@ -1,0 +1,79 @@
+<div class="clearfix vehicle-point" id="ul-vehicle-container">
+    <div class="garage-container">
+        <?php echo $this->getChildHtml('ulgarage') ?>
+    </div>
+    <div class="vehicle-modal" id="vehicle-modal">
+        <div class="modal-bg"></div>
+        <div class="modal-container">
+            <span class="modal-close closebtn">X</span>
+            <div class="modal-content"></div>
+        </div>
+    </div>
+</div>
+<div id="wait"><div class="loader"></div></div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('.garage-container').on('click', '.add-vehicle', function () {
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>",
+                    function (data) {
+                        jQuery("#vehicle-modal .modal-content").html(data);
+                        jQuery("#vehicle-modal").fadeIn();
+                    });
+        });
+
+        jQuery('.navbar-nav').on('click', '.our-vehicle-menu', function () {
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>",
+                    function (data) {
+                        jQuery("#vehicle-modal .modal-content").html(data);
+                        jQuery("#vehicle-modal").fadeIn();
+                    });
+        });
+
+        jQuery('.garage-container').on('click', '.clear-garage', function () {
+            var customerId = "";
+            <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+            <?php else: ?>
+                customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+            <?php endif; ?>
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/clearall') ?>", {customerId: customerId},
+            function (data) {
+                window.location.href = data;
+            });
+        });
+
+        jQuery('.garage-container').on('click', '.vehicle-name', function () {
+            var vehicleId = jQuery(this).prev('input').val();
+            var customerId = "";
+            <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+            <?php else: ?>
+                customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+            <?php endif; ?>
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/changeselection') ?>", {vehicleId: vehicleId, customerId: customerId},
+            function (data) {
+                jQuery("#ul-vehicle-container .garage-container").html(data);
+            });
+        });
+
+        jQuery('.garage-container').on('click', '.remove-vehicle', function () {
+            var vehicleId = jQuery(this).next('input').val();
+            <?php if (Mage::getSingleton('customer/session')->getCustomer()): ?>
+                var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+            <?php endif; ?>
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/removevehicle') ?>", {vehicleId: vehicleId, customerId: customerId},
+            function (data) {
+                jQuery("#ul-vehicle-container .garage-container").html(data);
+            });
+        });
+
+        jQuery("#vehicle-modal .modal-bg").unbind('click').bind('click', function () {
+            jQuery("#vehicle-modal").fadeOut();
+        });
+        jQuery("#vehicle-modal .modal-close").unbind('click').bind('click', function () {
+            jQuery("#vehicle-modal").fadeOut();
+        });
+
+    });
+</script>

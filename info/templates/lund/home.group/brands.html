@@ -1,0 +1,25 @@
+<div class="main-brand-section">
+    <div class="container">
+        <div class="brand-main">
+            <div class="brand-head">
+                <h1>Our Brands</h1>
+            </div>
+            <div class="brand-logo-main">
+                <ul>
+                {exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+                 {home_brands}
+                    <li>
+                        <div class="brand-our-main">
+                            <p>
+                                {exp:ce_img:pair src="{home_brands:logo}" width="207" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                            </p>
+                            <p>{home_brands:info}</p>
+                        </div>
+                    </li>
+                 {/home_brands}
+                {/exp:channel:entries}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

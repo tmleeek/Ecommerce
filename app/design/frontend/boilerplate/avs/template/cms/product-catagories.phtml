@@ -1,0 +1,59 @@
+<?php
+$_helper = $this->helper('catalog/output');
+
+$category = Mage::getResourceModel('catalog/category_collection')
+        ->addFieldToFilter('name', 'AVS')
+        ->getFirstItem();
+
+$subCategories = $category
+        ->getChildrenCategories()
+        ->addIsActiveFilter();
+
+$sortedCats = [];
+foreach ($subCategories as $_categoryId) {
+    $category = Mage::getModel('catalog/category')->load($_categoryId->getId());
+    if ($category->getIsFeaturedCategory()) {
+        $sortedCats[$category->getName()] = $category;
+    }
+}
+
+ksort($sortedCats, SORT_STRING);
+		 $imageHeight = 144;
+    	$imageWidth = 144;
+?>
+
+<div class="product-categories clearfix">
+    <div class="container">
+        <h2 class="title"><?php echo $this->__('Product Categories') ?></h2>
+        <div class="clearfix">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('home-product-category-section')->toHtml(); ?>
+            <div class="right-section">
+                <ul>
+                    <?php $i = 0 ?>
+                    <?php foreach ($sortedCats as $_category): ?>
+                        <?php
+                        $_imgHtml = "";
+						$image_url = Mage::getModel("imageresize/resize")->getResizedImageHome($imageWidth, $imageHeight, Mage::getModel('catalog/category')->load($_category->getId())->getSmallImage());
+                        $_imgHtml = '<img src="' .$image_url.'" alt="' . $this->escapeHtml($_category->getName()) . '" title="' . $this->escapeHtml($_category->getName()) . '" />';
+                        ?>
+                        
+                        <?php if ($i++ % 2 == 0): ?>
+                            <li>
+                            <?php endif; ?>
+
+                            <div class="list-devider">
+                                <div class="image">
+                                    <?php echo $_imgHtml ?>
+                                </div>
+                                <a href="<?php echo $_category->getUrl() ?>"><?php echo $_category->getName() ?></a>
+                            </div>
+
+                            <?php if ($i % 2 == 0): ?>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

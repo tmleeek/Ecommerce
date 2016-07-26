@@ -1,0 +1,126 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento enterprise edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Vidtest
+ * @version    1.5.3
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php
+    ?>
+<div class="aw-vidtest-uploadform" <?php if (Mage::helper('vidtest')->checkVersion('1.4.0.0')) { echo 'id="for_1400"'; } ?>>
+    <div class="form-head">
+        <h4><?php echo $this->__('Upload your video') ?></h4>
+    </div>
+    <fieldset>
+    <form enctype="multipart/form-data" action="<?php echo $this->getActionUrl(); ?>" method="post" name="aw-vidtest-upload" id="aw-vidtest-youtube-uploadform">
+        <div class="aw-vidtest-youtube-copyright">
+            <?php echo $this->getCopyright(); ?>
+        </div>
+        <div>
+            <label for="title_field"><?php echo $this->__('Title'); ?><span class="required">*</span></label><br />
+            <input class="input-text required-entry" name="title" id="title_field" type="text"  style="width: 450px;" value="" />
+        </div>
+
+        <div>
+            <label for="comment_field"><?php echo $this->__('Comment') ?></label><br />
+            <textarea class="input-text" name="comment" id="comment_field" cols="53" rows="4" style="width: 450px;"></textarea>
+        </div>
+
+        <div>
+            <label for="author_name_field"><?php echo $this->__('Author Name'); ?><span class="required">*</span></label><br />
+            <input class="input-text required-entry" name="author_name" id="author_name_field" type="text"  style="width: 450px;" value="<?php echo trim($this->htmlEscape($this->getCustomerName())); ?>" />
+        </div>
+        <div>
+            <label for="author_email_field"><?php echo $this->__('Author Email'); ?><span class="required">*</span></label><br />
+            <input class="input-text validate-email required-entry" name="author_email" id="author_email_field" type="text"  style="width: 450px;" value="<?php echo $this->htmlEscape($this->getCustomerEmail()); ?>" />
+        </div>
+
+        <div>            
+            <input type="radio" id="video_file_field_radio" name="video_type" value="file" checked="checked" onclick="checkRadios();" />
+            <label for="video_file_field_radio"><?php echo $this->__('Upload with file input'); ?><span class="required">*</span></label>
+        </div>
+        <div>
+            <input type="radio" id="video_link_field_radio" name="video_type" value="link" onclick="checkRadios();" />
+            <label for="video_link_field_radio"><?php echo $this->__('URL'); ?></label>
+        </div>
+
+        <div id="video_file_block">
+            <input class="input-text required-entry" name="video_file" id="video_file_field" type="file" value="" />  <span id = 'vidtest-max-filesize'><?php echo $this->__('max file size is %s Mb',Mage::getStoreConfig('vidtest/general/maxupload')); ?></span>
+        </div>
+        <div id="video_link_block" style="display: none;">
+            <input class="input-text" name="video_link" id="video_link_field" type="text"  style="width: 210px;" value="" />
+            <p>
+                <br /><?php echo $this->__('Below, you can find the examples of how the embedding URL look like for each of the supported services:
+                <br /><br />Youtube - <b>http://www.youtube.com/embed/(video code)</b><span style="color: red;">*</span>
+                <br />Vimeo - <b>http://player.vimeo.com/video/(video code)</b><span style="color: red;">*</span>
+                <br />Yahoo! Screen - <b>https://screen.yahoo.com/(video code)</b><span style="color: red;">*</span>.html?format=embed
+                <br />DailyMotion - <b>http://www.dailymotion.com/embed/video/(video code)</b><span style="color: red;">*</span>
+                <br />VK - <b>https://vk.com/video_ext.php?(video code)</b><span style="color: red;">*</span>
+                <br />
+                <br /><span style="color: red;">*</span> Where (video code) should be provided in the format corresponding to the source service') ?>
+            </p>
+        </div>
+        <input type="hidden" name="product_id" value="<?php echo $this->getProductId(); ?>" />
+        <div class="button-set">
+            <button class="form-button right<?php if (Mage::helper('vidtest')->checkVersion('1.4.0.0')) { echo ' button'; } ?>" type="submit"><span><?php echo $this->__('Go') ?></span></button>
+        </div>
+    </form>
+    </fieldset>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+
+    // Overrides standard submit
+    Validation.prototype.inheritedOnSubmit = Validation.prototype.onSubmit;
+    
+    Validation.prototype.onSubmit = function(ev){
+        if (this.form.id == 'aw-vidtest-youtube-uploadform'){
+            var ext_data = '<?php echo $this->getSecretKey(); ?>';
+            var div = document.createElement("div");
+            div.innerHTML = "<input type=\"hidden\" name=\"ext_data\" value=\""+ ext_data + "\" />";
+            document.getElementById(this.form.id).appendChild(div);
+        }
+        this.inheritedOnSubmit(ev);
+    }
+
+    var dataForm = new VarienForm('aw-vidtest-youtube-uploadform');
+  
+    var checkRadios = function(){
+        if ($('video_file_field_radio').checked){
+            
+            $('video_file_block').show();
+            $('video_link_block').hide();
+
+            addClass($('video_file_field'), 'required-entry');
+            removeClass($('video_link_field'), 'required-entry');
+
+        } else if($('video_link_field_radio').checked) {
+
+            $('video_link_block').show();
+            $('video_file_block').hide();
+            
+            addClass($('video_link_field'), 'required-entry');
+            removeClass($('video_file_field'), 'required-entry');
+        }
+    }
+//]]>
+</script>
+

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Unleaded_PIMS>
+            <version>0.0.5</version>
+        </Unleaded_PIMS>
+    </modules>
+
+    <global>
+
+        <blocks>
+            <unleaded_pims>
+                <class>Unleaded_PIMS_Block</class>
+            </unleaded_pims>
+        </blocks>
+
+        <helpers>
+            <unleaded_pims>
+                <class>Unleaded_PIMS_Helper</class>
+            </unleaded_pims>
+        </helpers>
+
+        <models>
+            <unleaded_pims>
+                <class>Unleaded_PIMS_Model</class>
+                <resourceModel>pims_mysql4</resourceModel>
+            </unleaded_pims>
+            <catalog>
+                <rewrite>
+                    <product_attribute_backend_media>Unleaded_PIMS_Model_Product_Attribute_Backend_Media</product_attribute_backend_media>
+                </rewrite>
+            </catalog>
+        </models>
+
+        <resources>
+            <pims_setup>
+                <setup>
+                    <module>Unleaded_PIMS</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </pims_setup>
+            <pims_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </pims_write>
+            <pims_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </pims_read>
+        </resources>
+
+        <events>
+            <adminhtml_block_html_before>
+                <observers>
+                    <unleaded_chaindrive>
+                        <type>model</type>
+                        <class>unleaded_pims/observer</class>
+                        <method>addViewProductButton</method>
+                    </unleaded_chaindrive>
+                </observers>
+            </adminhtml_block_html_before>
+        </events>
+
+        <ho_import>
+            <pims_category_avs>
+                <entity_type>catalog_category</entity_type>
+                <source model="ho_import/source_adapter_csv">
+                    <file>var/pims/category/MagentoBrands_csv_avs_full_20160607043528.csv</file>
+                </source>
+                <import_options>
+
+                </import_options>
+                <fieldmap>
+                    <_root value="Default Category"/>
+                    <_store value="avs"/>
+                    <_category field="Product Line Short Code"/>
+
+                    <available_sort_by value="position"/>
+                    <default_sort_by value="position"/>
+                    <custom_apply_to_products value="No"/>
+                    <custom_use_parent_settings value="No"/>
+                    <display_mode value="Products Only"/>
+                    <is_anchor value="Yes"/>
+
+                    <include_in_menu value="No">
+                        <store_view>
+                            <avs helper="unleaded_pims/import::getYesNoBool">
+                                <value field="Product Line Disabled"/>
+                            </avs>
+                        </store_view>
+                    </include_in_menu>
+                    <is_active value="No">
+                        <store_view>
+                            <avs helper="unleaded_pims/import::getYesNoBool">
+                                <value field="Product Line Saleable"/>
+                            </avs>
+                        </store_view>
+                    </is_active>
+
+                    <name>
+                        <store_view>
+                            <avs field="Product Line Display Name"/>
+                        </store_view>
+                    </name>
+                    <description>
+                        <store_view>
+                            <avs field="Product Line HTML"/>
+                        </store_view>
+                    </description>
+                    <url_key helper="ho_import/import_category::getUrlKey">
+                        <fields><title field="Product Line Display Name"/></fields>
+                        <store_view>
+                            <avs helper="ho_import/import_category::getUrlKey">
+                                <fields><title field="Product Line Display Name"/></fields>
+                            </avs>
+                        </store_view>
+                    </url_key>
+
+                    <meta_description>
+                        <store_view>
+                            <avs field="Product Line Meta Description"/>
+                        </store_view>
+                    </meta_description>
+                    <meta_keywords>
+                        <store_view>
+                            <avs field="Product Line Meta Keywords"/>
+                        </store_view>
+                    </meta_keywords>
+                    <meta_title>
+                        <store_view>
+                            <avs field="Product Line Meta Title"/>
+                        </store_view>
+                    </meta_title>
+                    
+                </fieldmap> 
+            </pims_category_avs>
+        </ho_import>
+
+    </global>
+
+    <admin>
+        <routers>
+            <unleaded_pims>
+                <use>admin</use>
+                <args>
+                    <module>Unleaded_PIMS</module>
+                    <frontName>unleaded_pims</frontName>
+                </args>
+            </unleaded_pims>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <unleaded_pims>
+                    <file>unleaded_pims.xml</file>
+                </unleaded_pims>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <default>
+        <unleaded_pims>
+            <ftp>
+                <host>lundlibrary.com</host>
+                <port>21</port>
+                <username>MOE</username>
+                <password>gxS7AL853dHY5bYn</password>
+            </ftp>
+        </unleaded_pims>
+    </default>
+
+</config>

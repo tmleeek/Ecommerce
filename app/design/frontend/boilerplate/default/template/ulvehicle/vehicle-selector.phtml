@@ -1,0 +1,104 @@
+<?php
+$vehicles = Mage::getModel("vehicle/ulymm")->getCollection()->addFieldToSelect('year');
+$years = [];
+foreach ($vehicles as $_vehicle) {
+    if (!in_array($_vehicle->getYear(), $years)) {
+        $years[] = $_vehicle->getYear();
+    }
+}
+rsort($years);
+?>
+<div class="add-vehicle-modal-title"><?php echo $this->__("Select Your Vehicle") ?></div>
+<div class="vehicle-selector-group">
+    <div class="vehicle-year-selector vehicle-selector">
+        <select class="vehicle-year">
+            <option value="0"><?php echo $this->__("Select Year") ?></option>
+            <?php foreach ($years as $year): ?>
+                <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="vehicle-make-selector vehicle-selector">
+        <select class="vehicle-make" disabled="">
+            <option value="0"><?php echo $this->__("Select Make") ?></option>
+        </select>
+    </div>
+    <div class="vehicle-model-selector vehicle-selector">
+        <select class="vehicle-model" disabled="">
+            <option value="0"><?php echo $this->__("Select Model") ?></option>
+        </select>
+    </div>
+    <button class="button" id="add-vehicle-to-garage">
+        <span>
+            <span>
+                <?php echo $this->__("GO!") ?>
+            </span>
+        </span>
+    </button>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery('#add-vehicle-to-garage').on('click', function () {
+            if (jQuery('.vehicle-year').val() !== "0" && jQuery('.vehicle-make').val() !== "0" && jQuery('.vehicle-model').val() !== "0") {
+                var year = jQuery('.vehicle-year').val();
+                var make = jQuery('.vehicle-make').val();
+                var model = jQuery('.vehicle-model').val();
+
+                <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                    var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+                <?php else: ?>
+                    var customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+                <?php endif; ?>
+
+                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", {year: year, make: make, model: model, customerId: customerId},
+                function (data) {
+                    window.location.href = data;
+                });
+            } else {
+                alert("Year, Make Or Model Fields can not be empty.");
+            }
+        });
+
+        jQuery('.vehicle-year').on('change', function () {
+            var yearForMake = this.value;
+
+            jQuery('.vehicle-make').attr('disabled', "");
+            jQuery('.vehicle-model').attr('disabled', "");
+
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/getmakebyyear/') ?>", {year: yearForMake},
+            function (data) {
+                var makeOptions = jQuery.parseJSON(data);
+
+                var optionsHtml = "<option value='0'>Select Make</option>";
+
+                jQuery.each(makeOptions, function (index, value) {
+                    optionsHtml += "<option value='" + value + "'>" + value + "</option>";
+                });
+
+                jQuery('.vehicle-make').removeAttr('disabled');
+                jQuery('.vehicle-make').html(optionsHtml);
+            });
+        });
+
+        jQuery('.vehicle-make').on('change', function () {
+            var yearForModel = jQuery('.vehicle-year').val();
+            var makeForModel = this.value;
+
+            jQuery('.vehicle-model').attr('disabled', "");
+
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/getmodelbymakeandyear/') ?>", {year: yearForModel, make: makeForModel},
+            function (data) {
+                var makeOptions = jQuery.parseJSON(data);
+
+                var optionsHtml = "<option value='0'>Select Model</option>";
+
+                jQuery.each(makeOptions, function (index, value) {
+                    optionsHtml += "<option value='" + value + "'>" + value + "</option>";
+                });
+
+                jQuery('.vehicle-model').removeAttr('disabled');
+                jQuery('.vehicle-model').html(optionsHtml);
+            });
+        });
+    });
+</script>

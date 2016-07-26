@@ -1,0 +1,56 @@
+{exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+<div class="top-slider-section">
+    <div class="welcome-tabs-main">
+        <div class="welcome-tabs">
+            <div class="tab-top-gep">
+                <ul class="nav nav-pills ">
+                 {tabs}
+                    <li data-tab="{tabs:count}" data-image="{tabs:tab_background}" {if tabs:count=='1'} class="active"{/if}><a>{tabs:tab_title}</a></li>
+                 {/tabs}
+                </ul>
+                <div class="tab-content panes">
+                  {tabs}
+                    <div id="tab{tabs:count}" class="tab-pane {if tabs:count=='1'} active{/if}">
+                        <div class="tab-bg">
+                            {tabs:tab_content}
+                        </div>
+                    </div>
+                  {/tabs}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="main-second-ban">
+        <div class="container">
+            <div class="slider-line-main">
+                <div class="slider-line-main-left"><img alt="" src="/media/wysiwyg/slider-line.png" /></div>
+                <div class="slider-line-main-right"><img alt="" src="/media/wysiwyg/slider-line.png" /></div>
+            </div>
+            <div class="banner-second">
+
+                <ul class="blog-slider">
+              {history}
+                <li>
+                    <div class="main-second-slider">
+                        <div class="blog-details">
+                          {exp:ce_img:pair src="{history:image}" width="253" height="246" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                        </div>
+                        <div class="content-slider">
+                            <h3>{history:year}</h3>
+                            <p>{history:title}</p>
+                            <div class="content-second">{history:info}</div>
+                        </div>
+                    </div>
+                </li>
+              {/history}
+
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+{/exp:channel:entries}

@@ -1,0 +1,68 @@
+
+<form>
+<input name="address"/>
+<input type="submit">
+</form>
+<a id="weather" href="#">Add weather</a>
+
+
+{exp:gmaps:init}
+{exp:gmaps:empty_map
+	address="heerde"
+	width="100%"
+}
+
+<script>
+$(function(){
+	$('#weather').click(function(){
+		if($(this).hasClass('active')) {
+			$(this).removeClass('active');
+			EE_GMAPS.triggerEvent('removeLayer', {
+				mapID : 'ee_gmap_1',
+				layerName : 'weather'	
+			});
+		} else {
+			$(this).addClass('active');
+			EE_GMAPS.triggerEvent('addLayer', {
+				mapID : 'ee_gmap_1',
+				layerName : 'weather'	
+			});
+		}
+	});
+
+	$('form').submit(function(){
+
+		//geocode address
+		EE_GMAPS.triggerEvent('geocode', {
+			address : $('input[name="address"]').val(),
+			callback : function(result, type){
+				
+				//remove old markers
+				EE_GMAPS.triggerEvent('removeMarkers', {
+					mapID : 'ee_gmap_1'
+				});
+
+				//parse result
+				result = $.parseJSON(result);
+
+				//add marker
+				EE_GMAPS.triggerEvent('addMarker', {
+					mapID : 'ee_gmap_1',
+					lat: result[0].latitude,
+					lng: result[0].longitude,
+					title: result[0].city
+				});
+
+				//Fit the map
+				EE_GMAPS.triggerEvent('fitZoom', {
+					mapID : 'ee_gmap_1',
+					zoomLevel : 11
+				});
+
+			}
+		});
+		return false;
+	});
+});
+	
+</script>

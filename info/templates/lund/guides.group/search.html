@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {mage:head}
+</head>
+<body id="pages">
+
+    {mage:after_body_start}
+    {mage:header}
+
+
+    <div class="container">
+
+        <div class="layout layout-2-cols">
+
+
+            <div class="content">
+
+                   <div class="guides">
+                    <div class="find-guide">
+                       <h2>Find Your Guide</h2>
+                       {exp:search:simple_form channel="guides" form_id="guide-search" form_class="clearfix" result_page="guides/search" search_in="everywhere"  results="50"}
+                        <input type="text" name="keywords" id="keywords" class="textbox" value="" placeholder="Search by keyword or part #..." />
+                        <button type="submit"><span class="fa fa-search"></span></button>
+                      {/exp:search:simple_form}
+
+                      <h3>Popular Downloads</h3>
+                         <ul>
+                         {exp:channel:entries channel="guides" category="18" dynamic="no" limit="6"}
+                            <li><a href="{guide}" target="_blank">{title}</a></li>
+                         {/exp:channel:entries}
+                         </ul>
+                   {exp:channel:entries channel="guide_page"}
+                      <h3>Newest Products</h3>
+                         {newest_products}
+                      <h3>Related Information</h3>
+                         {related_information}
+                    {/exp:channel:entries}
+
+                    </div>
+
+
+                       <section class="table">
+
+                              <table border="0" cellpadding="6" cellspacing="1" width="100%">
+                                <tr>
+                                    <th>Guide Title</th>
+                                    <th>{lang:excerpt}</th>
+                                    <th>{lang:date}</th>
+                                </tr>
+
+                            {exp:search:search_results switch="resultRowOne|resultRowTwo"}
+
+                                <tr class="{switch}">
+                                    <td width="35%" valign="top"><b><a href="{guide}" target="_blank">{title}</a></b></td>
+                                    <td width="45%" valign="top">{guide_sentence_summary}</td>
+                                    <td width="20%" valign="top">{entry_date format="%m/%d/%y"}</td>
+                                </tr>
+
+                                {if count == total_results}
+                                    </table>
+                                {/if}
+
+                                {paginate}
+                                    <p>Page {current_page} of {total_pages} pages {pagination_links}</p>
+                                {/paginate}
+
+                            {/exp:search:search_results}
+
+                            </table>
+
+                        </section>
+                          
+                    </div>
+
+            </div><!-- end of main -->
+        </div>
+    </div><!-- END OF CONTAINER -->
+
+
+
+
+
+    {mage:footer}
+    {mage:before_body_end}
+
+</body>
+</html>

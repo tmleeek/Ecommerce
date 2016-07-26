@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<sections>
+		<unleaded_pims translate="label" module="unleaded_pims">
+			<label>PIMS Settings</label>
+			<tab>unleaded</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>3</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<ftp translate="label" module="unleaded_pims">
+					<label>FTP Credentials</label>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<host translate="label" module="unleaded_pims">
+							<label>Host</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</host>
+						<port translate="label" module="unleaded_pims">
+							<label>Port</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</port>
+						<username translate="label" module="unleaded_pims">
+							<label>Username</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</username>
+						<password translate="label" module="unleaded_pims">
+							<label>Password</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</password>
+					</fields>
+				</ftp>
+				<brand_data translate="label" module="unleaded_pims">
+					<label>Brand Data</label>
+					<sort_order>2</sort_order>
+					<show_in_default>0</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<display_name translate="label" module="unleaded_pims">
+							<label>Display Name</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+						</display_name>
+						<short_code translate="label" module="unleaded_pims">
+							<label>Short Code</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+						</short_code>
+						<disabled translate="label" module="unleaded_pims">
+							<label>Is Brand Disabled?</label>
+							<frontend_type>select</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</disabled>
+						<saleable translate="label" module="unleaded_pims">
+							<label>Is Brand Saleable?</label>
+							<frontend_type>select</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+						</saleable>
+						<html translate="label" module="unleaded_pims">
+							<label>Brand HTML</label>
+							<frontend_type>editor</frontend_type>
+							<frontend_model>unleaded_pims/adminhtml_system_config_editor</frontend_model>
+							<sort_order>50</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+						</html>
+						<meta_title translate="label" module="unleaded_pims">
+							<label>Brand Meta Title</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+						</meta_title>
+						<meta_keywords translate="label" module="unleaded_pims">
+							<label>Brand Meta Keywords</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>70</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+						</meta_keywords>
+						<meta_description translate="label" module="unleaded_pims">
+							<label>Brand Meta Description</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>80</sort_order>
+							<show_in_default>0</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>1</show_in_store>
+						</meta_description>
+					</fields>
+				</brand_data>
+			</groups>
+		</unleaded_pims>
+	</sections>
+</config>

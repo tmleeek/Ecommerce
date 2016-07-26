@@ -1,0 +1,34 @@
+ <aside role="complementary">
+    <h2><a href="{structure:top:url}">{structure:top:title}</a></h2>
+     {exp:structure:nav  start_from="/{segment_1}"}
+
+    <div class="help">
+       <div class="item">
+           <p><span>Contact us at:</span><br><?php echo Mage::getStoreConfig('general/store_information/phone'); ?></p>
+       </div>
+       <div class="item">
+          <p><span>or click for our</span><br><a href="javascript:void(0)" onclick="javascript:window.open('http://dm5.contactatonce.com/CaoClientContainer.aspx?MerchantId=57316&amp;Providerid=3766&amp;PlacementId=15&amp;OriginationUrl='+encodeURIComponent(location.href),'','resizable=yes,toolbar=no,menubar=no,location=no,scrollbars=no,status=no,height=400,width=600');return false;">Live Chat</a></p>
+       </div>
+    </div>
+
+    <div class="social-link">
+       {mage:footer_connect}
+    </div>
+
+
+      <h2 class="recent">Recent Blog Posts</h2>
+    {exp:channel:entries channel="blog" dynamic="no" limit="3"}
+     <div class="post">
+       {if blog_image}
+         {exp:ce_img:pair src="{blog_image}" width="230" height="149" crop="yes|center,center"}<a href="{url_title_path=blog/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+       {if:else}
+         <a href="{url_title_path=blog/post}"><img src="/info/assets/images/placeholder.png" width="230" height="149" alt=""></a>
+       {/if}
+       <h3><a href="{url_title_path=blog/post}">{title}</a></h3>
+       <p>{sentence_summary}</p>
+        <p><a href="{url_title_path=blog/post}">Read More</a></p>
+    
+    </div>
+    {/exp:channel:entries}
+
+</aside>

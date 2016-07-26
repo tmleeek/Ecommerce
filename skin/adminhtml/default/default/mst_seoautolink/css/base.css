@@ -1,0 +1,19 @@
+.mst-config #seoautolink_autolink td.scope-label {
+    width: 100px !important;
+    text-align: right;
+}
+
+.mst-config #seoautolink_autolink .grid { width: auto !important; }
+
+.mst-config #seoautolink_autolink_skip_links_for_page.textarea { max-width: 507px; }
+.mst-config #seoautolink_autolink_excluded_tags.textarea { resize: none; }
+
+.mst-config #seoautolink_autolink .hint { margin-left: 15px;}
+
+/*remove icon-head*/
+.seoautolink-adminhtml-link-index .icon-head.head-adminhtml-link,
+.seoautolink-adminhtml-link-add .icon-head.head-adminhtml-link,
+.seoautolink-adminhtml-link-edit .icon-head.head-adminhtml-link,
+.seoautolink-adminhtml-import-index .icon-head.head-adminhtml-import {
+  padding-left: 0px;
+}

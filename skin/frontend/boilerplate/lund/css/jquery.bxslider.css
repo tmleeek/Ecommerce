@@ -1,0 +1,78 @@
+.bx-wrapper { position: relative; margin:0; padding:0; clear:both; }
+.bx-wrapper  ul{ margin:0; padding:0; list-style:none; text-align:center;}
+.bx-wrapper img { max-width: 100%; }
+.bx-wrapper .bx-loading { min-height: 50px; background: url(../images/loading.gif) center center no-repeat #fff; height: 100%; width: 100%; position: absolute; top: 0; right: 0; z-index: 2000; }
+.bx-wrapper .bx-pager, .bx-wrapper .bx-controls-auto { position: absolute; top: 17px; width: 100%; padding-right:10px; }
+.bx-wrapper .bx-pager { text-align: right; font-size: .85em; font-family: Arial; font-weight: bold; color: #666; padding-top: 0; }
+.bx-wrapper .bx-pager .bx-pager-item, .bx-wrapper .bx-controls-auto .bx-controls-auto-item { float:right; width:10px; clear:both; margin-bottom:6px; display: block; }
+.bx-wrapper .bx-pager.bx-default-pager a { background: #FFF; text-indent: 9999px; display: block; width: 10px; height: 10px; outline: 0; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; overflow:hidden; }
+.bx-wrapper .bx-pager.bx-default-pager a:hover, .bx-wrapper .bx-pager.bx-default-pager a.active { background: #df0022; }
+
+
+.home-main-slider { position:relative;}
+.home-main-slider .bx-prev{ background:url(../images/prev-arrow.png) left top no-repeat; width:54px; height:54px; text-indent:-999px; overflow:hidden; display:block; position:absolute; left:10%; top:245px;}
+.home-main-slider .bx-next{ background:url(../images/next-arrow.png) left top no-repeat; width:54px; height:54px; text-indent:-999px; overflow:hidden; display:block; position:absolute; right:10%; top:245px;}
+
+
+.home-main-slider .container{ position:relative;}
+.home-slider .text{ position:absolute; text-align:left; left:30px; top:53px; max-width:550px;}
+.home-slider .text h2{ margin:0; padding:0 0 15px 0; font-size:50px; color:#5fadfa; text-transform:uppercase; }
+.home-slider .text p{ margin:0; padding:0 0 60px 0; font-size:28px; color:#ffffff; text-transform:uppercase; line-height:30px; } 
+.home-slider .text a.video-btn { display:inline-block; box-shadow:0px 10px 10px #000; padding:2px; border-radius:5px; background: #ffffff;  background: -moz-linear-gradient(top,  #ffffff 0%, #2c2c2c 100%);  background: -webkit-linear-gradient(top,  #ffffff 0%,#2c2c2c 100%);  background: linear-gradient(to bottom,  #ffffff 0%,#2c2c2c 100%);  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#2c2c2c',GradientType=0 ); }
+.home-slider .text a.video-btn:hover{ text-decoration:none;}
+.home-slider .text a.video-btn span{ display:block; padding:0 55px; border-radius:0; height:61px; line-height:61px; color:#FFF; font-size:13px; text-transform:uppercase; overflow:hidden; background: #424952; background: -moz-linear-gradient(top,  #424952 0%, #000000 100%);  background: -webkit-linear-gradient(top,  #424952 0%,#000000 100%);  background: linear-gradient(to bottom,  #424952 0%,#000000 100%);  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#424952', endColorstr='#000000',GradientType=0 ); font-weight:700; }
+.home-slider .text a.video-btn:hover span{ background: #000; background: -moz-linear-gradient(top,  #000%, #424952  100%);  background: -webkit-linear-gradient(top,  #000 0%,#424952  100%);  background: linear-gradient(to bottom,  #000 0%,#424952  100%);  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000', endColorstr='#424952 ',GradientType=0 ); text-decoration:none; }
+.home-main-slider .bx-wrapper img{ height:auto;}
+
+@media (min-width: 1200px) {
+.home-slider .text.text-right-align{ right:30px; left:inherit; text-align:right;}
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+.home-slider .text h2{ font-size:32px; padding:0;}
+.home-slider .text p{ font-size:18px; line-height:20px; padding-bottom:20px;}
+.home-slider .text a.video-btn span{ height:37px; line-height:37px; padding:0 10px;}
+.home-main-slider .bx-prev{ left:7px; top:50%; margin-top:-27px;}
+.home-main-slider .bx-next{ right:7px; top:50%; margin-top:-27px;}
+.home-main-slider .container{ width:100%;}
+.home-slider .text{ left:72px; right:72px;}
+.home-slider .text.text-right-align{ right:72px; left:inherit; text-align:right;}
+}
+@media (min-width: 768px) and (max-width: 991px) {
+.home-slider .text h2{ font-size:32px; padding:0;}
+.home-slider .text p{ font-size:18px; line-height:20px; padding-bottom:20px;}
+.home-slider .text a.video-btn span{ height:37px; line-height:37px; padding:0 10px;}
+.home-main-slider .bx-prev{ left:7px; top:50%; margin-top:-27px;}
+.home-main-slider .bx-next{ right:7px; top:50%; margin-top:-27px;}
+
+.home-main-slider .container{ width:100%;}
+.home-slider .text{ left:72px; right:72px;}
+.home-slider .text.text-right-align{ right:72px; left:inherit; text-align:right;}
+
+}
+@media (min-width: 600px) and (max-width: 767px) {
+.home-slider .text h2{ font-size:18px; padding:0;}
+.home-slider .text p{ font-size:14px; line-height:20px; padding-bottom:20px;}
+.home-slider .text a.video-btn span{ height:37px; line-height:37px; padding:0 10px;}
+.home-main-slider .bx-prev, .home-main-slider .bx-next{ display:none;}
+.home-slider .text{ left:72px; right:72px;}
+
+.home-slider .text{ left:15px; top:10px;}
+.home-slider .text.text-right-align{ right:15px; left:inherit; text-align:right;}
+}
+@media (max-width: 599px) {
+.home-slider .text h2{ font-size:18px; padding:0;}
+.home-slider .text p{ font-size:14px; line-height:20px; padding-bottom:20px;}
+.home-slider .text a.video-btn:hover span, .home-slider .text a.video-btn, .home-slider .text a.video-btn span{ background:none; height:auto; line-height:normal; padding:0; box-shadow: inherit; font-size:14px; font-weight:700; color:#5fadfa;}
+
+.home-main-slider .bx-prev, .home-main-slider .bx-next{display:none;}
+.home-slider .text{ left:13px; right:13px; top:5px;}
+
+.home-slider .text h2{ font-size:18px; padding:0;}
+.home-slider .text p{ font-size:14px; line-height:20px; padding-bottom:20px;}
+.home-slider .text a.video-btn span{ height:37px; line-height:37px; padding:0 10px;}
+.home-main-slider .bx-prev, .home-main-slider .bx-next{ display:none;}
+.home-slider .text{ left:72px; right:72px;}
+.home-slider .text{ left:15px; top:10px;}
+.home-slider .text.text-right-align{ right:15px; left:inherit; text-align:right;}
+
+}

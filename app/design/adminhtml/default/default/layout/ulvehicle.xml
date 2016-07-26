@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <vehicle_adminhtml_vehiclebackend_index>
+	<reference name="content">
+	  <block type="vehicle/adminhtml_vehiclebackend" name="vehiclebackend" template="vehicle/vehiclebackend.phtml"/>
+	</reference>
+  </vehicle_adminhtml_vehiclebackend_index>
+  <vehicle_adminhtml_ulymm_index>
+	<reference name="content">
+	  <block type="vehicle/adminhtml_ulymm" name="ulymm" />
+	</reference>
+  </vehicle_adminhtml_ulymm_index>
+</layout>

@@ -1,0 +1,83 @@
+.mst-config #seo_general td.scope-label,
+.mst-config #seo_extended td.scope-label,
+.mst-config #seo_snippets td.scope-label,
+.mst-config #seo_url td.scope-label,
+.mst-config #seo_image td.scope-label,
+.mst-config #seo_info td.scope-label {
+    width: 100px !important;
+    text-align: right;
+}
+
+.mst-config #seo_general .grid,
+.mst-config #seo_extended .grid,
+.mst-config #seo_snippets .grid,
+.mst-config #seo_url .grid,
+.mst-config #seo_image .grid,
+.mst-config #seo_info .grid {
+    width: auto !important;
+}
+
+.mst-config #seo_general_robots_editor.textarea,
+.mst-config #seo_general_canonical_url_ignore_pages.textarea {
+    max-width: 507px;
+}
+
+.mst-config #seo_general .hint,
+.mst-config #seo_extended .hint,
+.mst-config #seo_snippets .hint,
+.mst-config #seo_url .hint,
+.mst-config #seo_image .hint,
+.mst-config #seo_info .hint {
+    margin-left: 15px;
+}
+
+.mst-config #row_seo_general_hreflang_locale_code td.scope-label {
+    left: 105px !important;
+    float: right;
+}
+.mst-config #row_seo_general_hreflang_locale_code td div.hint {
+    margin-left: 120px;
+}
+
+/*remove icon-head*/
+.seo-adminhtml-template-index .icon-head.head-adminhtml-template,
+.seo-adminhtml-template-edit .icon-head.head-adminhtml-template,
+.seo-adminhtml-template-add .icon-head.head-adminhtml-template,
+.seo-adminhtml-redirectimport-index .icon-head.head-adminhtml-redirectimport,
+.seo-adminhtml-redirect-index .icon-head.head-adminhtml-redirect,
+.seo-adminhtml-redirect-add .icon-head.head-adminhtml-redirect,
+.seo-adminhtml-redirect-edit .icon-head.head-adminhtml-redirect,
+.seo-adminhtml-rewrite-edit .icon-head.head-adminhtml-rewrite,
+.seo-adminhtml-rewrite-add .icon-head.head-adminhtml-rewrite {
+    padding-left: 0px;
+}
+
+/*add padding in SEO settings*/
+.m-seo-settings-first-padding {
+    padding-left: 25px;
+}
+
+.m-seo-settings-second-padding {
+    padding-left: 40px;
+}
+
+/*add arrow in SEO settings*/
+.m-seo-settings-field-arrow-add:after {
+    content: '▼';
+    color: #436D7B;
+    padding-left: 5px;
+    position: absolute;
+    right: 0px;
+    top: 6px;
+}
+
+/*link style*/
+.m-seo-group-link {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/*highlight brackets for SEO Template*/
+.m-seo-highlight-brackets {
+    color: #ea7601;
+}

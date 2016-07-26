@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<unleaded module="unleaded_pims">
+			<children>
+				<pims_import module="unleaded_pims">
+					<title>PIMS Dashboard</title>
+					<sort_order>20</sort_order>
+					<action>unleaded_pims/adminhtml_index</action>
+				</pims_import>
+			</children>
+		</unleaded>
+	</menu>
+	<acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<unleaded_pims translate="title" module="unleaded_pims">
+										<title>PIMS Section</title>
+										<sort_order>1</sort_order>
+									</unleaded_pims>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config>

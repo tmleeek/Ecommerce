@@ -1,0 +1,172 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento enterprise edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_Vidtest
+ * @version    1.5.3
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php
+/**
+ * This is template for AW_Vidtest_Block_Product_View
+ */
+?>
+
+<?php if ($this->canShow()): ?>
+    <?php
+
+    $firstId = null;
+
+    $this->addHandleForCurrentLayout();
+    $this->initRatioThumbsToLayout();
+
+    # Set up pixels for scroll per one
+    $this->setPixelsScroll('138');
+    ?>
+    <div class="aw-vidtest-collateral-box collateral-box<?php if (Mage::helper('vidtest')->checkVersion('1.4.0.0')) { echo ' box-collateral'; } ?>"<?php if (Mage::helper('vidtest')->checkVersion('1.4.0.0')) { echo ' id="for_1400"'; } ?>>
+        <?php if (Mage::helper('vidtest')->checkVersion('1.4.0.0')): ?>
+            <h2><?php echo $this->getSectionTitle(); ?></h2>
+            <?php if ($this->canUpload() && $this->hasVideos()): ?>
+                <div class="add-own-video-button" id="for_1400"><a href="#" onclick="vidtest.toogleForm(); return false;"><?php echo $this->__('Upload Video'); ?></a></div>
+            <?php endif; ?>
+
+        <?php else: ?>
+            <div class="head">
+                <h4><?php echo $this->getSectionTitle(); ?></h4>
+                <?php if ($this->canUpload() && $this->hasVideos()): ?>
+                    <div class="add-own-video-button"><a href="#" onclick="vidtest.toogleForm(); return false;"><?php echo $this->__('Upload Video'); ?></a></div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <?php if ($this->canUpload() || $this->hasVideos()): ?>
+            <div id="vidtest-player" class="aw-vidtest-player">
+                <?php if ($this->canUpload()): ?>
+                    <div id="uploadform-content" style="display: none;">
+                        <div>
+                            <?php echo $this->getForm(); ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+                <div id="player-content" style="display: block;">
+                    <div>
+                        <?php //echo $this->getPlayer(); ?>
+                    </div>
+                </div>
+            </div>
+            <?php if ($this->hasVideos()): ?>
+                <div class="aw-vidtest-details">
+                    <div class="aw-vidtest-description<?php if (!$this->showRate()) { echo ' no-rating'; } ?>" id="details-content">
+
+                    </div>
+                    <?php if ($this->showRate()): ?>
+                        <div class="aw-vidtest-rates" id="rate-content">
+                            <div class="rate-box" id="aw-rate-box" onmouseout="vidtest.mouseOut(this);">
+                                <div class="rate-selector">
+                                    <a href="#" onmouseover="vidtest.mouseMove(1);" onclick="vidtest.mouseClick(1); return false;"></a>
+                                    <a href="#" onmouseover="vidtest.mouseMove(2);" onclick="vidtest.mouseClick(2); return false;"></a>
+                                    <a href="#" onmouseover="vidtest.mouseMove(3);" onclick="vidtest.mouseClick(3); return false;"></a>
+                                    <a href="#" onmouseover="vidtest.mouseMove(4);" onclick="vidtest.mouseClick(4); return false;"></a>
+                                    <a href="#" onmouseover="vidtest.mouseMove(5);" onclick="vidtest.mouseClick(5); return false;"></a>
+                                </div>
+                                <div class="rate" id="aw-rate-indicator" style="width: 50%;">
+
+                                </div>
+                            </div>
+                            <div class="notice" id="aw-rate-notice"><?php echo $this->__('Thanks for voting'); ?></div>
+                            <div class="notice" id="aw-rate-loader"><?php echo $this->__('Voting...'); ?></div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <div class="aw-vidtest-scroll-box">
+                    <div class="aw-vidtest-scroll-panel">
+                        <div class="counter">
+                            <span><?php echo $this->getVideoSummaryMessage(); ?></span>
+                        </div>
+                        <div class="buttons">
+                            <?php if ($this->showButtons()): ?>
+                                <?php foreach($this->getButtons() as $button): ?>
+                                    <div class="page-button"><a class="<?php if ($button->getFirst()) { echo ' active first'; } if ($button->getLast()) { echo 'last'; } ?>" href="#" onclick="vidtest.scrollToAnchor('page-button-<?php echo $button->getId(); ?>', '<?php echo $button->getLeft(); ?>'); return false;" id="page-button-<?php echo $button->getId(); ?>"><span><?php echo $button->getNum(); ?></span></a></div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="aw-vidtest-scroller">
+                        <a class="scroll-button<?php if (!$this->showButtons()){ echo ' disabled'; } ?>" id="sbt-left" onclick = "vidtest.scrollLeft(this.id);"></a>
+                        <div id="aw-vidtest-scroll-frame-id" class="aw-vidtest-scroll-frame">
+                            <div class="aw-vidtest-scroll-line" id="scroll-line">
+                                <?php foreach ($this->getCollection() as $item): ?>
+
+
+                                    <?php $firstId = $firstId ? $firstId : $item->getApiVideoId(); ?>
+
+                                    <div class="aw-vidtest-videoitem" id="<?php echo $item->getApiVideoId(); ?>">
+
+                                        <div class="border">
+                                            <a href="#" onclick="vidtest.playVideo('<?php echo $item->getApiVideoId(); ?>'); return false;">
+                                                <img alt="thumbnail"  src="<?php echo $this->prepareVideoUrls($item->getThumbnail()); ?>" class="image120" />
+                                            </a>
+                                        </div>
+                                        <span class="aw-vidtest-video-time"><span><?php echo $item->getTime(); ?></span></span>
+
+                                        <div class="title">
+                                            <a href="#" onclick="vidtest.playVideo('<?php echo $item->getApiVideoId(); ?>'); return false;"><?php echo  $this->prepareLength($item->getTitle()); ?></a>
+                                            <br/>
+                                            <?php  echo  $this->prepareLength($item->getAuthorName());  ?>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        <a class="scroll-button<?php if (!$this->showButtons()){ echo ' disabled'; } ?>" id="sbt-right"  onclick = "vidtest.scrollRight(this.id);"></a>
+                    </div>
+
+                </div>
+            <?php endif; ?>
+        <?php else: ?>
+            <?php echo $this->__('No video uploaded yet'); ?>
+        <?php endif; ?>
+    </div>
+
+    <script type="text/javascript">
+        var vidtest = new AWVidtest($('vidtest-player').getWidth(), $('vidtest-player').getHeight(), '<?php echo $this->getPixelsScroll(); ?>', '<?php echo $this->getThumbnailCount(); ?>', '<?php echo count($this->getCollection()); ?>', 1);
+        <?php if ($this->hasVideos()): ?>
+        vidtest.detailTemplate = '<a href="{{v_url}}" target="_blank">{{title}}</a> &mdash; {{date}}<br>' +
+        '{{details}}';
+        vidtest.ajaxUrl = '<?php echo $this->getAjaxUrl(); ?>';
+
+        <?php foreach ($this->getCollection() as $item): ?>
+        vidtest.addVideo("<?php echo $item->getApiVideoId(); ?>",
+            "<?php echo $this->prepareVideoUrls($item->getApiVideoUrl()); ?>",
+            "<?php echo $this->prepareVideoUrls(Mage::getSingleton('vidtest/connector')->getApiModel($item->getApiCode())->getVideoUrl($item->getApiVideoId())); ?>",
+            "<?php echo $item->getRate(); ?>",
+            "<?php echo $this->getCanRate($item->getId()); ?>",
+            "<?php echo $item->getTitle(); ?>",
+            "<?php echo $this->prepareToDisplay($item->getComment()); ?>",
+            "<?php echo $item->getPublicDate(); ?>",
+            "<?php echo $item->getId(); ?>");
+        <?php endforeach; ?>
+        vidtest.playVideo('<?php echo $firstId; ?>');
+        <?php else: ?>
+        vidtest.toogleForm();
+        <?php endif; ?>
+    </script>
+<?php endif; ?>
+ 

@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Unleaded_Vehicle>
+            <version>0.1.0</version>
+        </Unleaded_Vehicle>
+    </modules>
+    <global>
+        <helpers>
+            <vehicle>
+                <class>Unleaded_Vehicle_Helper</class>
+            </vehicle>
+        </helpers>
+        <blocks>
+            <vehicle>
+                <class>Unleaded_Vehicle_Block</class>
+            </vehicle>
+        </blocks>
+        <models>
+            <catalogsearch>
+                <rewrite>
+                    <layer>Unleaded_Vehicle_Model_CatalogSearch_Layer</layer>
+                </rewrite>
+            </catalogsearch>
+            <catalog_resource>
+                <rewrite>
+                    <product_indexer_eav_source>Unleaded_Vehicle_Model_Resource_Product_Indexer_Eav_Source</product_indexer_eav_source>
+                </rewrite>
+            </catalog_resource>
+            <!-- Adding Support For Amasty Layered Navigation -->
+            <amshopby>
+                <rewrite>
+                    <url_builder>Unleaded_Vehicle_Model_Amasty_Url_Builder</url_builder>
+                </rewrite>
+            </amshopby>
+            <vehicle>
+                <class>Unleaded_Vehicle_Model</class>
+                <resourceModel>vehicle_mysql4</resourceModel>
+            </vehicle>
+            <vehicle_mysql4>
+                <class>Unleaded_Vehicle_Model_Mysql4</class>
+                <entities>		  
+                    <ulgarage>
+                        <table>ul_vehicle_garages</table>
+                    </ulgarage>		  
+                    <ulymm>
+                        <table>ul_vehicle_ymm</table>
+                    </ulymm>
+                </entities>
+            </vehicle_mysql4>
+            <customer>
+                <rewrite>
+                    <customer>Unleaded_Vehicle_Model_Customer_Customer</customer>
+                </rewrite>
+            </customer>
+        </models>
+        <resources>
+            <vehicle_setup>
+                <setup>
+                    <module>Unleaded_Vehicle</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </vehicle_setup>
+            <vehicle_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </vehicle_write>
+            <vehicle_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </vehicle_read>
+        </resources>
+    </global>
+    <admin>
+        <routers>
+            <vehicle>
+                <use>admin</use>
+                <args>
+                    <module>Unleaded_Vehicle</module>
+                    <frontName>admin_vehicle</frontName>
+                </args>
+            </vehicle>
+        </routers>
+    </admin>
+    <frontend>
+        <routers>
+            <ulvehicle>
+                <use>standard</use>
+                <args>
+                    <module>Unleaded_Vehicle</module>
+                    <frontName>vehicle</frontName>
+                </args>
+            </ulvehicle>
+        </routers>
+        <layout>
+            <updates>
+                <vehicle>
+                    <file>ulvehicle.xml</file>
+                </vehicle>
+            </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <menu>
+            <vehicle module="vehicle">
+                <title>UL Vehicles</title>
+                <sort_order>100</sort_order>
+                <children>
+                    <!--<vehiclebackend module="vehicle">
+                        <title>UL Vehicle</title>
+                        <sort_order>0</sort_order>
+                        <action>admin_vehicle/adminhtml_vehiclebackend</action>
+                    </vehiclebackend>-->
+                    <ulymm module="vehicle">
+                        <title>Manage Vehicles</title>
+                        <sort_order>20</sort_order>
+                        <action>admin_vehicle/adminhtml_ulymm</action>
+                    </ulymm>
+                </children>
+            </vehicle>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+                        <vehicle translate="title" module="vehicle">
+                            <title>Vehicle</title>
+                            <sort_order>1000</sort_order>
+                            <children>
+                                <vehiclebackend translate="title">
+                                    <title>UL Vehicle</title>
+                                </vehiclebackend>
+                                <ulymm translate="title">
+                                    <title>Manage Vehicles</title>
+                                    <sort_order>20</sort_order>
+                                </ulymm>
+                            </children>
+                        </vehicle>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <vehicle>
+                    <file>ulvehicle.xml</file>
+                </vehicle>
+            </updates>
+        </layout>
+    </adminhtml>
+</config> 

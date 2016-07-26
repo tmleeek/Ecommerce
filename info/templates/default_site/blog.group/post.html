@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {mage:head}
+  <script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "f3333df2-d00b-49fa-b629-dac8a3515a2a", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+
+</head>
+<body id="blog">
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+    {mage:header}
+
+    <div class="container">
+        <div class="layout layout-1-col">
+            <div role="main" id="post">
+                {exp:channel:entries channel="blog" limit="1"}
+                 <div class="breadcrumb"><a href="/">Home</a> | <a href="{path=blog}">Blog</a> | <span class='last'>{title}</span></div>
+                <h1>{title}</h1>
+                <div class="entry">
+                    {entry_date format="%F %d, %Y"}
+                    <div class="sharethis">
+                        <span class='st_facebook_large' displayText='Facebook'></span>
+                        <span class='st_twitter_large' displayText='Tweet'></span>
+                        <span class='st_pinterest_large' displayText='Pinterest'></span>
+                        <span class='st_googleplus_large' displayText='Google +'></span>
+                        <span class='st_email_large' displayText='Email'></span>
+                         <span class='st_sharethis_large' displayText='ShareThis'></span>
+                    </div>
+                </div>
+
+                        {blog_post}
+
+                          {full_image}
+                            <div class="full-image">
+                                {exp:ce_img:pair src="{photo}" width="1160" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                            </div>
+                          {/full_image}
+
+                          {page_content}
+                             {content}
+                          {/page_content}
+
+                          {gallery}
+                            <div class="gallery-image">
+                                {images}
+                                   {exp:ce_img:pair src="{url}" width="370" height="215" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                                {/images}
+                            </div>
+                          {/gallery}
+
+                       {/blog_post}
+
+                       <div class='tags'>
+                         <h2>Tags:</h2>
+                             {exp:tagger:tags entry_id="{entry_id}"}
+                                   <span>{tagger:tag_name}</span>
+                            {/exp:tagger:tags}
+                      </div>
+           
+                {/exp:channel:entries}
+                <div class="fb-comments" data-href="{current_url}" data-width="100%" data-numposts="5"></div>
+            </div>
+        </div>
+    </div><!-- end of container -->
+
+    {mage:footer}
+
+
+
+</body>
+</html>

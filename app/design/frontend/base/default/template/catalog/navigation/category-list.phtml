@@ -1,0 +1,74 @@
+<?php 
+	if (!$currentCategory = Mage::registry('current_category')) 
+		return;
+
+	$helper = Mage::helper('catalog/category');
+	$store  = Mage::app()->getStore();
+	// If this is the default store, we need to show both categories under all products
+	// otherwise we just show the category under this store's categories
+	if ($store->getCode() === 'default') {
+		$_brandCategories = [];
+		$brandCategories = Mage::getModel('catalog/category')
+							->loadByAttribute('name', 'All Products')
+							->getChildrenCategories();
+		foreach ($brandCategories as $brandCategory) {
+			$_brandCategories[$brandCategory->getName()] = [];
+
+			foreach ($brandCategory->getChildrenCategories() as $_category) {
+				$_brandCategories[$brandCategory->getName()][] = $_category;
+			}
+		}
+	} else {
+		$_categories = Mage::getModel('catalog/category')
+						->loadByAttribute('name', $store->getCode())
+						->getChildrenCategories();
+	}
+?>
+
+<?php if (isset($_categories)): ?>
+	<div class="block block-layered-nav">
+	    <div class="block-content">
+	        <dl id="narrow-by-list2">
+	            <dt><?php echo $store->getCode(); ?></dt>
+	            <dd>
+	                <ol>
+	                <?php foreach ($_categories as $_category): ?>
+	                    <?php if ($_category->getIsActive()): ?>
+	                    <li>
+	                        <a href="<?php echo $helper->getCategoryUrl($_category); ?>"<?php echo $_category->getName() === $currentCategory->getName() ? 'class="current"' : ''; ?>>
+	                        	<?php echo $this->escapeHtml($_category->getName()) ?>
+	                        </a>
+	                    </li>
+	                    <?php endif; ?>
+	                <?php endforeach; ?>
+	                </ol>
+	            </dd>
+	        </dl>
+	        <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+	    </div>
+	</div>
+<?php elseif (isset($_brandCategories)): ?>
+	<?php foreach ($_brandCategories as $brandName => $_categories): ?>
+		<div class="block block-layered-nav">
+		    <div class="block-content">
+		        <dl id="narrow-by-list2">
+		            <dt><?php echo $brandName; ?></dt>
+		            <dd>
+		                <ol>
+		                <?php foreach ($_categories as $_category): ?>
+		                    <?php if ($_category->getIsActive()): ?>
+		                    <li>
+		                        <a href="<?php echo $helper->getCategoryUrl($_category); ?>"<?php echo $_category->getName() === $currentCategory->getName() ? 'class="current"' : ''; ?>>
+		                        	<?php echo $this->escapeHtml($_category->getName()) ?>
+		                        </a>
+		                    </li>
+		                    <?php endif; ?>
+		                <?php endforeach ?>
+		                </ol>
+		            </dd>
+		        </dl>
+		        <script type="text/javascript">decorateDataList('narrow-by-list2')</script>
+		    </div>
+		</div>
+	<?php endforeach; ?>
+<?php endif; ?>

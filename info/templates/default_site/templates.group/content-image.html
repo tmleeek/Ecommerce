@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {mage:head}
+</head>
+<body id="pages">
+
+    {mage:header}
+
+ {exp:channel:entries channel="image_page"}
+     {sections_subheader}
+        <div class="subheader" style="background-image: {exp:ce_img:pair src='{sections_subheader:image}' max_width='1920' max_height='527' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+          <div class="container">
+             <h1>{title}</h1>
+                 <p>{sections_subheader:byline}</p>
+          </div>
+        </div>
+     {/sections_subheader}
+
+  {sections}
+
+   {about_section}
+        <section class="one sections">
+          <div class="container">
+             <h2 class="header">{title}</h2>
+             {three_images}
+               {exp:ce_img:pair src="{url}" width="387" height="250" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" class="photo"/>{/exp:ce_img:pair}
+             {/three_images}
+               <div class="clearfix"></div>
+               {content}
+                {if button_link}<div class="btn"><a href="{button_link}">Read More</a></div>{/if}
+          </div>
+        </section>
+   {/about_section}
+
+   {history_section}
+    <section class="two sections" style="background-image: {exp:ce_img:pair src='{background_image}' max_width='1920' max_height='527' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+      <div class="container">
+         <div class="text">
+           <h2>{title}</h2>
+           {copy}
+           {if button_link}<div class="btn"><a href="{button_link}">Read More</a></div>{/if}
+         </div>
+      </div>
+    </section>
+   {/history_section}
+
+   {manufacturing_section}
+        <section class="three sections">
+          <div class="container">
+               <h2>{title}</h2>
+               {top_content}
+
+            {if item_one}
+               <div class="item">
+                  {item_one}
+               </div>
+            {/if}
+
+            {if item_two}
+               <div class="item middle">
+                  {item_two}
+               </div>
+            {/if}
+
+            {if item_three}
+               <div class="item">
+                 {item_three}
+               </div>
+            {/if}
+               <div class="clearfix"></div>
+              {bottom_content}
+
+          </div>
+        </section>
+    {/manufacturing_section}
+
+    {banner_section}
+         <section class="banner sections" style="background-image: {exp:ce_img:pair src='{background_image}' max_width='1920' max_height='527' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+          <div class="container">
+               <h2>{byline}</h2>
+          </div>
+        </section>
+    {/banner_section}
+
+    {grey_section}
+        <section class="grey sections" style="background-image: url(/info/assets/images/grey-bkg.png);">
+          <div class="container">
+               <h2 class="title">{grey_title}</h2>
+               <div class="photo">
+                   {exp:ce_img:pair src="{grey_photo}" width="316" height="539" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" class="photo"/>{/exp:ce_img:pair}
+               </div>
+               <div class="text">
+                   <h3>{grey_name}</h3>
+                   <p class='title'>{grey_position}</p>
+                    {grey_text}
+                   {if grey_button_link}<div class="btn"><a href="{grey_button_link}">Read More</a></div>{/if}
+               </div>
+          </div>
+        </section>
+    {/grey_section}
+
+    {blue_section}
+        <section class="blue sections" style="background-image: url(/info/assets/images/blue-bkg.png);">
+          <div class="container">
+               {if blue_title}<h2 class="title">{blue_title}</h2>{/if}
+               <div class="photo">
+                   {exp:ce_img:pair src="{blue_photo}" width="316" height="539" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" class="photo"/>{/exp:ce_img:pair}
+               </div>
+               <div class="text">
+                   <h3>{blue_name}</h3>
+                   <p class='title'>{blue_position}</p>
+                   {blue_text}
+                   {if blue_button_link} <div class="btn"><a href="{blue_button_link}">Read More</a></div>{/if}
+               </div>
+          </div>
+        </section>
+    {/blue_section}
+
+    {outreach_section}
+        <section class="outreach sections clearfix">
+             <div class="text">
+               {outreach_text}
+               {if outreach_button_link}<div class="btn"><a href="{outreach_button_link}">Read More</a></div>{/if}
+             </div>
+             <div class="photo">
+                {exp:ce_img:pair src="{outreach_photo}" width="951" height="660" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" class="photo"/>{/exp:ce_img:pair}
+             </div>
+        </section>
+    {/outreach_section}
+
+   {/sections}
+ {/exp:channel:entries}
+    {mage:footer}
+
+
+</body>
+</html>

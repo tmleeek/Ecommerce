@@ -1,0 +1,35 @@
+<div class="main-products">
+    <div class="container">
+        <div class="brand-main">
+            <div class="products-head">
+            <h1>Our Products</h1>
+            <p>Functional, high-performance, protective and stylish</p>
+            </div>
+            <div class="pro-box-main">
+            <ul>
+                <li>
+                    <div class="pro-bg">
+                        <div class="truck-pic"><img alt="" src="/media/wysiwyg/ourb-pic-02.png" height="240"/></div>
+                        <div class="pro-bg-top">
+                            <p class="pro-bg-head">Browse our Showroom</p>
+                            <p>Our extensive line of automotive accessories includes everything from ventvisors/side window deflectors and hood protection to running boards / nerf bars and tonneau covers and so much more.</p>
+                        </div>
+                    </div>
+                </li>
+                {exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+                    {product_callouts}
+                        <li>
+                            <div class="pro-bg">
+                                <div class="truck-pic">
+                                    {exp:ce_img:pair src="{product_callouts:image}" width="369" height="240" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                                </div>
+                                <div class="browse-link"><a href="{product_callouts:link}">{product_callouts:title} <span class="arrow-right-icon"><img alt="" src="/media/wysiwyg/right-icon-arrow.png" /></span></a></div>
+                            </div>
+                        </li>
+                    {/product_callouts}
+                {/exp:channel:entries}
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>

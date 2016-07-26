@@ -1,0 +1,42 @@
+{exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination" limit="1"}
+<div class="main-products">
+    <div class="container">
+        <div class="brand-main">
+            <div class="products-head">
+            <h1>Our Products</h1>
+            <p>Functional, high-performance, protective and stylish</p>
+            </div>
+            <div class="pro-box-main">
+            <ul>
+                <li>
+                  {show_box}
+                    <div class="pro-bg">
+                        <div class="truck-pic">
+                          {exp:ce_img:pair src="{show_box:box_background}" width="369" height="240" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                        </div>
+
+                        <div class="pro-bg-top">
+                            {show_box:text}
+                        </div>
+
+                    </div>
+                  {/show_box}
+                </li>
+
+                    {product_callouts}
+                        <li>
+                            <div class="pro-bg">
+                                <div class="truck-pic">
+                                    {exp:ce_img:pair src="{product_callouts:image}" width="369" height="240" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                                </div>
+                                <div class="browse-link"><a href="{product_callouts:link}">{product_callouts:title} <span class="arrow-right-icon"><img alt="" src="/media/wysiwyg/right-icon-arrow.png" /></span></a></div>
+                            </div>
+                        </li>
+                    {/product_callouts}
+
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{/exp:channel:entries}

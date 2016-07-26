@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {mage:head}
+</head>
+<body id="pages">
+
+    {mage:after_body_start}
+    {mage:header}
+
+    {exp:channel:entries channel="guide_page"}
+
+      {guide_sub_header}
+        <div class="subheader" style="background-image: {exp:ce_img:pair src='{guide_sub_header:image}' max_width='1920' max_height='527' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
+             <h1>{title}</h1>
+             <p>{guide_sub_header:byline}</p>
+        </div>
+      {/guide_sub_header}
+     {/exp:channel:entries}
+    <div class="container">
+
+        <div class="layout layout-2-cols">
+          {exp:channel:entries channel="guide_page"}
+           {embed=_includes/page-sidenav}
+
+            <div role="main" class="content">
+                  <div class="breadcrumb">{exp:structure:breadcrumb here_as_title="yes" separator="|"}</div>
+               {guide_content}
+                  {full_image}
+                    <div class="full-image">
+                        {exp:ce_img:pair src="{photo}" width="838" height="481" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                    </div>
+                  {/full_image}
+
+                  {page_content}
+                     {content}
+                  {/page_content}
+               {/guide_content}
+             {/exp:channel:entries}
+
+           <div class="guides">
+            <div class="find-guide">
+               <h2>Find Your Guide</h2>
+               {exp:search:simple_form channel="guides" form_id="guide-search" form_class="clearfix" result_page="guides/search" search_in="everywhere"  results="50"}
+                <input type="text" name="keywords" id="keywords" class="textbox" value="" placeholder="Search by keyword or part #..." />
+                <button type="submit"><span class="fa fa-search"></span></button>
+              {/exp:search:simple_form}
+
+              <h3>Popular Downloads</h3>
+                 <ul>
+                 {exp:channel:entries channel="guides" category="18" dynamic="no" limit="6"}
+                    <li><a href="{guide}" target="_blank">{title}</a></li>
+                 {/exp:channel:entries}
+                 </ul>
+           {exp:channel:entries channel="guide_page"}
+              <h3>Newest Products</h3>
+                 {newest_products}
+              <h3>Related Information</h3>
+                 {related_information}
+            {/exp:channel:entries}
+
+            </div>
+
+               {exp:channel:categories channel="guides" style="linear"  dynamic="no" show_empty="no" show="not 18"}
+               <section class="clearfix">
+                {if category_description}
+                    <p>{category_description}</p>
+                {/if}
+                 <h2 class='title'>{category_name}</h2>
+                   {exp:channel:entries channel="guides" category="{category_id}" dynamic="no" limit="6" paginate="bottom"}
+                        <div class="item">
+                           {exp:ce_img:pair src="{guide_image}" width="190" height="127" crop="yes|center,center"}<a href="{guide}" target="_blank"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+                           <h3><a href="{guide}" target="_blank">{title}</a></h3>
+                           <p>{guide_sentence_summary}</p>
+                       </div>
+
+                       {paginate}
+                           {pagination_links}
+                                {next_page}
+                                   <div class="paginate"> <a href="{pagination_url}" class="button">Load More</a> </div>
+                                {/next_page}
+                            {/pagination_links}
+                       {/paginate}
+
+                   {/exp:channel:entries}
+
+
+                </section>
+               {/exp:channel:categories}
+
+               <section class="clearfix vid">
+                 <h2 class="title">Videos</h2>
+                    {exp:channel:entries channel="videos" dynamic="no" paginate="bottom" limit="2"}
+                          {exp:channel_videos:videos entry_id="{entry_id}"}
+                          <div class="vids clearfix">
+                               <div class="pic">
+                                  <a href="{video:url}" class="youtube"><img src="/info/assets/images/video.png" width="480" height="300" alt=""></a>
+                               </div>
+                              <h3>{video:title}</h3>
+                                {video:description}
+                         </div>
+                         {/exp:channel_videos:videos}
+
+                         {paginate}
+                           {pagination_links}
+                                {next_page}
+                                   <div class="paginate"> <a href="{pagination_url}" class="button">Load More</a> </div>
+                                {/next_page}
+                            {/pagination_links}
+                         {/paginate}
+                    {/exp:channel:entries}
+               </section>
+            </div>
+            </div><!-- end of main -->
+        </div>
+    </div><!-- END OF CONTAINER -->
+
+  {exp:channel:entries channel="guide_page"}
+   {bottom_banner}
+         <section class="banner2" style="background-image: {exp:ce_img:pair src='{bottom_banner:image}' max_width='1900' max_height='295' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};" class="clearfix">
+                <h2>{bottom_banner:text}</h2>
+         </section>
+    {/bottom_banner}
+  {/exp:channel:entries}
+
+    {mage:footer}
+    {mage:before_body_end}
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<div class="category-children">
+	<ul class="category-grid">
+		<?php 
+			foreach ($this->getCategories() as $category):
+				// We need to find a product that has an image and use that
+				$productCollection = $category
+										->getProductCollection()
+										->addAttributeToFilter('image', ['neq' => null])
+										->addAttributeToFilter('image', ['neq' => 'no_selection']);
+
+				foreach ($productCollection as $product) {
+					$imageUrl = Mage::getBaseUrl('media') . 'catalog/product' . $product->getImage();
+					break;
+				}
+		?>
+	        <li class="item">
+	            <div class="">
+	                <a href="<?php echo $this->getCategoryUrl($category); ?>" class="category-image">
+	                    <img alt="<?php echo $category->getName(); ?>" src="<?php echo $imageUrl; ?>" />
+	                </a>
+	                <div class="menu-details">
+	                    <div class="menu-title">
+	                    	<a href="<?php echo $this->getCategoryUrl($category); ?>">
+	                    		<span><?php echo $category->getName(); ?></span>
+	                    	</a>
+	                    </div>
+	                    <div class="menu-description">
+	                    	<?php echo $category->getShortDescription(); ?>
+	                    </div>
+	                </div>
+	            </div>
+	        </li>
+		<?php endforeach; ?>
+	</ul>
+</div>
+<script type="text/javascript">
+	(function($) {
+		var $itemLinks;
+		var baseUrl = '<?php echo Mage::getBaseUrl(); ?>';
+		var compatibleVehicles = {};
+
+		function init() {
+			console.log(baseUrl);
+			listenToLinks();
+		}
+
+		function listenToLinks() {
+			$itemLinks = $('ul.category-grid li.item a');
+			$itemLinks.on('click', function(event) {
+				event.preventDefault();
+				openYMM(this.href);
+				console.log(this.href);
+			});
+		}
+
+		function openYMM(href) {
+            $.ajax({
+            	method: 'POST',
+            	url: '<?php echo Mage::getUrl('ulvehicle/index/getCompatibleVehicles') ?>',
+            	data: {target: href},
+                success: function(data) {
+                    jQuery('#vehicle-modal .modal-content').html(data);
+                    jQuery('#vehicle-modal').fadeIn();
+                }
+            });
+		}
+
+		$(document).ready(init);
+	}(jQuery));
+</script>

@@ -1,0 +1,379 @@
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/LICENSE-M1.txt
+ *
+ * @category   AW
+ * @package    AW_Vidtest
+ * @copyright  Copyright (c) 2010 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/LICENSE-M1.txt
+ */
+
+.aw-vidtest-collateral-box{
+
+}
+
+div.box-aw-video-testimonial div.aw-vidtest-collateral-box h2 {
+    display: none;
+}
+
+.add-own-video-button a{
+    font-weight: bold;
+}
+
+.aw-vidtest-videoitem .image120 {
+    height: 90px;
+    width: 120px;
+}
+
+.aw-vidtest-videoitem border{
+    
+}
+
+.aw-vidtest-scroll-frame {
+    
+
+}
+
+.aw-vidtest-scroller {
+    position: relative;
+    float: none;
+}
+
+.aw-vidtest-scroller a.disabled#sbt-left:hover {
+    background-image:url(../images/btn_left.png) !important;
+}
+
+.aw-vidtest-scroller a.disabled#sbt-right:hover {
+    background-image:url(../images/btn_right.png) !important;
+}
+
+.aw-vidtest-scroll-box {
+    padding: 3px;
+    border: 1px solid #ccc;
+}
+
+.aw-vidtest-scroll-panel {
+    height: 34px;
+    padding: 0 33px;
+    padding-top: 3px;
+    float: none;
+}
+
+.aw-vidtest-scroll-panel .counter{
+    color:#1E7EC8;
+    float:left;
+    font-size:larger;
+    font-weight:bold;
+    padding-top:5xpx;
+}
+
+.aw-vidtest-scroll-panel .buttons{
+    float: right;
+
+}
+
+.aw-vidtest-scroll-panel div.page-button {
+    float: left;
+}
+.aw-vidtest-scroll-panel div.page-button a {
+    text-align: center;
+    text-decoration: none;
+    height: 27px;
+    width: 27px;
+	display:block;
+	cursor:pointer;
+	background-repeat:no-repeat;
+    background-image:url(../images/page_button.png);
+    padding-top:4px;
+}
+
+.aw-vidtest-scroll-panel div.page-button a.active, .aw-vidtest-scroll-panel div.page-button a:hover {
+    background-image:url(../images/page_button_active.png);
+    color: black;
+}
+
+.aw-vidtest-scroller a.scroll-button {
+	position:absolute;
+	z-index:100;
+	top:0px;
+	display:block;
+	cursor:pointer;
+	background-repeat:no-repeat;
+}
+
+
+
+.aw-vidtest-scroller a.scroll-button#sbt-left:hover {
+    background-image:url(../images/btn_left_hover.png);
+}
+
+.aw-vidtest-scroller a.scroll-button#sbt-right:hover {
+    background-image:url(../images/btn_right_hover.png);
+}
+
+.aw-vidtest-scroller a.scroll-button#sbt-left {
+    background-image:url(../images/btn_left.png);
+    left: 0;
+}
+
+.aw-vidtest-scroller a.scroll-button#sbt-right {
+    background-image:url(../images/btn_right.png);
+    right: 0;
+}
+
+a.scroll-button#sbt-left {
+    width: 27px;
+    height: 170px;
+}
+
+a.scroll-button#sbt-right {
+    width: 27px;
+    height: 170px;
+}
+
+
+.aw-vidtest-scroll-frame {
+    height: 170px;
+    width: 550px;
+    float: none;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+
+}
+
+.aw-vidtest-scroll-line {
+    padding-top: 3px;
+    /*padding-left: 7px;*/
+    position: absolute;
+    height: 170px;
+    left: 0;
+    width: 1000000px;
+}
+
+.aw-vidtest-videoitem {
+    float:left;
+    margin-right:14px;
+    position:relative;
+    width:124px;
+}
+
+.aw-vidtest-videoitem .title a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.aw-vidtest-videoitem .title a,
+.aw-vidtest-videoitem .author{
+    
+
+}
+
+.aw-vidtest-videoitem .border {
+    /*text-align: center;*/
+    /*border: 1px solid #ccc;*/
+}
+
+.aw-vidtest-video-time{
+    margin-right:0;
+    margin-top:0;
+    opacity:1;
+    position:absolute;
+    right:10px;
+    top:70px;
+    z-index:12;
+}
+
+.aw-vidtest-video-time span{
+    -moz-border-radius:3px 3px 3px 3px;
+    -webkit-border-radius:3px 3px 3px 3px;
+    background-color:#000000;
+    color:#FFFFFF !important;
+    display:inline-block;
+    font-size:11px;
+    font-weight:bold;
+    height:14px;
+    line-height:14px;
+    opacity:0.75;
+    padding:0 4px;
+    vertical-align:top;
+}
+
+/*** Player */
+
+.aw-vidtest-player {
+    width: 633px;
+    min-height: 400px;
+    margin-bottom: 8px;
+}
+
+/** Upload form */
+
+.aw-vidtest-uploadform {
+    margin: 21px;
+}
+
+div#uploadform-content {
+    border: 1px solid #ccc;
+}
+
+
+
+.aw-vidtest-uploadform div.form-head {
+    border-bottom: 1px solid #E4E4E4;
+    margin-bottom: 5px;
+}
+.aw-vidtest-uploadform div.button-set {
+    border-top: 1px solid #E4E4E4;
+    margin-top: 21px;
+}
+
+.aw-vidtest-youtube-copyright{
+    float: right;
+}
+
+/*** Details */
+.aw-vidtest-details {
+    overflow: hidden;
+    margin-bottom:8px;
+    width: 633px;
+}
+
+.aw-vidtest-description {
+    border:1px solid #CCCCCC;
+    float:left;
+    min-height:50px;
+    padding:3px 7px;
+    width:457px;
+    overflow: auto;
+}
+
+.no-rating#details-content {
+    width:617px;
+}
+
+/** Vidtest Rates */
+.aw-vidtest-rates {
+    border:1px solid #CCCCCC;
+    float:right;
+    height:44px;
+    padding-left:7px;
+    padding-top:12px;
+    width:146px;
+}
+
+.aw-vidtest-rates .rate-box {
+    background:url("../images/stars_grey.png") repeat-x scroll 0 0 transparent;
+    float:left;
+    height:27px;
+    margin-right:5px;
+    position:relative;
+    width:140px;
+}
+
+.aw-vidtest-rates .rate-box .rate {
+    background:url("../images/stars_gold.png") repeat-x scroll 0 0 transparent;
+    height:27px;
+    left:0;
+    z-index: 9;
+    position:absolute;
+    top:0;
+}
+
+.aw-vidtest-rates .rate-box .rate-selector {
+    height:27px;
+    width: 140px;
+    z-index: 10;
+    left:0;
+    position:absolute;
+    top:0;
+}
+
+.aw-vidtest-rates .rate-box .rate-selector a {
+    height:27px;
+    width: 28px;
+    display: block;
+    float: left;
+}
+
+.aw-vidtest-rates .disabled .rate-selector a {
+    cursor: auto;
+}
+
+.aw-vidtest-rates .notice {
+    color: inherit;
+    margin-left:3px;   
+    display: none;
+}
+
+/*** Layout customizations */
+.col1-layout .col-main .aw-vidtest-player,
+.col-1-layout .col-main .aw-vidtest-player { width: 848px; }
+.col1-layout .col-main .aw-vidtest-details,
+.col-1-layout .col-main .aw-vidtest-details { width: 848px; }
+.col1-layout .no-rating#details-content,
+.col-1-layout .no-rating#details-content { width:832px; }
+.col1-layout .col-main .aw-vidtest-details .aw-vidtest-description,
+.col-1-layout .col-main .aw-vidtest-details .aw-vidtest-description { width: 673px; }
+.col1-layout .col-main  .aw-vidtest-scroll-frame,
+.col-1-layout .col-main  .aw-vidtest-scroll-frame { width: 696px; }
+
+
+.col3-layout .col-main .aw-vidtest-player,
+.col-3-layout .col-main .aw-vidtest-player { width: 423px; }
+.col3-layout .col-main .aw-vidtest-details,
+.col-3-layout .col-main .aw-vidtest-details { width: 423px; }
+.col3-layout .no-rating#details-content,
+.col-3-layout .no-rating#details-content { width:407px; }
+.col3-layout .col-main .aw-vidtest-details .aw-vidtest-description,
+.col-3-layout .col-main .aw-vidtest-details .aw-vidtest-description { width: 248px; }
+.col3-layout .col-main  .aw-vidtest-scroll-frame,
+.col-3-layout .col-main  .aw-vidtest-scroll-frame { width: 276px; }
+.col3-layout .col-main .aw-vidtest-uploadform .input-text,
+.col-3-layout .col-main .aw-vidtest-uploadform .input-text { width: 300px !important; }
+
+/** Magento 1.4.* Fixes */
+.aw-vidtest-uploadform .button-set button.button {
+    margin-top:  3px;
+}
+
+.aw-vidtest-collateral-box .add-own-video-button#for_1400 {
+    /*position:absolute;*/
+    /*right:4px;*/
+    /*top:-1px;*/
+}
+
+.aw-vidtest-collateral-box#for_1400 {
+    position:relative;
+}
+
+.aw-vidtest-uploadform#for_1400 div span.required {
+    color: #EB340A;
+}
+
+/* Player fluid width */
+
+#player-content {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+}
+
+#player-content iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#vidtest-player {
+    margin-top: 15px;
+}

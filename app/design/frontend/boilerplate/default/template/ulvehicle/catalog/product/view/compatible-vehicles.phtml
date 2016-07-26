@@ -1,0 +1,39 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = Mage::registry('current_product'); ?>
+<?php $vehicleList = $_product->getCompatibleVehicles(); ?>
+<?php $vehiclesCollection = Mage::getModel('vehicle/ulymm')->getCollection()->addFieldToFilter('ymm_id', ["in" => explode(",", $vehicleList)]); ?>
+<?php if ($vehiclesCollection->count() > 0): ?>
+    <div class="pro-over-main">
+        <div class="container">
+            <div class="pro-head-over">
+                <h2 class="mobi-drop-icon"><?php echo $this->__("COMPATIBLE VEHICLE LIST") ?></h2>
+                <table class="year-length-main">  
+                    <tbody>        
+                        <tr>
+                            <th><?php echo $this->__("Year") ?></th>
+                            <th><?php echo $this->__("Make") ?></th>
+                            <th><?php echo $this->__("Model") ?></th>
+                            <th><?php echo $this->__("SubModel") ?></th>
+                            <th><?php echo $this->__("Body Style") ?></th>
+                            <th><?php echo $this->__("Bed Length") ?></th>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="compatible-main-list"  id="ex3">
+                    <table>
+                        <?php foreach ($vehiclesCollection as $_vehicle) : ?>
+                            <tr>
+                                <td><?php echo $_vehicle->getYear(); ?></td>
+                                <td><?php echo $_vehicle->getMake(); ?></td>
+                                <td><?php echo $_vehicle->getModel(); ?></td>
+                                <td><?php echo $_vehicle->getSubModel(); ?></td>
+                                <td><?php echo $_vehicle->getBodyStyle(); ?></td>
+                                <td><?php echo $_vehicle->getBedLength(); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

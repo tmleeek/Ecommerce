@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <vidtest module="vidtest" translate="title">
+                    <title>Video Testimonials</title>
+                    <sort_order>20</sort_order>
+                    <children>
+                        <all_video translate="title">
+                            <title>All video</title>
+                            <sort_order>10</sort_order>
+                            <action>adminhtml/aw_vidtest_video</action>
+                        </all_video>
+                        <pending_video translate="title">
+                            <title>Pending video</title>
+                            <sort_order>20</sort_order>
+                            <action>adminhtml/aw_vidtest_video/pending</action>
+                        </pending_video>
+                        <settings translate="title">
+                            <title>Settings</title>
+                            <sort_order>30</sort_order>
+                            <action>adminhtml/system_config/edit/section/vidtest</action>
+                        </settings>
+                    </children>
+                </vidtest>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <vidtest>
+                                <title>Video Testimonials</title>
+                                <sort_order>20</sort_order>
+                                <children>
+                                    <all_video translate="title">
+                                        <title>All video</title>
+                                        <sort_order>10</sort_order>
+                                    </all_video>
+                                    <pending_video translate="title">
+                                        <title>Pending video</title>
+                                        <sort_order>20</sort_order>
+                                    </pending_video>
+                                    <settings translate="title">
+                                        <title>Settings</title>
+                                        <sort_order>30</sort_order>
+                                    </settings>
+                                </children>
+                            </vidtest>
+                        </children>
+                    </catalog>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <vidtest>
+                                        <title>aheadWorks - Video Testimonials</title>
+                                    </vidtest>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+    <layout>
+        <updates>
+            <vidtest>
+                <file>aw_vidtest.xml</file>
+            </vidtest>
+        </updates>
+    </layout>
+    <translate>
+        <modules>
+            <AW_Vidtest>
+                <files>
+                    <default>AW_Vidtest.csv</default>
+                </files>
+            </AW_Vidtest>
+        </modules>
+    </translate>
+</config>

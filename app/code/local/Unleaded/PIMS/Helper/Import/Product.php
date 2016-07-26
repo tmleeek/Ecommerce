@@ -1,0 +1,425 @@
+<?php
+
+class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
+{	
+	const TAXABLE_GOODS = 2;
+
+	protected $currentSku = false;
+	protected $row 		  = [];
+	protected $vehicleType;
+
+	protected $adapter;
+	protected $categoryImporter;
+
+	public function __construct()
+	{
+		$this->adapter          = Mage::helper('unleaded_pims/import_product_adapter');
+		$this->categoryImporter = Mage::helper('unleaded_pims/import_category');
+	}
+
+	public function __destruct()
+	{
+		$this->saveCurrentProduct();
+	}
+
+	/*
+		[
+			$make => [
+				$model => [
+					$subModel => [
+						$subDetail => [$year1, $year2, $year3],
+					]
+				]
+			]
+		],
+		[
+			'NISSAN' => [
+				'PICKUP' => [1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994],
+				'D21'    => [1986, 1988, 1989, 1990]
+			]
+		]
+	 */
+	protected $vehicles = [];
+
+
+	public function hasSku()
+	{
+		return $this->currentSku ? true : false;
+	}
+
+	public function newProduct($sku, $row, $vehicleType)
+	{
+		$this->saveCurrentProduct();
+
+		$this->currentSku  = $sku;
+		$this->vehicles    = [];
+		$this->row         = $row;
+		$this->vehicleType = $vehicleType;
+	}
+
+	public function isNewSku($sku)
+	{
+		return $this->currentSku !== $sku;
+	}
+
+	public function addVehicle($year, $make, $model, $subModel, $subDetail)
+	{
+		if (!isset($this->vehicles[$make]))
+			$this->vehicles[$make] = [];
+
+		if (!isset($this->vehicles[$make][$model]))
+			$this->vehicles[$make][$model] = [];
+
+		if (!isset($this->vehicles[$make][$model][$subModel]))
+			$this->vehicles[$make][$model][$subModel] = [];
+
+		if (!isset($this->vehicles[$make][$model][$subModel][$subDetail]))
+			$this->vehicles[$make][$model][$subModel][$subDetail] = [];
+
+		if (!in_array($year, $this->vehicles[$make][$model][$subModel][$subDetail]))
+			$this->vehicles[$make][$model][$subModel][$subDetail][] = $year;
+	}
+
+	public $productLineCache = [];
+	protected function saveCurrentProduct()
+	{
+		if (!$this->hasSku())
+			return;
+
+		$this->debug($this->currentSku);
+
+		// See if the product exists
+		$isNewProduct = true;
+		$product      = Mage::getModel('catalog/product')->loadByAttribute('sku', $this->currentSku);
+		if (!$product || !$product->getId())
+			$product = Mage::getModel('catalog/product');
+		else
+			$isNewProduct = false;
+
+		// Next we need to get the attribute set id
+		if ($isNewProduct)
+			$attributeSetId = Mage::helper('unleaded_pims/import_product_attributesets')->getSetId($this->row, $this->currentSku);
+		else
+			$attributeSetId = $product->getAttributeSetId();
+
+		// Get base product data for new products, otherwise start blank array
+		if ($isNewProduct)
+			$_productData = $this->getBaseProductData($attributeSetId);
+		else
+			$_productData = [];
+
+		// Now get the attribute with name, attributes, and the set itself
+		$attributeSetData = $this->adapter->getAttributeSetData($attributeSetId);
+
+		// Map the product data based on the attribute set
+		$_productData = $this->adapter->mapAttributeSetData($this->row, $_productData, $attributeSetData);
+
+		// Make sure the options exist for YMM
+		$this->createNewYMMOptions();
+
+		$_productData['vehicle_type']        = $this->vehicleType;		
+		$_productData['compatible_vehicles'] = $this->getCompatibleVehicles();
+		$_productData['category_ids']        = $this->getCategories();
+
+		try {
+			if (!$isNewProduct)
+				unset($_productData['url_key']);
+
+			foreach ($_productData as $key => $value)
+				$product->setData($key, $value);
+
+			$product->save();
+
+			// Add to the product line cache
+			// $this->addToProductLineCache($this->row['Product Line Short Code'], $product);
+		} catch (Exception $e) {
+			$this->error($e->getMessage());
+			$this->error($e->getTraceAsString());
+		}
+
+		// Now we need to get the images
+		$this->saveProductImages($product);
+
+		// Now we need to check if a configurable product is necessary		
+	}
+
+	// public function addToProductLineCache($productLine, $product)
+	// {
+	// 	if (!isset($this->productLineCache[$productLine]))
+	// 		$this->productLineCache[$productLine] = [];
+
+	// 	foreach ($this->vehicles as $make => $models) {
+	// 		foreach ($models as $model => $subModels) {
+	// 			foreach ($subModels as $subModel => $subDetails) {
+	// 				foreach ($subDetails as $subDetail => $years) {
+	// 					foreach ($years as $year) {
+	// 						if (!isset($this->productLineCache[$productLine][$make]))
+	// 							$this->productLineCache[$productLine][$make] = [];
+
+	// 						if (!isset($this->productLineCache[$productLine][$make][$model]))
+	// 							$this->productLineCache[$productLine][$make][$model] = [];
+
+	// 						if (!isset($this->productLineCache[$productLine][$make][$model][$year]))
+	// 							$this->productLineCache[$productLine][$make][$model][$year] = [];
+
+	// 						$this->productLineCache[$productLine][$make][$model][$year][] = $product;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
+	protected function getCategories()
+	{
+		$categories = [];
+		// We will need to drop this into multiple categories, and log errors if the 
+		// category doesn't exist
+		
+		// First up is the "Product Line"
+		$categoryName = $this->row['Product Line Short Code'];
+		$category     = Mage::getModel('catalog/category')->loadByAttribute('name', $categoryName);
+		if (!$category || !$category->getId())
+			$this->error('Can\'t find category ' . $categoryName);
+		else
+			foreach (explode('/', $category->getPath()) as $categoryId)
+				$categories[] = $categoryId;
+
+		// Next is the Model -> Make -> Year
+		foreach ($this->vehicles as $make => $models) {
+			foreach ($models as $model => $subModels) {
+				foreach ($subModels as $subModel => $subDetails) {
+					foreach ($subDetails as $subDetail => $years) {
+						foreach ($years as $year) {
+							$MMY = [
+								'make'  => $make,
+								'model' => $model,
+								'year'  => $year
+							];
+							$category = $this->categoryImporter->getMMYCategory($MMY);
+							if (!$category || !$category->getId())
+								$this->error('Can\'t find MMY Category ' . implode(' - ', $MMY));
+							else
+								foreach (explode('/', $category->getPath()) as $categoryId)
+									$categories[] = $categoryId;
+						}
+					}
+				}
+			}
+		}
+
+		return $categories;
+	}
+
+	protected function createNewYMMOptions()
+	{
+		foreach ($this->vehicles as $make => $models) {
+			$makeOptionId = $this->adapter->getOptionId('make', ['Make' => $make]);
+			foreach ($models as $model => $subModels) {
+				$modelOptionId = $this->adapter->getOptionId('model', ['Model' => $model]);
+				foreach ($subModels as $subModel => $subDetails) {
+					$subModelOptionId = $this->adapter->getOptionId('sub_model', ['SubModel' => $subModel]);
+					foreach ($subDetails as $subDetail => $years) {
+						$subDetailOptionId = $this->adapter->getOptionId('sub_detail', ['SubDetail' => $subDetail]);
+						foreach ($years as $year) {
+							$yearOptionId = $this->adapter->getOptionId('year', ['Year' => $year]);
+							// var_dump($yearOptionId);var_dump($makeOptionId);var_dump($modelOptionId);
+							// var_dump($year);var_dump($make);var_dump($model);var_dump($subModel);var_dump($subDetail);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected $vehicleCache = [];
+	protected function getCompatibleVehicles()
+	{
+		$vehicles = [];
+
+		foreach ($this->vehicles as $make => $models) {
+			foreach ($models as $model => $subModels) {
+				foreach ($subModels as $subModel => $subDetails) {
+					foreach ($subDetails as $subDetail => $years) {
+						foreach ($years as $year) {
+							$vehicleCollection = Mage::getModel('vehicle/ulymm')
+												->getCollection()
+												->addFieldToFilter('year', $year)
+												->addFieldToFilter('make', $make)
+												->addFieldToFilter('model', $model)
+												->addFieldToFilter('sub_model', $subModel)
+												->addFieldToFilter('sub_detail', $subDetail);
+
+							if ($vehicleCollection->getSize() === 0) {
+								// We need to add this vehicle
+								try {
+									$_vehicle = [
+										'year'       => $year,
+										'make'       => $make,
+										'model'      => $model,
+										'sub_model'  => $subModel,
+										'sub_detail' => $subDetail,
+									];
+									$vehicle = Mage::getModel('vehicle/ulymm')->setData($_vehicle)->save();
+									$this->addVehicleToCache($vehicle);
+									$vehicles[] = $vehicle->getId();
+								} catch (Exception $e) {
+									$this->error($e->getMessage());
+								}
+							} else {
+								foreach ($vehicleCollection as $vehicle) {
+									$this->addVehicleToCache($vehicle);
+									$vehicles[] = $vehicle->getId();
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return implode(',', $vehicles);
+	}
+
+	protected function isInVehicleCache($year, $make, $model, $subModel, $subDetail)
+	{
+		if (!isset($this->vehicleCache[$make]))
+			return false;
+
+		if (!isset($this->vehicleCache[$make][$model]))
+			return false;
+
+		if (!isset($this->vehicleCache[$make][$model][$subModel]))
+			return false;
+
+		if (!isset($this->vehicleCache[$make][$model][$subModel][$subDetail]))
+			return false;
+
+		if (!array_key_exists($year, $this->vehicleCache[$make][$model][$subModel][$subDetail]))
+			return false;
+
+		return $this->vehicleCache[$make][$model][$subModel][$subDetail][$year];
+	}
+
+	protected function addVehicleToCache($vehicle)
+	{
+		$make      = $vehicle->getMake();
+		$model     = $vehicle->getModel();
+		$subModel  = $vehicle->getSubModel();
+		$subDetail = $vehicle->getSubDetail();
+		$year      = $vehicle->getYear();
+
+		if (!isset($this->vehicleCache[$make]))
+			$this->vehicleCache[$make] = [];
+
+		if (!isset($this->vehicleCache[$make][$model]))
+			$this->vehicleCache[$make][$model] = [];
+
+		if (!isset($this->vehicleCache[$make][$model][$subModel]))
+			$this->vehicleCache[$make][$model][$subModel] = [];
+
+		if (!isset($this->vehicleCache[$make][$model][$subModel][$subDetail]))
+			$this->vehicleCache[$make][$model][$subModel][$subDetail] = [];
+
+		if (!array_key_exists($year, $this->vehicleCache[$make][$model][$subModel][$subDetail]))
+			$this->vehicleCache[$make][$model][$subModel][$subDetail][$year] = $vehicle->getId();
+	}
+
+	protected function getBaseProductData($attributeSetId)
+	{
+		return [
+			'sku'              => $this->currentSku,
+			'type_id'          => Mage_Catalog_Model_Product_Type::TYPE_SIMPLE,
+			'tax_class_id'     => self::TAXABLE_GOODS,
+			'website_ids'      => [1],
+			'is_massupdate'    => true,
+			'attribute_set_id' => $attributeSetId,
+			'category_ids'     => [],
+			'visibility'       => Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+			'media_gallery'    => [
+				'images'				  => []
+			],
+			'stock_data'       => [
+				'use_config_manage_stock' => 0, 
+				'manage_stock'            => 1, 
+				'is_in_stock'             => 1,
+				'qty'					  => 0
+			]
+		];
+	}
+
+	protected function saveProductImages(Mage_Catalog_Model_Product $product)
+	{
+		$images = [
+			'p01_off_vehicle'   => 'P01 - Off Vehicle',
+			'p03_lifestyle'     => 'P03 - Lifestyle',
+			'p04_primary_photo' => 'P04 - Primary Photo',
+			'p05_closeup'       => 'P05 - Closeup',
+			'p06_mounted'       => 'P06 - Mounted',
+			'p07_unmounted'     => 'P07 - Unmounted'
+		];
+		foreach ($images as $attributeCode => $field) {
+			// First check to see if we have data
+			if ($this->row[$field] === '')
+				continue;
+
+			// Try to download the image
+			if (!$localPath = Mage::helper('unleaded_pims/ftp')->getPartsImage($this->row[$field]))
+				return $this->error('Unable to download image');
+
+			// Grab the media gallery and make sure we don't duplicate
+			$product->load('media_gallery');
+			$mediaGallery = $product->getMediaGallery();
+
+			foreach ($mediaGallery['images'] as $image) {
+				// Check to see if we already have this in the gallery
+				if (strstr($image['file'], $this->row[$field])) {
+					// Make sure it exists on the disk
+					$mageImagePath = Mage::getBaseDir('media') . '/catalog/product' . $image['file'];
+					if (!file_exists($mageImagePath)) {
+						// We have this in our media gallery but it does not exist on disk, we need to
+						// remove it from the DB and save this image to disk and DB
+						$this->removeImageReferenceFromMediaGallery($product, $mediaGallery, $image['file']);
+						if (!copy($localPath, $mageImagePath))
+							$this->error('Problem overwriting catalog image');
+					}
+					// Either way, we already have this image in our media gallery, so continue to next image
+					continue 2;
+				}
+			}
+
+			// Set the image to it's respective attribute code, and also the default images 
+			// if it's the primary photo
+			$mediaAttribute = [$attributeCode];
+			if ($attributeCode === 'p04_primary_photo')
+				$mediaAttribute = array_merge($mediaAttribute, ['image', 'small_image', 'thumbnail']);
+			
+			// Now that we have local path we can add image to gallery	
+			try {
+				$product
+					->addImageToMediaGallery($localPath, $mediaAttribute, false, false)
+					->save();
+			} catch (Exception $e) {
+				$this->error($e->getMessage());
+				$this->error('Unable to save image');
+			}
+		}
+	}
+
+	protected function removeImageReferenceFromMediaGallery($product, $mediaGallery, $filePath)
+	{
+		// Iterate through gallery to find position of filePath in question
+		foreach ($mediaGallery['images'] as $index => $image)
+			if ($image['file'] === $filePath) {
+				unset($mediaGallery['images'][$index]);
+				break;
+			}
+
+		// Now save the gallery back to the product
+		try {
+			$product->setData('media_gallery', $mediaGallery);
+			$product->getResource()->save($product);
+		} catch (Exception $e) {
+			$this->error($e->getMessage());
+		}	
+	}
+}

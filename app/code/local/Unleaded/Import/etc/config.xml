@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Unleaded_Import>
+      <version>0.1.0</version>
+    </Unleaded_Import>
+  </modules>
+  <global>
+    <helpers>
+      <unleadedimport>
+        <class>Unleaded_Import_Helper</class>
+      </unleadedimport>
+    </helpers>
+    <ho_import>
+        <ymm_categories>
+            <entity_type>catalog_category</entity_type>
+            <source model="ho_import/source_adapter_csv">
+                <file>var/import/ymm.csv</file>
+                <delimiter>,</delimiter>
+                <enclosure>"</enclosure>
+            </source>
+            <import_options>
+                <!-- <skip_download>1</skip_download> -->
+                <error_limit>100000</error_limit>
+                <continue_after_errors>1</continue_after_errors>
+                <partial_indexing>1</partial_indexing>
+                <ignore_duplicates>1</ignore_duplicates>
+            </import_options>
+            <clean>
+                <!-- <mode>delete</mode> --> <!-- options are delete, hide, disable -->
+            </clean>
+            <events>
+                <!-- <source_row_fieldmap_before helper="unleadedimport::checkIfValid"/> -->
+            </events>
+            <fieldmap>
+                <_root helper="unleadedimport::duplicate">
+                    <value>Default Category</value>
+                    <count>3</count>
+                </_root>
+                <_category helper="unleadedimport::getCategory" />
+
+                <!-- Required Attributes -->
+                <is_active helper="unleadedimport::duplicate">
+                    <value>Yes</value>
+                    <count>3</count>
+                </is_active>
+                <include_in_menu helper="unleadedimport::duplicate">
+                    <value>No</value>
+                    <count>3</count>
+                </include_in_menu>
+                <available_sort_by helper="unleadedimport::duplicate">
+                    <value>position</value>
+                    <count>3</count>
+                </available_sort_by>
+                <default_sort_by helper="unleadedimport::duplicate">
+                    <value>position</value>
+                    <count>3</count>
+                </default_sort_by>
+            </fieldmap>
+        </ymm_categories>
+    </ho_import>
+  </global>
+</config>

@@ -1,0 +1,138 @@
+<?php
+    // Now load these vehicles
+    $vehicleCollection = Mage::getModel("vehicle/ulymm")
+                            ->getCollection()
+                            ->addFieldToFilter('ymm_id', ['in' => $this->getCompatibleVehicleIds()]);
+
+    $compatibleVehicles = [];
+    foreach ($vehicleCollection as $vehicle) {
+        $year  = $vehicle->getYear();
+        $make  = $vehicle->getMake();
+        $model = $vehicle->getModel();
+
+        if (!isset($compatibleVehicles[$year]))
+            $compatibleVehicles[$year] = [];
+        if (!isset($compatibleVehicles[$year][$make]))
+            $compatibleVehicles[$year][$make] = [];
+
+        if (in_array($model, $compatibleVehicles[$year][$make]))
+            continue;
+
+        $compatibleVehicles[$year][$make][] = $model;
+    }
+
+    $years = array_keys($compatibleVehicles);
+    rsort($years);
+?>
+
+<div class="add-vehicle-modal-title"><?php echo $this->__("Select Your Vehicle") ?></div>
+<div class="vehicle-selector-group">
+    <div class="vehicle-year-selector vehicle-selector">
+        <select class="vehicle-year">
+            <option value="0"><?php echo $this->__("Select Year") ?></option>
+            <?php foreach ($years as $year): ?>
+                <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="vehicle-make-selector vehicle-selector">
+        <select class="vehicle-make" disabled="">
+            <option value="0"><?php echo $this->__("Select Make") ?></option>
+        </select>
+    </div>
+    <div class="vehicle-model-selector vehicle-selector">
+        <select class="vehicle-model" disabled="">
+            <option value="0"><?php echo $this->__("Select Model") ?></option>
+        </select>
+    </div>
+    <button class="button" id="add-vehicle-to-garage">
+        <span>
+            <span>
+                <?php echo $this->__("GO!") ?>
+            </span>
+        </span>
+    </button>
+</div>
+
+<script type="text/javascript">
+    (function($) {
+        var compatibleVehicles = JSON.parse('<?php echo json_encode($compatibleVehicles); ?>'),
+            targetCategoryId = '<?php echo $this->getTargetCategoryId(); ?>',
+            $year = {},
+            $make = {},
+            $model = {},
+            $submit = {};
+
+        function init() {
+            $year = $('.vehicle-year');
+            $make = $('.vehicle-make');
+            $model = $('.vehicle-model');
+            $submit = $('#add-vehicle-to-garage');
+
+            listenToSubmit();
+            listenToYear();
+            listenToMake();
+
+            console.log(compatibleVehicles);
+        }
+
+        function listenToSubmit() {
+            $submit.on('click', function () {
+                if (allFieldsHaveValues()) {
+
+                    <?php if (Mage::getSingleton('customer/session')->getCustomer()): ?>
+                        var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+                    <?php endif; ?>
+
+                    $.ajax({
+                        url: '<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>',
+                        method: 'POST',
+                        data: {
+                            year: $year.val(),
+                            make: $make.val(),
+                            model: $model.val(),
+                            customerId: customerId,
+                            targetCategoryId: targetCategoryId
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            // window.location.href = data;
+                        }
+                    });
+                } else {
+                    alert("Year, Make Or Model Fields can not be empty.");
+                }
+            });
+        }
+
+        function listenToYear() {
+            $year.on('change', function () {
+                var optionsHtml = "<option value='0'>Select Make</option>";
+
+                jQuery.each(compatibleVehicles[$year.val()], function (key, value) {
+                    optionsHtml += "<option value='" + key + "'>" + key + "</option>";
+                });
+
+                $make.removeAttr('disabled').html(optionsHtml);
+            });
+        }
+
+        function listenToMake() {
+            $make.on('change', function () {
+                var optionsHtml = "<option value='0'>Select Model</option>";
+
+                jQuery.each(compatibleVehicles[$year.val()][$make.val()], function (index, value) {
+                    optionsHtml += "<option value='" + value + "'>" + value + "</option>";
+                });
+
+                $model.removeAttr('disabled').html(optionsHtml);
+            });
+        }
+
+        function allFieldsHaveValues() {
+            return $year.val() !== "0" && $make.val() !== "0" && $model.val() !== "0";
+        }
+
+        $(document).ready(init);
+    }(jQuery));
+</script>

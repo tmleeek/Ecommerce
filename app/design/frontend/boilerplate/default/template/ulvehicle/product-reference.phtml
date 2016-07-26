@@ -1,0 +1,78 @@
+<?php $_helper = $this->helper('catalog/output'); ?>
+<?php $_product = Mage::registry('current_product'); ?>
+<?php $vehicleYear = $_product->getAttributeText('year') ?>
+<?php $vehicleMake = $_product->getAttributeText('make') ?>
+<?php $vehicleModel = $_product->getAttributeText('model') ?>
+<?php if ($vehicleYear != "" && $vehicleMake != "" && $vehicleModel != ""): ?>
+    <?php $garage = $this->getGarageVehicles(); ?>
+    <div class="product-vehicle-container">
+        <?php echo $this->__("This Product Fits: ") ?>
+        <div class="current-product-vehicle"><?php echo $vehicleYear . " " . $vehicleMake . " " . $vehicleModel ?></div>
+        <div class="change-vehicle">
+            <button class="button add-vehicle" type="button">
+                <span>
+                    <span>
+                        <?php echo $this->__('Change Vehicle') ?>
+                    </span>
+                </span>
+            </button>
+        </div>
+        <?php if (count($garage) >= 1): ?>
+            <div class="additional-vehicles">
+                <div class="ul-vehicles">
+                    <div class="vehicle-title"><?php echo $this->__("Stored Vehicles") ?></div>
+                    <ul class="vehicle-list">
+                        <?php foreach ($garage as $vehicleId) : ?>
+                            <?php $_vehicle = Mage::getModel('vehicle/ulymm')->load($vehicleId) ?>
+                            <?php $searchUrl = $this->getSearchQuery($_vehicle); ?>
+                            <li class="vehicle-item">
+                                <span class="remove-vehicle">X</span>
+                                <input type="hidden" value="<?php echo $_vehicle->getId() ?>" />
+                                <div class="vehicle-name">
+                                    <?php echo $_vehicle->getYear() . " " . $_vehicle->getMake() . " " . $_vehicle->getModel() ?>
+                                </div>
+                                <div class="view-products">
+                                    <a class="search-vehicle-products" href="<?php echo $searchUrl ?>"><?php echo $this->__('View Products') ?></a>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                        <li class="add-vehicle-item">
+                            <button class="button add-vehicle" type="button">
+                                <span>
+                                    <span>
+                                        <?php echo $this->__('Add Vehicle') ?>
+                                    </span>
+                                </span>
+                            </button>
+                        </li>
+                        <li class="clear-all">
+                            <a href="javascript:void(0)" class="clear-garage"><span>X</span><?php echo $this->__('Clear All') ?></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="embedded-vehicle-selector">
+                <?php echo $this->getChildHtml('select-vehicle-embedded') ?>
+            </div>
+        <?php else: ?>
+            <div class="additional-vehicles">
+                <div class="ul-vehicles">
+                    <ul class="vehicle-list">
+                        <li class="add-vehicle-item">
+                            <button class="button add-vehicle" type="button">
+                                <span>
+                                    <span>
+                                        <?php echo $this->__('Add Vehicle') ?>
+                                    </span>
+                                </span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="embedded-vehicle-selector">
+                <?php echo $this->getChildHtml('select-vehicle-embedded') ?>
+            </div>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>

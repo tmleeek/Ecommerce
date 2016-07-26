@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {mage:head}
+    </head>
+
+    <body id="locator">
+        {mage:header}
+
+        <div class="container">
+
+            <div class="layout layout-2-cols">
+
+                <div class="breadcrumb"><a href="/">Home</a> |  <span class='last'>Dealer Locator</span></div>
+
+                <h1>Dealer Locator</h1>
+
+                <aside role="complementary">
+
+                    <div class="retail">Online Retailers</div>
+                    <h2>Select Filter</h2>
+
+                    {exp:low_search:form channel="online_retailers" result_page="dealer-locator/online-filter" form_id="online-search"}
+                        <select name="search:store_country">
+                            <option value="">Select Country</option>
+                            {exp:vz_picky field="store_country"}
+                                <option value="{value}">{value}</option>
+                            {/exp:vz_picky}
+                        </select>
+                        <select name="search:brand">
+                            <option value="">Select Brand</option>
+                            {exp:vz_picky field="brand"}
+                                <option value="{value}">{value}</option>
+                            {/exp:vz_picky}
+                        </select>
+                        <select name="search:categories">
+                            <option value="">Select Category</option>
+                            {exp:vz_picky field="categories"}
+                                <option value="{value}">{value}</option>
+                            {/exp:vz_picky}
+                        </select>
+                    {/exp:low_search:form}
+
+                    <h2>Retailers</h2>
+                    <div class="retailers">
+                        {exp:channel:entries channel="online_retailers" dynamic="no"}
+                            <div class="store">
+                                {exp:ce_img:pair src="{store_logo}" max_width="168" crop="yes|center,center"}<a href="{store_website}" target="_blank"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+                            </div>
+                        {/exp:channel:entries}
+                    </div>
+
+                </aside>
+
+                <div role="main">
+
+                    {exp:gmap:search 
+                        channel="dealer_locator" 
+                        geocode_field="location"
+                        latitude_field="locator_latitude"
+                        longitude_field="locator_longitude"
+                        distance_field="distance_max"
+                        cache_post="false"
+                        id="locator-search"
+                    }
+                        <input type="hidden" name="distance_max" value="10" />
+                        <div class="type">
+                            <div class="local">Local Retailers</div>
+
+                            <fieldset>
+                                <input type="search" name="location" id="location" value="{if post:location}{post:location}{/if}" placeholder="Address or Zipcode"/>
+                                <button type="submit">Go</button>
+                            </fieldset>
+                        </div>
+
+                        <div class="filter clearfix">
+                            <h2>Filter by Brand</h2>
+                            <ul>
+                                {categories}
+                                    <li><label><input name="categories[]" value="{category_id}" type="checkbox" {checked}> {category_name}</label></li>
+                                {/categories}
+                            </ul>
+                        </div>
+                    {/exp:gmap:search}
+
+                    <div id="map">
+                        {exp:gmap:init id="locationsmap" style="width:100%;height:100%" styles="/info/assets/js/map.js"}
+                    </div>
+
+                    <div class='results'>
+                        {exp:gmap:results order_by="distance" limit="10" channel="dealer_locator" category_search_type="OR" match_categories_exact="yes" cache_post="false" parse_tags="true"}
+                            {if has_searched}
+                                    <a href="#accordion-{entry_id}" class="title"><b class="count"><?php { echo $count++; } ?></b>{title} <span class="distance">(Distance: {distance}{metric})</span><span class="arrow">&nbsp;</span></a>
+                                <div class="location clearfix">
+                                    <div class="addy">
+                                        <address>
+                                            {locator_location:address_component type="street_number"} {locator_location:address_component type="street"}<br/>
+                                            {locator_location:address_component type="city"}, {locator_location:address_component type="state" output="short_name"} {locator_location:address_component type="zipcode"}
+                                            <br>Phone: {locator_phone}
+                                        </address>
+                                        {if locator_website}<a href="{locator_website}" target="_blank" class="button">See Store Details</a>{/if}
+                                    </div>
+                                </div>
+                                {exp:gmap:marker id="locationsmap" latitude="{locator_latitude}" longitude="{locator_longitude}" show_one_window="true" icon="/info/assets/images/blue-marker.png"}
+                                    <h3>{title}</h3>
+                                    <address>
+                                        {locator_location:address_component type="street_number"} {locator_location:address_component type="street"}<br/>
+                                        {locator_location:address_component type="city"}, {locator_location:address_component type="state" output="short_name"} {locator_location:address_component type="zipcode"}
+                                        <br>Phone: {locator_phone}
+                                    </address>
+                                {/exp:gmap:marker}
+                            {/if}
+
+                            {if has_not_searched}
+                                <?php $count = 1 ?>
+                                {exp:channel:entries limit="10" channel="dealer_locator"}
+                                    <a href="#accordion-{entry_id}" class="title"><b class="count"><?php { echo $count++; } ?></b>{title} <span class="arrow">&nbsp;</span></a>
+                                                                          
+                                    
+                                    
+                                    <div class="location clearfix" id="accordion-{entry_id}">
+                                        <div class="addy">
+                                            <address>
+                                                {locator_location:address_component type="street_number"} {locator_location:address_component type="street"}<br/>
+                                                {locator_location:address_component type="city"}, {locator_location:address_component type="state" output="short_name"} {locator_location:address_component type="zipcode"}
+                                                <br>Phone: {locator_phone}
+                                            </address>
+                                            {if locator_website}<a href="{locator_website}" target="_blank" class="button">See Store Details</a>{/if}
+                                        </div>
+                                    </div>
+                                    {exp:gmap:marker id="locationsmap" latitude="{locator_latitude}" longitude="{locator_longitude}" show_one_window="true" icon="/info/assets/images/blue-marker.png"}
+                                        <h3>{title}</h3>
+                                        <address>
+                                            {locator_location:address_component type="street_number"} {locator_location:address_component type="street"}<br/>
+                                            {locator_location:address_component type="city"}, {locator_location:address_component type="state" output="short_name"} {locator_location:address_component type="zipcode"}
+                                            <br>Phone: {locator_phone}
+                                        </address>
+                                    {/exp:gmap:marker}
+                                {/exp:channel:entries}
+                            {/if}
+                        {/exp:gmap:results}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {mage:footer}
+        {mage:before_body_end}
+
+    </body>
+</html>

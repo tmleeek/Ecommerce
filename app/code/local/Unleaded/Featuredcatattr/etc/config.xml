@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Unleaded_Featuredcatattr>
+            <version>0.0.1</version>
+        </Unleaded_Featuredcatattr>
+    </modules>
+    <global>
+        <resources>
+            <featuredcatattr_setup>
+                <setup>
+                    <module>Unleaded_Featuredcatattr</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </featuredcatattr_setup>
+            <featuredcatattr_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </featuredcatattr_write>
+            <featuredcatattr_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </featuredcatattr_read>
+        </resources>
+    </global>
+</config>

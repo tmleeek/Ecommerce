@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <!-- Default handle, loaded on most pages -->
+    <default>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>css/ulvehicle.css</stylesheet>
+            </action>			
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/ulvehicle.js</name>
+                <params><![CDATA[data-group="ul001"]]></params>
+            </action>
+        </reference>
+        <reference name="header">
+            <block type="vehicle/vehicle" name="ulvehicle" template="ulvehicle/vehicle.phtml">
+                <block type="vehicle/vehicle" name="ulgarage" template="ulvehicle/garage.phtml"/>
+            </block>
+            <block type="core/template" name="select-vehicle" template="ulvehicle/vehicle-selectore-home.phtml"/>
+        </reference>
+		
+    </default>
+   
+    <catalog_product_view>
+        <reference name="product.info">
+            <block type="core/template" name="compatible-vehicles" template="ulvehicle/catalog/product/view/compatible-vehicles.phtml"/>
+            <block type="vehicle/vehicle" name="vehicle-reference" template="ulvehicle/product-reference.phtml">
+                <block type="core/template" name="select-vehicle-embedded" template="ulvehicle/vehicle-selector-embedded.phtml"/>
+            </block>
+        </reference>
+    </catalog_product_view>
+    <!-- Unleaded Vehicle Custom search results -->
+
+    <ulvehicle_results_for translate="label">
+        <label>Search Result</label>
+        <update handle="page_two_columns_right" />
+        <!-- Mage_Catalogsearch -->
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="left">
+            <block type="amshopby/search_layer" name="amshopby.navleft" before="-" template="catalog/layer/view.phtml"/>
+        </reference>
+        <remove name="breadcrumbs" />
+        <reference name="content">
+            <block type="vehicle/result" name="vehicle_search_result" as="vehicle.search.result" template="ulvehicle/search/result.phtml">
+                <block type="catalog/product_list" name="search_result_list" template="catalog/product/list.phtml">
+                    <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                        <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                    </block>
+                    <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                    <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                </block>
+                <action method="setListOrders"/>
+                <action method="setListModes"/>
+                <action method="setListCollection"/>
+            </block>
+            
+            <block type="amshopby/search_layer_top" name="amshopby.navtop" before="vehicle.search.result" template="amasty/amshopby/view_top.phtml"/>
+            <block type="core/template" name="amshopby.bottom" after="-" template="amasty/amshopby/bottom.phtml">
+                <action method="setBlockId"><id>amshopby-filters-bottom-cms</id></action>
+            </block>
+        </reference>
+    </ulvehicle_results_for>
+</layout>
+

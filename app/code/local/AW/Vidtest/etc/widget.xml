@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets>
+    <vidtest_video type="vidtest/widget_video" translate="name description" module="vidtest">
+        <name>AW Vidtest Video</name>
+        <is_email_compatible>0</is_email_compatible>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>1</show_in_store>
+        <parameters>
+            <testimonial_id type="complex" translate="label">
+                <visible>1</visible>
+                <label>Testimonial ID</label>
+                <type>Text</type>
+                <required>1</required>
+                <sort_order>10</sort_order>
+            </testimonial_id>
+            <width type="complex" translate="label">
+                <visible>1</visible>
+                <label>Width</label>
+                <type>Text</type>
+                <sort_order>20</sort_order>
+            </width>
+            <height type="complex" translate="label">
+                <visible>1</visible>
+                <label>Height</label>
+                <type>Text</type>
+                <sort_order>30</sort_order>
+            </height>
+        </parameters>
+    </vidtest_video>
+    
+    <vidtest_random type="vidtest/widget_random" translate="name description" module="vidtest">
+        <name>AW Vidtest Random Video</name>
+        <is_email_compatible>0</is_email_compatible>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>1</show_in_store>
+        <parameters>
+            <product_id type="complex" translate="label">
+                <visible>1</visible>
+                <label>Product ID</label>
+                <type>Text</type>
+                <sort_order>10</sort_order>
+            </product_id>
+            <width type="complex" translate="label">
+                <visible>1</visible>
+                <label>Width</label>
+                <type>Text</type>
+                <sort_order>20</sort_order>
+            </width>
+            <height type="complex" translate="label">
+                <visible>1</visible>
+                <label>Height</label>
+                <type>Text</type>
+                <sort_order>30</sort_order>
+            </height>
+        </parameters>
+    </vidtest_random>
+    
+    <vidtest_playlist type="vidtest/widget_playlist" translate="name description" module="vidtest">
+        <name>AW Vidtest Product Videos</name>
+        <is_email_compatible>0</is_email_compatible>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>1</show_in_store>
+        <parameters>
+            <product_id type="complex" translate="label">
+                <visible>1</visible>
+                <label>Product ID</label>
+                <type>Text</type>
+                <sort_order>10</sort_order>
+            </product_id>
+            <width type="complex" translate="label">
+                <visible>1</visible>
+                <label>Width</label>
+                <type>Text</type>
+                <sort_order>20</sort_order>
+            </width>
+            <height type="complex" translate="label">
+                <visible>1</visible>
+                <label>Height</label>
+                <type>Text</type>
+                <sort_order>30</sort_order>
+            </height>
+        </parameters>
+    </vidtest_playlist>
+</widgets>

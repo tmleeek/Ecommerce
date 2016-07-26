@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="footer">
+            <block type="core/template" name="lund.chat.dropin" template="page/html/chat-dropin.phtml"/>
+            <block type="core/template" name="lund.chat.tracking" template="page/html/chat-tracking.phtml"/>
+        </reference>
+    </default>
+</layout>

@@ -1,0 +1,25 @@
+{exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+<div class="main-wapper">
+    <ul class="home-slider">
+
+       {home_slider}
+            <li>
+            	<div class="container">
+                <div class="ban-slide-one {if home_slider:text_align == "Right"} text-right-align {/if} {if home_slider:text_align == "Left"} text-left-align {/if} ">
+
+                    {home_slider:copy}
+                    {if home_slider:link}<div class="ban-button"><a href="{home_slider:link}">{home_slider:link_text}</a></div>{/if}
+                </div>
+                </div>
+                {exp:ce_img:pair src="{home_slider:image}" width="1900" height="940" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+            </li>
+        {/home_slider}
+
+    </ul>
+</div>
+ {/exp:channel:entries}
+<div class="chat-main-banner">
+<div class="container">
+<div class="chat-now-banner"><a onclick="javascript:window.open('http://dm5.contactatonce.com/CaoClientContainer.aspx?MerchantId=57316&amp;Providerid=3766&amp;PlacementId=15&amp;OriginationUrl='+encodeURIComponent(location.href),'','resizable=yes,toolbar=no,menubar=no,location=no,scrollbars=no,status=no,height=400,width=600');return false;" href="#">Chat Now</a></div>
+</div>
+</div>

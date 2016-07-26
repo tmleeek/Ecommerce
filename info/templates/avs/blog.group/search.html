@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {mage:head}
+</head>
+<body id="blog">
+
+    {mage:header}
+
+
+    {embed='blog/filter'}
+
+
+    <div class="container container2">
+       <div class="breadcrumb"><a href="/">Home</a> | <a href="{path=blog}">Blog</a> | <span class='last'>Search Results</span></div>
+
+
+
+
+                  <table border="0" cellpadding="6" cellspacing="1" width="100%">
+                    <tr>
+                        <th>{lang:title}</th>
+                        <th>{lang:excerpt}</th>
+                        <th>{lang:date}</th>
+                    </tr>
+
+                {exp:search:search_results switch="resultRowOne|resultRowTwo"}
+
+                    <tr class="{switch}">
+                        <td width="30%" valign="top"><b><a href="{auto_path}">{title}</a></b></td>
+                        <td width="30%" valign="top">{sentence_summary}</td>
+                        <td width="10%" valign="top">{entry_date format="%m/%d/%y"}</td>
+                    </tr>
+
+                    {if count == total_results}
+                        </table>
+                    {/if}
+
+                    {paginate}
+                        <p>Page {current_page} of {total_pages} pages {pagination_links}</p>
+                    {/paginate}
+
+                {/exp:search:search_results}
+
+                </table>
+
+    </div><!-- END OF CONTAINER -->
+
+
+
+    {mage:footer}
+
+
+</body>
+</html>

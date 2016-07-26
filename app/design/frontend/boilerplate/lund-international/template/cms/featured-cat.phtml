@@ -1,0 +1,15 @@
+<?php
+$catID = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId();
+$category = Mage::getModel('catalog/category')->load($catID);
+?>
+<?php if($category->getFeaturedImage()): ?>
+<div class="cat-main-bg-pic clearfix">
+    <div class="container">
+        <div class="cat-main-bg-head">
+            <h2><?php echo $textField = $category->getFeaturedTitle(); ?></h2>
+            <div class="featured-short-desc"><?php echo $textField = $category->getShortDescriptionFeatured(); ?></div>
+        </div>
+    </div>
+    <div class="cat-main-bg"> <img src="<?php echo Mage::getBaseUrl('media').'catalog/category/'. $category->getFeaturedImage(); ?>" alt=""  /> </div>
+</div>
+<?php endif; ?>

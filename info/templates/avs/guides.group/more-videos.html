@@ -1,0 +1,19 @@
+ {exp:channel:entries channel="videos" dynamic="no" paginate="bottom" limit="2"}
+      {exp:channel_videos:videos entry_id="{entry_id}"}
+      <div class="vids clearfix">
+           <div class="pic">
+              <a href="{video:url}" class="youtube"><img src="/info/assets/images/video.png" width="480" height="300" alt=""></a>
+           </div>
+          <h3>{video:title}</h3>
+            {video:description}
+     </div>
+     {/exp:channel_videos:videos}
+
+     {paginate}
+       {pagination_links}
+            {next_page}
+               <div class="paginate"> <a href="{pagination_url}" class="button">Load More</a> </div>
+            {/next_page}
+        {/pagination_links}
+     {/paginate}
+{/exp:channel:entries}

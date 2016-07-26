@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Unleaded_Integratee>
+			<active>true</active>
+			<codePool>local</codePool>
+		</Unleaded_Integratee>
+	</modules>
+</config>

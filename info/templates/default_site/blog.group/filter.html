@@ -1,0 +1,24 @@
+ <div class="search-bar">
+        <div class='container'>
+            <h2>FILTER:</h2>
+            <select class="catsearch">
+                <option value="">Select Category</option>
+                {exp:channel:categories channel="blog" style="linear" show_empty="no" category_group="1"}
+                    <option value="{path='blog'}">{category_name}</option>
+                {/exp:channel:categories}
+            </select>
+
+             <select class="catsearch">
+                <option value="">Filter by Brand</option>
+                {exp:channel:categories channel="blog" style="linear" show_empty="no" category_group="2"}
+                    <option value="{path='blog'}">{category_name}</option>
+                {/exp:channel:categories}
+            </select>
+
+
+              {exp:search:simple_form channel="blog" form_id="blog-search" result_page="blog/search" search_in="everywhere"  results="2"}
+                <input type="text" name="keywords" id="keywords" class="textbox" value="" placeholder="Search the blog..." />
+                <button type="submit"><span class="fa fa-search"></span></button>
+              {/exp:search:simple_form}
+        </div>
+    </div>

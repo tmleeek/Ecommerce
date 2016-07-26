@@ -1,0 +1,13 @@
+.mst-config #seositemap_frontend td.scope-label,
+.mst-config #seositemap_google td.scope-label {
+    width: 100px !important;
+    text-align: right;
+}
+
+.mst-config #seositemap_frontend .grid,
+.mst-config #seositemap_google .grid { width: auto !important; }
+
+.mst-config #seositemap_frontend .textarea { max-width: 507px; }
+
+.mst-config #seositemap_frontend .hint,
+.mst-config #seositemap_google .hint { margin-left: 15px;}

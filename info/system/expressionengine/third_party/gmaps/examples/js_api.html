@@ -1,0 +1,165 @@
+
+
+{exp:gmaps:init}
+{exp:gmaps:empty_map
+	address="heerde"
+	width="100%"
+}
+
+<script>
+$(function(){
+	
+	//add a marker	
+	/*EE_GMAPS.triggerEvent('addMarker', {
+		mapID : 'ee_gmap_1',
+		lat: 52.38904,
+		lng: 6.038935,
+		title: 'Test',
+		click: function(e) {
+			alert('You clicked in this marker');
+		},
+		infoWindow: {
+			content: '<p>HTML Content</p>'
+		}
+	});*/
+
+	//add a marker	
+	/*EE_GMAPS.triggerEvent('addMarker', {
+		mapID : 'ee_gmap_1',
+		lat: 51.924216,
+		lng: 4.481776,
+		title: 'Test',
+		click: function(e) {
+			alert('You clicked in this marker');
+		},
+		infoWindow: {
+			content: '<p>HTML Content</p>'
+		}
+	});*/
+
+	//create circle 
+	/*EE_GMAPS.triggerEvent('drawCircle', {
+		mapID : 'ee_gmap_1',
+		lat: 51.924216,
+		lng: 4.481776,
+		fillColor : '#BBD8E9',
+		fillOpacity : 0.3,
+		radius : 50000,
+		strokeColor : '#BBD8E9',
+		strokeOpacity : 0.8,
+		strokeWeight : 1,
+		zIndex : 1
+	});*/
+
+	//create circle 
+	/*EE_GMAPS.triggerEvent('drawRectangle', {
+		mapID : 'ee_gmap_1',
+		bounds : [[52.211157,5.9699231],[52.38904,6.038935]],
+		fillColor : '#BBD8E9',
+		fillOpacity : 0.3,
+		strokeColor : '#BBD8E9',
+		strokeOpacity : 0.8,
+		strokeWeight : 1,
+		zIndex : 1
+	});*/
+
+	//create Polygons
+	/*EE_GMAPS.triggerEvent('drawPolygon', {
+		mapID : 'ee_gmap_1',
+		paths: [[-12.040397656836609,-77.03373871559225], [-12.040248585302038,-77.03993927003302], [-12.050047116528843,-77.02448169303511],	[-12.044804866577001,-77.02154422636042]],
+		strokeColor: '#BBD8E9',
+		strokeOpacity: 1,
+		strokeWeight: 3,
+		fillColor: '#BBD8E9',
+		fillOpacity: 0.6,
+		zIndex : 1
+	});*/
+
+	//create Polylines
+	/*EE_GMAPS.triggerEvent('drawPolyline', {
+		mapID : 'ee_gmap_1',
+		path: [[-12.044012922866312, -77.02470665341184], [-12.05449279282314, -77.03024273281858], [-12.055122327623378, -77.03039293652341], [-12.075917129727586, -77.02764635449216], [-12.07635776902266, -77.02792530422971], [-12.076819390363665, -77.02893381481931], [-12.088527520066453, -77.0241058385925], [-12.090814532191756, -77.02271108990476]],
+		strokeColor: '#131540',
+		strokeOpacity: 0.6,
+		strokeWeight: 6
+	});*/
+
+	//set the zoom level
+	/*EE_GMAPS.triggerEvent('setZoom', {
+		mapID : 'ee_gmap_1',
+		zoomLevel : 10
+	});*/
+
+	// Fit bounds
+	/*EE_GMAPS.triggerEvent('fitZoom', {
+		mapID : 'ee_gmap_1'
+	});*/
+
+	// Geocode
+	/*EE_GMAPS.triggerEvent('geocode', {
+		address : 'apeldoorn|heerde',
+		ip : '62.195.44.138',
+		latlng : '52.0704978,4.3006999',
+		callback : function(result, type){
+			console.log($.parseJSON(result), type);
+		}
+	});*/
+
+	//set the zoom level
+	/*EE_GMAPS.triggerEvent('setZoom', {
+		mapID : 'ee_gmap_1',
+		zoomLevel : 10
+	});*/
+
+	/*Example Geocoding and Add marker with circle and rectangle*/
+	EE_GMAPS.triggerEvent('geocode', {
+		address : 'heerde|apeldoorn|amsterdam',
+		callback : function(result, type){
+			result = $.parseJSON(result);
+			$.each(result, function(k,v){
+				EE_GMAPS.triggerEvent('addMarker', {
+					mapID : 'ee_gmap_1',
+					lat: v.latitude,
+					lng: v.longitude,
+					title: v.city
+				});
+
+				EE_GMAPS.triggerEvent('drawCircle', {
+					mapID : 'ee_gmap_1',
+					lat: v.latitude,
+					lng: v.longitude,
+					fillColor : '#BBD8E9',
+					fillOpacity : 0.3,
+					radius : 7000,
+					strokeColor : '#BBD8E9',
+					strokeOpacity : 0.9,
+					strokeWeight : 2,
+					zIndex : 1
+				});
+			});
+
+			EE_GMAPS.triggerEvent('geocode', {
+				address : 'utrecht|hardewijk gelderland',
+				callback : function(result, type){
+					result = $.parseJSON(result);
+					EE_GMAPS.triggerEvent('drawRectangle', {
+						mapID : 'ee_gmap_1',
+						bounds : [[result[0].latitude,result[0].longitude],[result[1].latitude,result[1].longitude]],
+						fillColor : '#BBD8E9',
+						fillOpacity : 0.3,
+						strokeColor : '#BBD8E9',
+						strokeOpacity : 0.8,
+						strokeWeight : 2,
+						zIndex : 1
+					});
+				}
+			});
+
+			EE_GMAPS.triggerEvent('fitZoom', {
+				mapID : 'ee_gmap_1',
+				zoomLevel : 9
+			});
+		}
+	});
+});
+</script>

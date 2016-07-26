@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    /**
+     * aheadWorks Co.
+     *
+     * NOTICE OF LICENSE
+     *
+     * This source file is subject to the EULA
+     * that is bundled with this package in the file LICENSE.txt.
+     * It is also available through the world-wide-web at this URL:
+     * http://ecommerce.aheadworks.com/LICENSE-M1.txt
+     *
+     * @category   AW
+     * @package    AW_Vidtest
+     * @copyright  Copyright (c) 2010 aheadWorks Co. (http://www.aheadworks.com)
+     * @license    http://ecommerce.aheadworks.com/LICENSE-M1.txt
+     */
+-->
+<layout version="0.1.0">
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addCss">
+                <stylesheet>aw_vidtest/css/styles.css</stylesheet>
+            </action>
+            <action method="addJs">
+                <script>aw_vidtest/vidtest.js</script>
+            </action>
+        </reference>
+        <reference name="product.info">
+            <block type="vidtest/tab" name="aw.vidtest.products.tab" as="aw.vidtest.tab"/>
+            <block type="vidtest/product_view" name="aw.vidtest.products.view" as="aw.vidtest"/>
+            <block type="vidtest/random" name="aw.vidtest.random" as="aw.vidtest.random" template="aw_vidtest/random.phtml" />
+        </reference>
+    </catalog_product_view>
+</layout>

@@ -1,0 +1,20 @@
+{exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+<div class="content-tab-section clearfix">
+    <div class="tab-bg-car-pic">
+        <div class="container">
+            <div id="tab-area" class="pro-info-tab-sec">
+                <div class="tab-sec">
+                  {home_tabs}
+                    <div class="tab {home_tabs:switch='description-tab|additional-tab|features-tab'}">{home_tabs:tab_title}</div>
+                    <div class="tab-content">
+                        <div class="tab-content-wrapper">
+                            {home_tabs:tab_content}
+                        </div>
+                    </div>
+                  {/home_tabs}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/exp:channel:entries}

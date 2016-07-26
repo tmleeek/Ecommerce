@@ -1,0 +1,76 @@
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  font: 0/0 a;
+  color: transparent;
+  text-shadow: none;
+  background-color: transparent;
+  border: 0;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.seositemap-map ul {
+  *zoom: 1;
+  margin-left: 15px;
+  margin-bottom: 15px;
+}
+.seositemap-map ul:before,
+.seositemap-map ul:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.seositemap-map ul:after {
+  clear: both;
+}
+.seositemap-map ul.stores li {
+  font-weight: bold;
+  font-size: 100%;
+}
+.seositemap-map ul li.level-2 {
+  font-weight: bold;
+}
+.seositemap-map ul li.level-3 {
+  margin-left: 15px;
+}
+.seositemap-map ul li.level-4 {
+  margin-left: 30px;
+  font-size: 90%;
+}
+.seositemap-map ul li.level-5 {
+  margin-left: 45px;
+  font-size: 90%;
+}
+.seositemap-map ul li.level-6 {
+  margin-left: 60px;
+  font-size: 90%;
+}
+.seositemap-map ul li.level-7 {
+  margin-left: 75px;
+  font-size: 90%;
+}
+.review-aggregate-hide {
+  display:none;
+ }
+.seositemap-index-index div.seositemap-map table {
+  width:100%;
+}
+.seositemap-index-index div.seositemap-map table tbody tr td {
+  vertical-align: top;
+}

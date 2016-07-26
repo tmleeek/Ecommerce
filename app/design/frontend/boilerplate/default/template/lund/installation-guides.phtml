@@ -1,0 +1,39 @@
+<?php
+$helper = Mage::helper('guideindexer');
+$lundGuides = $helper->getBrandGuides('347');
+$avsGuides = $helper->getBrandGuides('348');
+$limit = 6;
+$lundCnt = 1;
+$avsCnt = 1;
+?>
+<section class="clearfix">
+    <h2 class="title"><?php echo $this->__('Lund') ?></h2>
+    <?php foreach ($lundGuides as $_lundGuide): ?>
+        <?php if ($lundCnt > 6) break; ?>
+        <div class="item">
+            <h3><a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_lundGuide . ".pdf" ?>"><?php echo $_lundGuide ?></a></h3>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+        </div>
+        <?php $lundCnt++ ?>
+    <?php endforeach; ?>
+
+    <?php if (count($lundGuides) > 6): ?>
+        <div class="paginate"> <a class="button" href="http://lunddev.build.moe/info/customer-care/installation-guides/P6"><?php echo $this->__('Load More') ?></a> </div>
+    <?php endif; ?>
+</section>
+
+<section class="clearfix">
+    <h2 class="title"><?php echo $this->__('AVS') ?></h2>
+    <?php foreach ($avsGuides as $_avsGuide): ?>
+        <?php if ($avsCnt > 6) break; ?>
+        <div class="item">
+            <h3><a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_avsGuide .".pdf" ?>"><?php echo $_avsGuide ?></a></h3>
+            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+        </div>
+        <?php $avsCnt++ ?>
+    <?php endforeach; ?>
+
+    <?php if (count($avsGuides) > 6): ?>
+        <div class="paginate"> <a class="button" href="http://lunddev.build.moe/info/customer-care/installation-guides/P6"><?php echo $this->__('Load More') ?></a> </div>
+    <?php endif; ?>
+</section>

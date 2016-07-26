@@ -1,0 +1,69 @@
+<?php
+/**
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2011-2014 Webcomm Pty Ltd
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+?>
+<?php
+/**
+ * Top menu for store
+ *
+ * @see Mage_Page_Block_Html_Topmenu
+ */
+?>
+<?php $_menu = $this->getHtml('level-top') ?>
+<?php if ($_menu): ?>
+	<nav class="navbar navbar-default navbar-main" role="navigation">
+    	<div class="navbar-collapse navbar-main-collapse nav-width-fixed">
+        	<div class="tablet-menu-hide">
+            	<a href="javascript:void(0)"><span><?php echo $this->__("Menu") ?></span></a>
+            </div>
+            <div class="where-to-buy">
+            	<a href="info/dealer-locator/?___store=default"><span><?php echo $this->__("Where To Buy") ?></span></a>
+            </div>
+            <ul class="nav navbar-nav">
+            	<li class="level0 nav-1 level-top parent about-links"><a class="level-top" href="javascript:void(0)"><span><?php echo $this->__("About Us") ?></span></a>
+                	<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('about-top-block')->toHtml(); ?>
+                </li>
+                <li class="level0 nav-1 level-top parent our-products-menu hidefor-desktop"><a class="level-top" href="javascript:void(0)"><span><?php echo $this->__("Our Products") ?></span></a>
+                	<?php echo $this->getLayout()->createBlock('core/template')->setTemplate('page/html/our-products.phtml')->toHtml(); ?>
+                </li>
+                
+                <li class="level0 nav-1 level-top parent our-products-menu hidefor-mobile"><a class="level-top" href="javascript:void(0)"><span><?php echo $this->__("Our Products") ?></span></a></li>
+                <li class="level0 nav-1 level-top parent about-links our-brand-topnavi"><a class="level-top" href="javascript:void(0)"><span><?php echo $this->__("Our Brands") ?></span></a>
+                	<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('our-brand-top-block')->toHtml(); ?>
+                </li>
+                <li class="level0 nav-1 level-top parent our-vehicle-menu"><a class="level-top" href="javascript:void(0)"><span><?php echo $this->__("Select Vehicle") ?></span></a></li>
+            </ul>
+            <ul class="custom-login">
+            	<li>
+                	<?php if (! Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                    	<a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><?php echo $this->__("Login or Register") ?></a>
+                    <?php else: ?>
+                    	<a href="<?php echo Mage::helper('customer')->getLogoutUrl(); ?>"><?php echo $this->__('Logout') ?></a>
+                    <?php endif; ?>
+                </li>
+                <li><a href="/info/customer-care/?___store=default"><?php echo $this->__("Customer service") ?></a></li>
+            </ul>
+        </div>
+    </nav>
+<?php endif ?> 
