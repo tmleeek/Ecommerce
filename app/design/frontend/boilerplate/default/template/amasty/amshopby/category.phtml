@@ -17,6 +17,7 @@
             Amasty_Shopby_Model_Catalog_Layer_Filter_Category::DT_WSUBCAT,
         ))): ?>
     <?php foreach ($this->getItems() as $_item): ?>
+        <?php if($_item->getLabel() == "MMY") break; ?>
         <li class="amshopby-cat amshopby-cat-level-<?php echo max(1, $_item->getLevel())?> <?php if ($_multiselectEnabled) echo 'amshopby-cat-multi' . ($_item->getIsSelected() ? ' amshopby-cat-multiselected' : '') ?>">
             <?php if ($_item->getIsSelected()) :?>
                 <?php if ($_multiselectEnabled) echo '<a href="' . $this->urlEscape($_item->getUrl())  .'">' ?>
@@ -37,6 +38,7 @@
     <?php endforeach ?>
 <?php elseif (Amasty_Shopby_Model_Catalog_Layer_Filter_Category::DT_STATIC2LVL == $_displayType): ?>
     <?php foreach ($this->getItems() as $_item): ?>
+        <?php if($_item->getLabel() == "MMY") break; ?>
         <?php
             $level      = $_item->getLevel();
             $additional = $_item->getIsFolded() ? 'style="display:none"' : '';
@@ -63,6 +65,7 @@
             <!-- uncomment to show Filter name in the dropdown <option value=""><?php echo $this->getName() ?></option>-->
             <option value="">&nbsp;</option>
             <?php foreach ($this->getItems() as $_item): ?>
+                <?php if($_item->getLabel() == "MMY") break; ?>
             <option  value="<?php echo $this->urlEscape($_item->getUrl()) ?>">
                 <?php echo $_item->getLabel() ?>
                 <?php if ($_showCount && $_item->getCount()):?>

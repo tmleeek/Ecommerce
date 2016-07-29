@@ -237,6 +237,8 @@ foreach ($categoryIds as $id) {
                                         <iframe width="275" height="232" src="https://www.youtube.com/embed/<?php echo $_category->getProductLineInstallVideo() ?>" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
+                             <?php else: ?>
+                             &nbsp;
                             <?php endif; ?>
                         </div>
                         <?php if ($_category->getDescription()): ?>
@@ -250,6 +252,8 @@ foreach ($categoryIds as $id) {
                                     </div>
                                 </div>
                             </div>
+                        <?php else: ?>
+                             &nbsp;
                         <?php endif; ?>
                         <?php if ($_category->getProductLineFeatureBenefits()): ?>
                             <div class="pro-third-part">
@@ -264,6 +268,8 @@ foreach ($categoryIds as $id) {
                             </div>
                         <?php endif; ?>
                     </div>
+                    
+                    
                 </div>
             </div>
         </div>
@@ -407,12 +413,15 @@ foreach ($categoryIds as $id) {
                         <div class="pro-tech-third">
                             <div class="pro-tech-box">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-
+                                
+                                	
+									<?php if ($_product->getBoxStyle() || $_product->getBoxOpeningType() || $_product->getInteriorBoxDimensions()): ?>
                                     <tr>
-                                        <td>Storage Box Details</td>
+                                        <td><?php echo $this->__("Storage Box Details") ?></td>
 
                                         <td>&nbsp;</td>
                                     </tr>
+                                    <?php endif; ?>
 
                                     <?php if ($_product->getBoxStyle()): ?>
                                         <tr>
@@ -438,15 +447,24 @@ foreach ($categoryIds as $id) {
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getProductSpecifications()): ?>
-                                        <tr>
-                                            <td><?php echo $this->__("Product Specifications") ?></td>
 
-                                            <td><?php echo $_helper->productAttribute($_product, $_product->getProductSpecifications(), 'product_specifications') ?></td>
+                                        <tr>
+                                            <td class="bg-thead">
+                                            <?php if ($_product->getDimA() || $_product->getDimB() || $_product->getDimC() || $_product->getDimD() || $_product->getDimE() || $_product->getDimF() || $_product->getDimG()|| $_product->getDimG()): ?>
+											<?php echo $this->__("Product Specifications") ?>
+                                            <?php endif; ?>
+                                            
+                                            </td>
+                                            <td class="bg-thead">
+												<?php if ($_product->getWeight() || $_product->getHeight() || $_product->getWidth() || $_product->getLength()): ?>
+                                                <?php echo $this->__("Shipping Specifications") ?>
+                                                <?php endif; ?>
+                                            </td>
                                         </tr>
-                                    <?php endif; ?>
+
                                     <tr>
-                                        <td class="padding-none"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <td class="padding-none">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                 <?php if ($_product->getDimA()): ?>
                                                     <tr class="border-main-bottom">
                                                         <td><?php echo $this->__("DIM_A") ?></td>
@@ -488,13 +506,14 @@ foreach ($categoryIds as $id) {
                                                     </tr>
                                                 <?php endif; ?>
                                                 <?php if ($_product->getDimG()): ?>
-                                                    <tr >
+                                                    <tr>
                                                         <td><?php echo $this->__("DIM_G") ?></td>
                                                         <td><?php echo $_helper->productAttribute($_product, $_product->getDimG(), 'dim_G') ?></td>
                                                     </tr>
                                                 <?php endif; ?>
-                                            </table></td>
-                                        <td class="padding-none"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            </table>
+                                            </td>
+                                        <td class="padding-none left-border-section"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 
                                                 <?php if ($_product->getWeight()): ?>
                                                     <tr class="border-main-bottom">

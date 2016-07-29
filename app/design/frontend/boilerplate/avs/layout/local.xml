@@ -5,6 +5,7 @@
 		<reference name="head">
 			<action method="addCss"><stylesheet>css/custom.css</stylesheet></action>
 			<action method="addCss"><stylesheet>css/custom2.css</stylesheet></action>
+			<action method="addCss"><stylesheet>css/ee.css</stylesheet></action>
 			<action method="addCss"><stylesheet>css/jquery.bxslider.css</stylesheet></action>
 			<action method="addCss"><stylesheet>css/owl.carousel.css</stylesheet></action>
 			
@@ -189,6 +190,15 @@
     </PRODUCT_TYPE_configurable>
     
     <expressionengine_integratee>
+		<reference name="head">
+    	    <action method="setTemplate"><template>page/html/head-ee.phtml</template></action>
+    	</reference>
+		<reference name="header">
+			<remove name="select-vehicle" />
+		</reference>
+		<block type="cms/block" name="footer_connect">
+			<action method="setBlockId"><block_id>footer-connect</block_id></action>
+		</block>
         <block type="cms/block" name="installation-guides">
             <action method="setBlockId"><block_id>installation-guides</block_id></action>
         </block>

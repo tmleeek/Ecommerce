@@ -21,21 +21,22 @@
                     <h2>Select Filter</h2>
 
                     {exp:low_search:form channel="online_retailers" result_page="dealer-locator/online-filter" form_id="online-search"}
+                    
                         <select name="search:store_country">
                             <option value="">Select Country</option>
                             {exp:vz_picky field="store_country"}
                                 <option value="{value}">{value}</option>
                             {/exp:vz_picky}
                         </select>
-                        <select name="search:brand">
+                        <select name="search:store_brand">
                             <option value="">Select Brand</option>
-                            {exp:vz_picky field="brand"}
+                            {exp:vz_picky field="store_brand"}
                                 <option value="{value}">{value}</option>
                             {/exp:vz_picky}
                         </select>
-                        <select name="search:categories">
+                        <select name="search:store_categories">
                             <option value="">Select Category</option>
-                            {exp:vz_picky field="categories"}
+                            {exp:vz_picky field="store_categories"}
                                 <option value="{value}">{value}</option>
                             {/exp:vz_picky}
                         </select>
@@ -43,12 +44,10 @@
 
                     <h2>Retailers</h2>
                     <div class="retailers">
-                        {exp:channel:entries channel="online_retailers" dynamic="no"}
-                            <div class="store">
-                                {exp:ce_img:pair src="{store_logo}" max_width="168" crop="yes|center,center"}<a href="{store_website}" target="_blank"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
-                            </div>
-                        {/exp:channel:entries}
-                    </div>
+                    	<div class="store">
+                        	<p>Please select the Filters.</p>
+                        </div>
+                     </div>
 
                 </aside>
 

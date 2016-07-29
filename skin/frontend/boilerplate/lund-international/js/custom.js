@@ -352,7 +352,6 @@ jQuery(document).ready(function() {
 jQuery(function(){
 
 	jQuery("#online-search select").change(function(e){
-
 		jQuery("#online-search").ajaxSubmit({
 			target: ".retailers"
 		});

@@ -5,6 +5,7 @@
 
     $imageHeight = 52;
     $imageWidth  = 92;
+    $sperator = Mage::getSingleton('core/cookie')->get('currentVehicle') ? "&" : "?";
 ?>
 
 <div class="product-navigation product-show">
@@ -22,9 +23,9 @@
                         $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, Mage::getModel('catalog/category')->load($_category->getId())->getThumbnail());
 
                         if ($category->getName() == "Lund"):
-                            $categoryUrl = $_helper->getCategoryUrl($_category) . "?brand=lund";
+                            $categoryUrl = $_helper->getCategoryUrl($_category) . $sperator . "___store=lund";
                         elseif ($category->getName() == "AVS"):
-                            $categoryUrl = $_helper->getCategoryUrl($_category) . "?brand=avs";
+                            $categoryUrl = $_helper->getCategoryUrl($_category) . $sperator . "___store=avs";
                         endif;
                         ?>
                         <li>

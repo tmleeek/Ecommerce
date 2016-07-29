@@ -155,9 +155,17 @@ div.block-layered-nav dd li.amshopby-cat-level-2 { padding-left: 60px; }
 .car-pic-main li {width:16.66%; padding: 0 6px 30px 6px;}
 .car-pic-main ul{ display: table; margin:15px -6px 0 -6px;}
 
+.pro-tech-box table tr td.bg-thead{ background:#d1d1d1; line-height:26px;}
+.pro-tech-box table tr td.padding-none{ vertical-align:top;}
+.pro-tech-box table tr td.padding-none.left-border-section{ border-left:2px solid #d1d1d1;}
+.pro-tech-box table tr td.padding-none.left-border-section tr td{ border-left:0;}
+.vehicle-top .select-make-home, .vehicle-top .select-year-home{ padding:0 32px 0 0; margin: 0; border: 1px solid #494f5a; width: 100%; border-radius:5px; overflow: hidden; background-color: #fff; background: #fff url(../images/select-cusom-arrow.png) no-repeat 100% 50%; }
+.vehicle-top select { padding:0 0 0 20px; width:130%; border: none; box-shadow: none; background-color: transparent; background-image: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+.vehicle-top select:focus { outline: none; }
 
-
-a.view-all-products{  float: right; margin-right: -60px; margin-top: -29px; position: relative; background:url(../images/view-arrow.png) right center no-repeat; padding-right:10px; font-size:14px; color:#000000;}
+.newsmore-btn{ text-align:center; margin-top: -45px; padding-bottom: 12px;}
+.newsmore-btn a{background:#000; color:#fff; cursor:pointer; font-size:12px; font-weight:700; height:33px; line-height:31px; text-transform:uppercase; width:130px; display:inline-block; border-radius:5px; border:0;}
+.newsmore-btn a:hover{ background: #6fb500; text-decoration:none;}
 
 @media (min-width: 1200px) {
 .pro-three-box{ display:block !important;}

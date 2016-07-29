@@ -12,6 +12,11 @@
             </vehicle>
         </helpers>
         <blocks>
+            <page>
+                <rewrite>
+                    <html_pager>Unleaded_Vehicle_Block_Html_Pager</html_pager>
+                </rewrite>
+            </page>
             <vehicle>
                 <class>Unleaded_Vehicle_Block</class>
             </vehicle>
