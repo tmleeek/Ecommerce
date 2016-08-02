@@ -11,22 +11,28 @@ rsort($years);
 <div class="add-vehicle-modal-title"><?php echo $this->__("Select Your Vehicle") ?></div>
 <div class="vehicle-selector-group">
     <div class="vehicle-year-selector vehicle-selector">
+    <div class="custom-select-field">
         <select class="vehicle-year">
             <option value="0"><?php echo $this->__("Select Year") ?></option>
             <?php foreach ($years as $year): ?>
                 <option value="<?php echo $year; ?>"><?php echo $year; ?></option>
             <?php endforeach; ?>
         </select>
+        </div>
     </div>
     <div class="vehicle-make-selector vehicle-selector">
+    <div class="custom-select-field">
         <select class="vehicle-make" disabled="">
             <option value="0"><?php echo $this->__("Select Make") ?></option>
         </select>
+        </div>
     </div>
     <div class="vehicle-model-selector vehicle-selector">
+    <div class="custom-select-field">
         <select class="vehicle-model" disabled="">
             <option value="0"><?php echo $this->__("Select Model") ?></option>
         </select>
+        </div>
     </div>
     <button class="button" id="add-vehicle-to-garage">
         <span>
@@ -47,7 +53,7 @@ rsort($years);
                 <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
                     var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
                 <?php else: ?>
-                    var customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+                    var customerId = false;
                 <?php endif; ?>
 
                 jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", {year: year, make: make, model: model, customerId: customerId},

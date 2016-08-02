@@ -39,7 +39,7 @@
 ?>
         <ul class="breadcrumb">
         	<li class="home"><a title="<?php echo $this->__("Go to Home Page") ?>" href="<?php echo $this->getUrl('') ?>"><?php echo $this->__("Home") ?></a></li>
-            <li class="home"><a title="<?php echo $this->__("AVS") ?>" href="<?php echo $this->getUrl('') ?>"><?php echo $this->__("AVS") ?></a></li>
+            <li class="home"><a title="<?php echo $this->getStore()->getName(); ?>" href="<?php echo $this->getUrl('') ?>"><?php echo $this->getStore()->getName(); ?></a></li>
             <li class="search_result"><strong> <?php echo $Vehiclename ?></strong></li>
         </ul>
             
@@ -47,7 +47,7 @@
         <div class="page-title2">
         	<h1 class="vehicle-search-criteria">
             	<?php echo $Vehiclename ?>
-                <span class="criteria-sub"><?php echo $this->__('Lund Accessories') ?></span>
+                <span class="criteria-sub"><?php echo $this->getCategory() ? $this->getCategory()->getName() : ''; ?></span>
             </h1>
         </div>
         
@@ -63,7 +63,7 @@
                     <div class="vehicle-search-criteria">
                         <h2><?php echo $Vehiclename ?></h2>
                         <div class="cat-short-description" >
-                            <?php echo $this->__('Lund Accessories') ?>
+                            <?php echo $this->getCategory() ? $this->getCategory()->getName() : ''; ?>
                         </div>
                     </div>
                 </div>

@@ -7,12 +7,7 @@ class Unleaded_Vehicle_Block_Vehicle extends Mage_Core_Block_Template {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             return $customer->getGarage();
         } else {
-            $remoteAddr = Mage::helper('core/http')->getRemoteAddr();
-
-            $guestGarageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
-            $guestGarageModel->addFieldToFilter('customer_id', $remoteAddr);
-
-            return json_decode($guestGarageModel->getFirstItem()->getVehicles());
+            return [];
         }
     }
 

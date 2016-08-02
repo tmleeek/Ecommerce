@@ -12,7 +12,7 @@
 
 
     <div class="container container2">
-       <div class="breadcrumb"><a href="/">Home</a> | <a href="{path=news}">News</a> | <span class='last'>Search Results</span></div>
+       <div class="breadcrumb"><a href="/">Home</a> | <a href="{path=news}?brand=avs">News</a> | <span class='last'>Search Results</span></div>
 
 
 
@@ -27,7 +27,7 @@
                 {exp:search:search_results switch="resultRowOne|resultRowTwo"}
 
                     <tr class="{switch}">
-                        <td width="30%" valign="top"><b><a href="{auto_path}">{title}</a></b></td>
+                        <td width="30%" valign="top"><b><a href="{auto_path}?brand=avs">{title}</a></b></td>
                         <td width="30%" valign="top">{sentence_summary}</td>
                         <td width="10%" valign="top">{entry_date format="%m/%d/%y"}</td>
                     </tr>

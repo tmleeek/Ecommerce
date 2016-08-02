@@ -58,7 +58,7 @@ rsort($years);
                 <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
                     var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
                 <?php else: ?>
-                    var customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+                    var customerId = false;
                 <?php endif; ?>
 
                 jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", {year: year, make: make, model: model, customerId: customerId},

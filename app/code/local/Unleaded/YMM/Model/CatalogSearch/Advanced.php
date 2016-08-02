@@ -1,7 +1,6 @@
 <?php
 
-class Unleaded_YMM_Model_CatalogSearch_Advanced 
-	extends Mage_CatalogSearch_Model_Advanced
+class Unleaded_YMM_Model_CatalogSearch_Advanced extends Mage_CatalogSearch_Model_Advanced
 {
 	public $category = false;
 	public function addFilters($values)
@@ -12,6 +11,7 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced
 
         // Grab category
         $this->category = isset($values['category']) ? $this->getCategoryFromUrlKey($values['category']) : false;
+        Mage::register('currentCategory', $this->category);
 
         foreach ($attributes as $attribute) {
             /* @var $attribute Mage_Catalog_Model_Resource_Eav_Attribute */
@@ -46,6 +46,7 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced
                         $hasConditions = true;
                         $this->_addSearchCriteria($attribute, $value);
                     }
+                    // echo'<br>';echo'<br>';echo __LINE__ . ' ';var_dump((string)$this->getProductCollection()->getSelect());
                 }
             } else {
                 $condition = $this->_prepareCondition($attribute, $value);
@@ -90,8 +91,7 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced
     	// Mage::log(__LINE__ . ' ' . var_export($this->category, true));
 
         $collection
-        	->addAttributeToSelect(Mage::getSingleton('catalog/config')
-        	->getProductAttributes())
+        	->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes())
             ->setStore(Mage::app()->getStore())
             ->addMinimalPrice()
             ->addTaxPercents()
@@ -101,7 +101,16 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced
         Mage::getSingleton('catalog/product_visibility')->addVisibleInSearchFilterToCollection($collection);
 
         if ($this->category) {
-        	$collection->addCategoryFilter($this->category);
+        	$collection
+                ->clear()
+                ->joinField('category_id',
+                    'catalog/category_product',
+                    'category_id',
+                    'product_id = entity_id',
+                    null,
+                    'left')
+                ->addAttributeToFilter('category_id', $this->category->getId())
+                ->load();
         }
 
         return $this;

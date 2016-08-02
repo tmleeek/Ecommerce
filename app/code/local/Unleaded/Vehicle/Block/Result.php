@@ -2,7 +2,8 @@
 
 class Unleaded_Vehicle_Block_Result extends Mage_CatalogSearch_Block_Advanced_Result {
 
-    protected function _prepareLayout() {
+    protected function _prepareLayout() 
+    {
         parent::_prepareLayout();
         if ($breadcrumbs = $this->getLayout()->getBlock('breadcrumbs')) {
             $breadcrumbs->addCrumb('home', array(
@@ -23,10 +24,20 @@ class Unleaded_Vehicle_Block_Result extends Mage_CatalogSearch_Block_Advanced_Re
         $this->getLayout()->getBlock('head')->setTitle($title);
     }
 
-    public function getFormUrl() {
+    public function getFormUrl()
+    {
         return Mage::getModel('core/url')
                         ->setQueryParams($this->getRequest()->getQuery())
                         ->getUrl('*/search/', array('_escape' => true)); //URL: example.com/module_frontname/
     }
 
+    public function getCategory()
+    {
+        return Mage::registry('currentCategory');
+    }
+
+    public function getStore()
+    {
+        return Mage::app()->getStore();
+    }
 }

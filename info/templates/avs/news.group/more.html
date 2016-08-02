@@ -1,13 +1,13 @@
  {exp:channel:entries channel="news" {if segment_2=='category'} limit="6" {if:else} limit="3" offset="6"{/if} paginate="bottom" }
             <div class="post {switch='|middle|'}">
                {if blog_image}
-                {exp:ce_img:pair src="{blog_image}" width="230" height="149" crop="yes|center,center"}<a href="{url_title_path=news/post}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+                {exp:ce_img:pair src="{blog_image}" width="230" height="149" crop="yes|center,center"}<a href="{url_title_path=news/post}?brand=avs"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
                {if:else}
-                <a href="{url_title_path=news/post}"><img src="/info/assets/images/placeholder.png" width="230" height="149" alt=""></a>
+                <a href="{url_title_path=news/post}?brand=avs"><img src="/info/assets/images/placeholder.png" width="230" height="149" alt=""></a>
                {/if}
-                 <h3><a href="{url_title_path=news/post}">{title}</a></h3>
+                 <h3><a href="{url_title_path=news/post}?brand=avs">{title}</a></h3>
                  <p>{sentence_summary}</p>
-                 <p><a href="{url_title_path=news/post}">Read More</a></p>
+                 <p><a href="{url_title_path=news/post}?brand=avs">Read More</a></p>
             </div>
              {paginate}
                {pagination_links}

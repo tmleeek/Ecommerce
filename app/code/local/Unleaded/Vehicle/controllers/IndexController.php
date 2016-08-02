@@ -1,8 +1,9 @@
 <?php
 
-class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action {
-
-    public function indexAction() {
+class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action 
+{
+    public function indexAction()
+    {
         $this->loadLayout();
         $layout = Mage::getSingleton('core/layout');
         $html = $layout
@@ -12,7 +13,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         echo $html;
     }
 
-    public function removeVehicleAction() {
+    public function removeVehicleAction()
+    {
         $vehicleId = Mage::app()->getRequest()->getParam('vehicleId');
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
@@ -40,7 +42,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         echo $html;
     }
 
-    public function clearAllAction() {
+    public function clearAllAction()
+    {
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
         $garageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
@@ -55,7 +58,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         echo Mage::getBaseUrl();
     }
 
-    public function changeSelectionAction() {
+    public function changeSelectionAction()
+    {
         $vehicleId = Mage::app()->getRequest()->getParam('vehicleId');
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
@@ -75,7 +79,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         echo $html;
     }
 
-    public function addVehicleAndRedirectAction() {
+    public function addVehicleAndRedirectAction() 
+    {
         $request = $this->getRequest();
 
         $year = $request->getParam('year');
@@ -94,16 +99,22 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
 
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
-        $garageModel = Mage::getModel('vehicle/ulgarage')
-                ->getCollection()
-                ->addFieldToFilter('customer_id', $customerId);
+        if ($customerId !== 'false')
+            $garageModel = Mage::getModel('vehicle/ulgarage')
+                            ->getCollection()
+                            ->addFieldToFilter('customer_id', $customerId);
+        else
+            $garageModel = false;
 
         $vehicleBlock = $this->getLayout()->getBlockSingleton('vehicle/vehicle');
 
         // Set cookie for vehicle
         $cookie = Mage::getSingleton('core/cookie');
         $cookie->set(
-                'currentVehicle', Mage::helper('unleaded_ymm')->getVehicleSegment($year, $make, $model), (60 * 60 * 24 * 30), '/'
+                'currentVehicle', 
+                Mage::helper('unleaded_ymm')->getVehicleSegment($year, $make, $model),
+                (60 * 60 * 24 * 30), 
+                '/'
         );
 
         // If there is a targetCategoryId then we need to direct them to the product
@@ -113,6 +124,10 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         else
             $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
 
+        if (!$garageModel) {
+            echo $redirectUrl;
+            return;
+        }
 
         if ($garageModel->count() == 1) {
             $garageData = $garageModel->getFirstItem();
@@ -146,7 +161,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         }
     }
 
-    public function getMakeByYearAction() {
+    public function getMakeByYearAction()
+    {
         $year = Mage::app()->getRequest()->getParam('year');
         $ymmCollection = Mage::getModel("vehicle/ulymm")->getCollection();
         $ymmCollection->addFieldToFilter('year', $year);
@@ -161,7 +177,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         echo json_encode($yearMake);
     }
 
-    public function getModelByMakeAndYearAction() {
+    public function getModelByMakeAndYearAction()
+    {
         $year = Mage::app()->getRequest()->getParam('year');
         $make = Mage::app()->getRequest()->getParam('make');
 
@@ -179,7 +196,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         echo json_encode($yearMakeModel);
     }
 
-    public function getCompatibleVehiclesAction() {
+    public function getCompatibleVehiclesAction() 
+    {
         $request = $this->getRequest();
         $target = $request->getParam('target');
 

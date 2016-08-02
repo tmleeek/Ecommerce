@@ -6,6 +6,7 @@ class Unleaded_YMM_Helper_Category extends Mage_Catalog_Helper_Category
 	protected $baseUrl              = null;
     protected $urlCache             = [];
     protected $urlKeyCache          = [];
+    
     public function getCurrentVehicleCookie()
     {
     	if ($this->currentVehicleCookie === null)
@@ -67,16 +68,17 @@ class Unleaded_YMM_Helper_Category extends Mage_Catalog_Helper_Category
             $url .= '?category=' . $category->getUrlKey();
         }
 
-        // Now add brand, which will always be a query param
-        $store = Mage::getSingleton('core/cookie')->get('store');
-        if ($store && $store !== 'default') {
+        // Now add brand, which will always be a query param and is dependent on the 
+        // category's parent
+        $parentCategory = $category->getParentCategory();
+        if ($parentCategory && $parentCategory->getName() !== 'Default Category') {
             // Make sure brand isn't already in url
             if (!strstr($url, 'brand=')) {
                 // Now check if we've already started query params
                 if (strstr($url, '?'))
-                    $url .= '&brand=' . $store;
+                    $url .= '&brand=' . strtolower($parentCategory->getName());
                 else
-                    $url .= '?brand=' . $store;
+                    $url .= '?brand=' . strtolower($parentCategory->getName());
             }
         }
         

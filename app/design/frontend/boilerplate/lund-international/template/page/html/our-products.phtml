@@ -1,11 +1,24 @@
 <?php
-    $_helper = Mage::helper('catalog/category');
+    $_helper    = Mage::helper('catalog/category');
     $categories = Mage::getResourceModel('catalog/category_collection')
-            ->addFieldToFilter('name', ['in' => ['AVS', 'Lund']]);
+                    ->addFieldToFilter('name', ['in' => ['AVS', 'Lund']]);
 
     $imageHeight = 52;
     $imageWidth  = 92;
-    $sperator = Mage::getSingleton('core/cookie')->get('currentVehicle') ? "&" : "?";
+
+    $sortCats = [];
+    foreach ($categories as $category) {
+        $subCategories = $category
+                            ->getChildrenCategories()
+                            ->addIsActiveFilter()
+                            ->addAttributeToSelect('*');
+
+        foreach ($subCategories as $_category) 
+            $sortedCats[$_category->getName()] = $_category;
+        
+    }
+
+    ksort($sortedCats, SORT_STRING);
 ?>
 
 <div class="product-navigation product-show">
@@ -13,24 +26,14 @@
         <div class="menu-left-content">
             <ul>
                 <?php
-                foreach ($categories as $category):
-                    $subCategories = $category
-                            ->getChildrenCategories()
-                            ->addIsActiveFilter()
-                            ->addAttributeToSelect('*');
-
-                    foreach ($subCategories as $_category):
+                    foreach ($sortedCats as $_category):
                         $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, Mage::getModel('catalog/category')->load($_category->getId())->getThumbnail());
 
-                        if ($category->getName() == "Lund"):
-                            $categoryUrl = $_helper->getCategoryUrl($_category) . $sperator . "___store=lund";
-                        elseif ($category->getName() == "AVS"):
-                            $categoryUrl = $_helper->getCategoryUrl($_category) . $sperator . "___store=avs";
-                        endif;
-                        ?>
+                        $categoryUrl = $_helper->getCategoryUrl($_category);
+                ?>
                         <li>
                             <div class="catrgory-navigation">
-                                <a href="<?php echo $categoryUrl ?>" class="category-image">
+                                <a href="<?php echo $categoryUrl ?>" class="category-image" data-category="<?php echo $_category->getId(); ?>">
                                     <img alt="<?php echo $_category->getName() ?>" src="<?php echo $image_url ?>" />
                                 </a>
                                 <div class="menu-details">
@@ -39,9 +42,8 @@
                                 </div>
                             </div>
                         </li>
-                        <?php
+                <?php
                     endforeach;
-                endforeach;
                 ?>
             </ul>
         </div>

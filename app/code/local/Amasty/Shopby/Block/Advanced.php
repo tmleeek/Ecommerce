@@ -57,7 +57,7 @@ class Amasty_Shopby_Block_Advanced extends Mage_Catalog_Block_Navigation
         }
 
         $html = array();
-        $html[1] = '<a href="' . $this->getCategoryUrl($category) . '">' . $this->htmlEscape($category->getName()) . $productCount . '</a>';
+        $html[1] = '<a href="' . Mage::helper('catalog/category')->getCategoryUrl($category) . '">' . $this->htmlEscape($category->getName()) . $productCount . '</a>';
 
         $showAll   = Mage::getStoreConfig('amshopby/advanced_categories/show_all_categories');
         $showDepth = Mage::getStoreConfig('amshopby/advanced_categories/show_all_categories_depth');

@@ -167,6 +167,32 @@ div.block-layered-nav dd li.amshopby-cat-level-2 { padding-left: 60px; }
 .newsmore-btn a{background:#000; color:#fff; cursor:pointer; font-size:12px; font-weight:700; height:33px; line-height:31px; text-transform:uppercase; width:130px; display:inline-block; border-radius:5px; border:0;}
 .newsmore-btn a:hover{ background: #6fb500; text-decoration:none;}
 
+.vehicle-selector-group .vehicle-selector .custom-select-field{ padding:0 32px 0 0; margin: 0; border: 1px solid #494f5a; width: 100%; border-radius:5px; overflow: hidden; background-color: #fff; background: #fff url(../images/select-cusom-arrow.png) no-repeat 100% 50%; }
+#vehicle-modal .modal-content .vehicle-selector-group .vehicle-selector select { padding:0 0 0 10px; width:130%; border: none; box-shadow: none; background-color: transparent; background-image: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+.vehicle-selector-group .vehicle-selector .custom-select-field select:focus { outline: none; }
+
+body.catalogsearch-result-index aside[role="complementary"],
+body.unleaded-ymm-index-index aside[role="complementary"], body.catalog-category-view aside[role="complementary"], body.ulvehicle-results-for  aside[role="complementary"]{ position:relative; margin:0;}
+body.catalogsearch-result-index aside[role="complementary"]:after,
+body.unleaded-ymm-index-index  aside[role="complementary"]:after, body.catalog-category-view aside[role="complementary"]:after, body.ulvehicle-results-for  aside[role="complementary"]:after{ background:url(../images/shadow.jpg) repeat-y left top; bottom: 0; content: ""; height: 100%; right:-48px; position:absolute; top:0; width:60px;}
+
+
+.block-layered-nav dd ol li.selectd{ background:#75b9e1 url(../images/filter-selected.png) left center no-repeat;}
+
+div.block-layered-nav dd a.amshopby-attr, div.block-layered-nav dd a.amshopby-attr:hover,  .block-layered-nav dd ol li a{ padding-top:5px; padding-bottom:5px; line-height:19px;}
+.block-layered-nav dd ol li.amshopby-advanced:hover, .block-layered-nav dd ol li.amshopby-advanced a, .block-layered-nav dd ol li.amshopby-advanced li:hover, .block-layered-nav dd ol li.amshopby-advanced li a { background:none; color:#000000; font-weight:400; border:0; position:relative;}
+.block-layered-nav dd ol li.amshopby-advanced li.active > a{background:#75b9e1 url(../images/cat-filter.png) 20px center no-repeat; color:#FFF; font-weight:900;}
+.block-layered-nav dd ol li.amshopby-advanced ol, .block-layered-nav dd ol li.amshopby-advanced li, .block-layered-nav dd ol li.amshopby-advanced, .block-layered-nav dd ol li.amshopby-advanced li ol{margin:0; padding:0;}
+.block-layered-nav dd ol li.amshopby-advanced li > a{ padding-left:67px;}
+.block-layered-nav dd ol li.amshopby-advanced li > a:hover{ background:#75b9e1 url(../images/cat-filter.png) 20px center no-repeat; color:#FFF; font-weight:900;}
+.block-layered-nav dd ol li.amshopby-advanced li > ol > li.level1 > a{ padding-left:75px;}
+.block-layered-nav dd ol li.amshopby-advanced li > ol > li.level2 > a{ padding-left:85px;}
+.block-layered-nav dd ol li.amshopby-advanced li a:after{ content:""; left:45px; right:28px; bottom:0; height:1px; background:#bbbbbb; position:absolute; }
+.block-layered-nav dd ol li.amshopby-advanced ol li.level2 ol{ display:none;}
+div.block-layered-nav dd a.amshopby-attr-selected{ color:#FFF; font-weight:900;}
+
+.product-essential .product-img-box .more-views ul li{ margin:0; text-align:center;}
+
 @media (min-width: 1200px) {
 .pro-three-box{ display:block !important;}
 .review-bg-section{ display:block !important;}
@@ -202,6 +228,12 @@ div.block-layered-nav dd li.amshopby-cat-level-2 a{ padding-left:15px;}
 .our-product-navi .product-navigation{ position:relative; overflow:hidden; width:100%; top:-3px; display:block;}
 .our-product-navi{ display:none;}
 
+.block-layered-nav dd ol li.amshopby-advanced{ padding-right:0;}
+.block-layered-nav dd ol li.amshopby-advanced:hover, .block-layered-nav dd ol li.amshopby-advanced li:hover{ width:100%;}
+.block-layered-nav dd ol li.amshopby-advanced li a::after{ right:0; left:40px;}
+.block-layered-nav dd ol li.amshopby-advanced li > a{ padding-left:60px; padding-right:0;}
+.block-layered-nav dd ol li.amshopby-advanced li > ol > li.level1 > a{ padding-left:65px;}
+.block-layered-nav dd ol li.amshopby-advanced li > ol > li.level2 > a{ padding-left:70px;}
 
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -236,6 +268,13 @@ div.block-layered-nav dd li.amshopby-cat-level-2 a{ padding-left:15px;}
 .navbar-default .navbar-nav > li.hidefor-mobile{ display:none !important;}
 .our-product-navi .product-navigation{ display:none !important;}
 .our-product-navi{ display:none !important;}
+
+.block-layered-nav dd ol li.amshopby-advanced{ padding-right:17px;}
+.block-layered-nav dd ol li.amshopby-advanced:hover, .block-layered-nav dd ol li.amshopby-advanced li:hover{ width:100%;}
+.block-layered-nav dd ol li.amshopby-advanced li a::after{ right:0; left:40px;}
+.block-layered-nav dd ol li.amshopby-advanced li > a{ padding-left:60px; padding-right:0;}
+.block-layered-nav dd ol li.amshopby-advanced li > ol > li.level1 > a{ padding-left:65px;}
+.block-layered-nav dd ol li.amshopby-advanced li > ol > li.level2 > a{ padding-left:70px;}
 }
 @media (min-width: 600px) and (max-width: 767px) {
 .product-view{ margin:0;}
@@ -254,6 +293,8 @@ div.block-layered-nav dd li.amshopby-cat-level-2 a{ padding-left:15px;}
 .navbar-default .navbar-nav > li.hidefor-mobile{ display:none !important;}
 .our-product-navi .product-navigation{ display:none !important;}
 .our-product-navi{ display:none !important;}
+body.catalogsearch-result-index aside[role="complementary"]:after,
+body.unleaded-ymm-index-index  aside[role="complementary"]:after, body.catalog-category-view aside[role="complementary"]:after, body.ulvehicle-results-for  aside[role="complementary"]:after{ display:none;}
 }
 @media (max-width: 599px) {
 .product-view{ margin:0;}
@@ -278,4 +319,6 @@ div.block-layered-nav dd li.amshopby-cat-level-2 a{ padding-left:30px;}
 .navbar-default .navbar-nav > li.hidefor-mobile{ display:none !important;}
 .our-product-navi .product-navigation{ display:none !important;}
 .our-product-navi{ display:none !important;}
+body.catalogsearch-result-index aside[role="complementary"]:after,
+body.unleaded-ymm-index-index  aside[role="complementary"]:after, body.catalog-category-view aside[role="complementary"]:after, body.ulvehicle-results-for  aside[role="complementary"]:after{ display:none;}
 }

@@ -292,8 +292,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 #locator  aside[role="complementary"] h2 {font-size: 19px; color: #000; text-transform: uppercase; background: #e4e4e4; padding: 20px;}
 #locator  #online-search select {width: 100%; font-size: 13px; color: #464646;padding: 10px; border: 1px solid #a6a6a6; border-radius: 5px; margin-bottom: 10px;}
 
-#locator .retailers  {padding-bottom: 15px; height: 1000px;  overflow-x: hidden; margin-bottom: 20px;}
+#locator .retailers  {padding-bottom: 15px; height: 1000px;  overflow-x: hidden; margin-bottom: 20px; display:none;}
 #locator .retailers .store {border: 1px solid #e6e6e6; text-align: center; padding: 18px 0px 20px; margin-bottom: 5px;}
+#locator .retailers2  {border: 1px solid #e6e6e6; text-align: center; padding: 18px 0px 20px; margin-bottom: 5px;}
+
 
 #locator div[role="main"]  {border-left: 1px solid #d9d9d9; box-shadow: inset 8px 0px 2px 0px rgba(0,0,0,0.10);}
 #locator .local {color: #4e4e4e; font-weight: bold; font-size: 20px; text-transform: uppercase; border: 1px solid #e6e6e6;  display: inline-block; padding: 18px 40px;border-radius: 5px; margin: 15px 0px; }

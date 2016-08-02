@@ -27,7 +27,7 @@
                 ?>
                     <li>
                         <div class="catrgory-navigation">
-                            <a href="<?php echo $_helper->getCategoryUrl($_category); ?>" class="category-image">
+                            <a href="<?php echo $_helper->getCategoryUrl($_category); ?>" class="category-image" data-category="<?php echo $_category->getId(); ?>">
                                 <img alt="<?php echo $_category->getName() ?>" src="<?php echo $image_url ?>" />
                             </a>
                             <div class="menu-details">

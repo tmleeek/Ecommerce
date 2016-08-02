@@ -54,6 +54,39 @@
         </div>
     </div>
 
+<?php elseif (Mage::getSingleton('core/cookie')->get('currentVehicle') && !Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+    <div class="current-vehicle">
+        <?php echo Mage::getSingleton('core/cookie')->get('currentVehicle') ?>
+    </div>
+    <div class="additional-vehicles">
+        <div class="ul-vehicles">
+            <div class="vehicle-title"><?php echo $this->__("Login to Save Your Vehicles") ?></div>
+            <ul class="vehicle-list">
+                <li class="vehicle-item">
+                    <div class="vehicle-name">
+                        <?php echo Mage::getSingleton('core/cookie')->get('currentVehicle') ?>
+                    </div>
+                    <div class="view-products">
+                        <a class="search-vehicle-products" href="<?php echo Mage::getBaseUrl() . Mage::getSingleton('core/cookie')->get('currentVehicle') ?>">
+                            <?php echo $this->__('View Products') ?>
+                        </a>
+                    </div>
+                </li>
+                <li class="add-vehicle-item">
+                    <button class="button add-vehicle" type="button">
+                        <span>
+                            <span>
+                                <?php echo $this->__('Add Vehicle') ?>
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li class="clear-all">
+                    <a href="javascript:void(0)" class="clear-garage"><span>X</span><?php echo $this->__('Clear All') ?></a>
+                </li>
+            </ul>
+        </div>
+    </div>
 <?php else: ?>
     <button class="button add-vehicle" type="button">
         <span>

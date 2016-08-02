@@ -45,9 +45,36 @@
             <label><?php echo $this->__('Sort By:') ?></label>
             <select onchange="setLocation(this.value)" class="custom-style">
             <?php foreach($this->getAvailableOrders() as $_key=>$_order): ?>
-                <option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key)): ?> selected="selected"<?php endif; ?>>
-                    <?php echo $this->__($_order) ?>
+            
+			<?php if ($_order == 'Price' || $_order == 'Name' || $_order == 'Sort by rating'): ?>
+            	<?php if ($_order == 'Price'): ?>	
+            	<option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'asc'): ?> selected="selected"<?php endif; ?>>
+                	<?php echo $this->__('Sort by') ?> <?php echo $this->__($_order) . ': Low to High' ?>
+                </option> 
+                <option value="<?php echo $this->getOrderUrl($_key, 'desc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                	<?php echo $this->__('Sort by') ?> <?php echo $this->__($_order) . ': High to Low' ?>
+                </option> 
+                
+                <?php elseif ($_order == 'Name'): ?>	
+                
+                 <option value="<?php echo $this->getOrderUrl('name', 'asc') ?>"<?php if($this->isOrderCurrent('name') && $this->getCurrentDirection() == 'asc'): ?> selected="selected"<?php endif; ?>>
+				 	<?php echo $this->__("Sort by A to Z") ?>
                 </option>
+                <option value="<?php echo $this->getOrderUrl('name', 'desc') ?>"<?php if($this->isOrderCurrent('name') && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                	<?php echo $this->__("Sort by Z to A") ?>
+                </option>
+                
+                <?php elseif ($_order == 'Sort by rating'): ?>	
+                <option value="<?php echo $this->getOrderUrl('rating_summary', 'desc') ?>"<?php if($this->isOrderCurrent('rating_summary') && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                	<?php echo $this->__("Sort by rating") ?>
+                </option>
+            	<?php endif; ?>
+                
+                
+            <?php else: ?>
+            <option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key)): ?> selected="selected"<?php endif; ?>><?php echo $this->__($_order) ?></option>
+            <?php endif; ?>
+
             <?php endforeach; ?>
             </select>
         </div>

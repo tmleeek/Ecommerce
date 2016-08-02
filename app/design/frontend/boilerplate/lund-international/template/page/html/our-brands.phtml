@@ -1,23 +1,24 @@
-<?php $_helper = Mage::helper('catalog/category') ?>
 <?php
-$category = Mage::getResourceModel('catalog/category_collection')
-        ->addFieldToFilter('name', 'Our Brands')
-        ->getFirstItem();
+    $_helper  = Mage::helper('catalog/category');
+    $category = Mage::getResourceModel('catalog/category_collection')
+                ->addFieldToFilter('name', 'Our Brands')
+                ->getFirstItem();
 
-$categoryId = $category->getId();
+    $categoryId = $category->getId();
+    $imageHeight = 52;
+    $imageWidth  = 92;
+    $rootCategory = Mage::getModel('catalog/category')->load($categoryId);
+    $_categories = $rootCategory->getResource()->getChildren($rootCategory, true); 
 ?>
-<?php $rootCategory = Mage::getModel('catalog/category')->load($categoryId) ?>
-<?php $_categories = $rootCategory->getResource()->getChildren($rootCategory, true); ?>
-
 <div class="product-navigation brand-show">
     <div class="container">
         <div class="menu-left-content">
             <ul>
-                <?php foreach ($_categories as $_categoryId): ?>
-                    <?php $_category = Mage::getModel('catalog/category')->load($_categoryId) ?>
-                    <?php $imageHeight = 52; ?>
-                    <?php $imageWidth = 92; ?>
-                    <?php $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, $_category->getThumbnail()) ?>
+                <?php 
+                    foreach ($_categories as $_categoryId):
+                        $_category = Mage::getModel('catalog/category')->load($_categoryId);
+                        $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, $_category->getThumbnail());
+                ?>
                     <li>
                         <div class="catrgory-navigation">
                             <a href="<?php echo $_helper->getCategoryUrl($_category) ?>" class="category-image">

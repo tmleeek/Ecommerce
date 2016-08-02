@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Unleaded_Sortbyrating>
+            <version>0.0.1</version>
+        </Unleaded_Sortbyrating>
+    </modules>
+    <global>
+        <blocks>
+            <catalog>
+                <rewrite>
+                    <product_list>Unleaded_Sortbyrating_Block_Catalog_Product_List</product_list>
+                </rewrite>
+            </catalog>
+        </blocks>
+        <models>
+            <catalog>
+                <rewrite>
+                    <config>Unleaded_Sortbyrating_Model_Catalog_Config</config>
+                </rewrite>
+            </catalog>
+        </models>
+    </global>
+</config>

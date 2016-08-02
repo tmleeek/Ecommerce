@@ -45,7 +45,7 @@ ksort($sortedCats, SORT_STRING);
                                 <div class="image">
                                     <?php echo $_imgHtml ?>
                                 </div>
-                                <a href="<?php echo $_category->getUrl() ?>"><?php echo $_category->getName() ?></a>
+                                <a href="<?php echo Mage::helper('catalog/category')->getCategoryUrl($_category) ?>"><?php echo $_category->getName() ?></a>
                             </div>
 
                             <?php if ($i % 2 == 0): ?>

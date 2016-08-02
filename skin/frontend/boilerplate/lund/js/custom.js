@@ -485,3 +485,8 @@ jQuery(document).ready(function() {
 		jQuery('.our-product-navi').hide();
 	});
 });
+jQuery(document).ready(function() {
+	jQuery('.block-layered-nav dd ol li a.amshopby-attr-selected').each(function() {
+		jQuery(this).parent().addClass("selectd");
+	});
+});

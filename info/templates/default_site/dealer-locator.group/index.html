@@ -22,19 +22,19 @@
 
                     {exp:low_search:form channel="online_retailers" result_page="dealer-locator/online-filter" form_id="online-search"}
                     
-                        <select name="search:store_country">
+                        <select name="search:store_country" class="select-country">
                             <option value="">Select Country</option>
                             {exp:vz_picky field="store_country"}
                                 <option value="{value}">{value}</option>
                             {/exp:vz_picky}
                         </select>
-                        <select name="search:store_brand">
+                        <select name="search:store_brand" disabled="disabled" class="select-brand">
                             <option value="">Select Brand</option>
                             {exp:vz_picky field="store_brand"}
                                 <option value="{value}">{value}</option>
                             {/exp:vz_picky}
                         </select>
-                        <select name="search:store_categories">
+                        <select name="search:store_categories" disabled="disabled" class="select-categories">
                             <option value="">Select Category</option>
                             {exp:vz_picky field="store_categories"}
                                 <option value="{value}">{value}</option>
@@ -45,8 +45,11 @@
                     <h2>Retailers</h2>
                     <div class="retailers">
                     	<div class="store">
-                        	<p>Please select the Filters.</p>
                         </div>
+                     </div>
+                     
+                     <div class="retailers2">
+	                     <p>Please select the Filters.</p>
                      </div>
 
                 </aside>

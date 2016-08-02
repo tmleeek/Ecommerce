@@ -37,12 +37,11 @@
 <script type="text/javascript">
 	(function($) {
 		var $itemLinks;
-		var baseUrl = '<?php echo Mage::getBaseUrl(); ?>';
-		var compatibleVehicles = {};
 
 		function init() {
-			console.log(baseUrl);
-			listenToLinks();
+                        <?php if(!Mage::getSingleton('core/cookie')->get('currentVehicle')): ?>
+                            listenToLinks();
+                        <?php endif; ?>
 		}
 
 		function listenToLinks() {

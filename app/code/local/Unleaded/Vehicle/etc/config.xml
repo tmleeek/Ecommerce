@@ -32,12 +32,6 @@
                     <product_indexer_eav_source>Unleaded_Vehicle_Model_Resource_Product_Indexer_Eav_Source</product_indexer_eav_source>
                 </rewrite>
             </catalog_resource>
-            <!-- Adding Support For Amasty Layered Navigation -->
-            <amshopby>
-                <rewrite>
-                    <url_builder>Unleaded_Vehicle_Model_Amasty_Url_Builder</url_builder>
-                </rewrite>
-            </amshopby>
             <vehicle>
                 <class>Unleaded_Vehicle_Model</class>
                 <resourceModel>vehicle_mysql4</resourceModel>

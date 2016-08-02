@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Unleaded_Sortbyrating>
+      <active>true</active>
+      <codePool>local</codePool>
+    </Unleaded_Sortbyrating>
+  </modules>
+</config>

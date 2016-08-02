@@ -23,6 +23,7 @@ class Unleaded_YMM_IndexController extends Mage_Core_Controller_Front_Action
         }
 
         $this->loadLayout();
+        // var_dump(Mage::app()->getLayout()->getUpdate()->getHandles());exit;
         $this->_initLayoutMessages('catalog/session');
         $this->renderLayout();
 	}

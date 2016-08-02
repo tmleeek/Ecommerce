@@ -6,3 +6,21 @@
    		<p>No retailers matching your search.</p>
     {/if}
 {/exp:low_search:results}
+
+<script type="text/javascript">
+jQuery(function(){
+	if ( jQuery('#online-search select').is('[disabled=disabled]')) {
+		jQuery("#locator .retailers").hide();
+	}
+	else {
+		jQuery("#locator .retailers").show();
+	}
+	
+	if (jQuery('#online-search select.select-categories').val() == '') {
+		jQuery("#locator .retailers").hide();
+	}
+	else {
+		jQuery("#locator .retailers").show();
+	}
+});
+</script>
