@@ -111,6 +111,7 @@ $config['multiple_sites_enabled'] = 'y';
 
 $config['gmap_api_version'] = '3.22';
 $config['gmap_api_key'] = 'AIzaSyAi8_RYGduEnXRlUgyksd6HwhEDynSdARM';
+$config['assets_site_url'] = '/info/index.php';
 
 // END EE config items
 
