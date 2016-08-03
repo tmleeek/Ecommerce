@@ -11,6 +11,18 @@
 |
 */
 
+$config['app_version'] = '2.11.1';
+$config['license_contact'] = 'jarod@unleadedgroup.com';
+$config['license_number'] = '5686-7722-4860-9889';
+$config['debug'] = '1';
+$config['cp_url'] = 'http://lunddev.build.moe/info/admin.php';
+$config['doc_url'] = 'http://ellislab.com/expressionengine/user-guide/';
+$config['is_system_on'] = 'y';
+$config['allow_extensions'] = 'y';
+$config['cache_driver'] = 'file';
+$config['cookie_prefix'] = '';
+$config['cookie_httponly'] = 'y';
+
 $protocol                         = (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") ? "https://" : "http://";
 $base_url                         = $protocol . $_SERVER['SERVER_NAME'] . "/info";
 $base_path                        = $_SERVER['DOCUMENT_ROOT'] . "/info";

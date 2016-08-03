@@ -8,6 +8,8 @@ foreach ($vehicles as $_vehicle) {
 }
 rsort($years);
 ?>
+<input type="hidden" class="catId" value="<?php echo Mage::app()->getRequest()->getParam('catId') ?>"/>
+<input type="hidden" class="catBrand" value="<?php echo Mage::app()->getRequest()->getParam('brand') ?>"/>
 <div class="add-vehicle-modal-title"><?php echo $this->__("Select Your Vehicle") ?></div>
 <div class="vehicle-selector-group">
     <div class="vehicle-year-selector vehicle-selector">
@@ -49,14 +51,25 @@ rsort($years);
                 var year = jQuery('.vehicle-year').val();
                 var make = jQuery('.vehicle-make').val();
                 var model = jQuery('.vehicle-model').val();
-
+                var catId = jQuery('.catId').val();
+                var brand = jQuery('.catBrand').val();
+                var customerId = "";
+                
                 <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
-                    var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+                    customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
                 <?php else: ?>
-                    var customerId = false;
+                    customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
                 <?php endif; ?>
 
-                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", {year: year, make: make, model: model, customerId: customerId},
+                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", 
+                {
+                    year: year, 
+                    make: make, 
+                    model: model, 
+                    customerId: customerId, 
+                    catId: catId, 
+                    brand: brand
+                },
                 function (data) {
                     window.location.href = data;
                 });

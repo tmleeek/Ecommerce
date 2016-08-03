@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition End User License Agreement
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magento.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magento.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magento.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Core
+ * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
+ * @license http://www.magento.com/license/enterprise-edition
+ */
+-->
+<config>
+    <global>
+        <install>
+            <date><![CDATA[Fri, 18 Mar 2016 21:07:56 +0000]]></date>
+        </install>
+        <crypt>
+            <key><![CDATA[54aa7e6f9daedf7ea943c8a1a0db1ee8]]></key>
+        </crypt>
+        <disable_local_modules>false</disable_local_modules>
+        <cache>
+            <backend>Mage_Cache_Backend_Redis</backend>
+            <backend_options>
+                <server>127.0.0.1</server>              
+                <port>6379</port>
+                <persistent></persistent>               
+                <database>0</database>
+                <password></password>
+                <force_standalone>0</force_standalone>  
+                <connect_retries>1</connect_retries>    
+                <read_timeout>10</read_timeout>         
+                <automatic_cleaning_factor>0</automatic_cleaning_factor> 
+                <compress_data>1</compress_data>        
+                <compress_tags>1</compress_tags>        
+                <compress_threshold>20480</compress_threshold>  
+                <compression_lib>gzip</compression_lib> 
+            </backend_options>
+        </cache>
+        <full_page_cache>
+            <backend>Mage_Cache_Backend_Redis</backend>
+            <backend_options>
+                <server>127.0.0.1</server>  
+                <port>6379</port>
+                <persistent></persistent>   
+                <database>1</database>      
+                <password></password>
+                <force_standalone>0</force_standalone>  
+                <connect_retries>1</connect_retries>    
+                <lifetimelimit>57600</lifetimelimit>    
+                <compress_data>0</compress_data>        
+            </backend_options>
+        </full_page_cache>
+        <resources>
+            <db>
+                <table_prefix><![CDATA[]]></table_prefix>
+            </db>
+            <default_setup>
+                <connection>
+                    <host><![CDATA[localhost]]></host>
+                    <username><![CDATA[lunddev_mage]]></username>
+                    <password><![CDATA[SNQZ8gIhc5gVV6RAtSrm]]></password>
+                    <dbname><![CDATA[lunddev_mage]]></dbname>
+                    <initStatements><![CDATA[SET NAMES utf8]]></initStatements>
+                    <model><![CDATA[mysql4]]></model>
+                    <type><![CDATA[pdo_mysql]]></type>
+                    <pdoType><![CDATA[]]></pdoType>
+                    <active>1</active>
+                </connection>
+            </default_setup>
+        </resources>
+        <session_save><![CDATA[db]]></session_save>
+        <redis_session>                       
+            <host>127.0.0.1</host>            
+            <port>6379</port>
+            <password></password>             
+            <timeout>2.5</timeout>            
+            <persistent></persistent>         
+            <db>2</db>                        
+            <compression_threshold>2048</compression_threshold>  
+            <compression_lib>gzip</compression_lib>              
+            <log_level>4</log_level>               
+            <max_concurrency>6</max_concurrency>                 
+            <break_after_frontend>5</break_after_frontend>       
+            <break_after_adminhtml>30</break_after_adminhtml>
+            <bot_lifetime>7200</bot_lifetime>                    
+        </redis_session>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <frontName><![CDATA[admin_o5PnT4c]]></frontName>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

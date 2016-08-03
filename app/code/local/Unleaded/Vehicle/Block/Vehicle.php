@@ -7,7 +7,12 @@ class Unleaded_Vehicle_Block_Vehicle extends Mage_Core_Block_Template {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             return $customer->getGarage();
         } else {
-            return [];
+            $remoteAddr = Mage::helper('core/http')->getRemoteAddr();
+
+            $guestGarageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
+            $guestGarageModel->addFieldToFilter('customer_id', $remoteAddr);
+
+            return json_decode($guestGarageModel->getFirstItem()->getVehicles());
         }
     }
 
@@ -26,14 +31,10 @@ class Unleaded_Vehicle_Block_Vehicle extends Mage_Core_Block_Template {
 
     public function getSearchQuery($vehicle) {
 
-        $yearId = Mage::helper('vehicle')->mapAttributeOptionLabelToId('year', $vehicle->getYear());
-        $makeId = Mage::helper('vehicle')->mapAttributeOptionLabelToId('make', $vehicle->getMake());
-        $modelId = Mage::helper('vehicle')->mapAttributeOptionLabelToId('model', $vehicle->getModel());
-
-        $searchUrl = Mage::getUrl('ulvehicle/results/for') . "?";
-        $searchUrl .= "year=" . $yearId . "&";
-        $searchUrl .= "make=" . $makeId . "&";
-        $searchUrl .= "model=" . $modelId;
+        $searchUrl = Mage::getBaseUrl() . "models/";
+        $searchUrl .= $vehicle->getYear() . "-";
+        $searchUrl .= strtolower($vehicle->getMake()). "-";
+        $searchUrl .= str_replace(" ", "_", strtolower($vehicle->getModel()));
 
         return $searchUrl;
     }

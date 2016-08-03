@@ -78,8 +78,12 @@
         jQuery(".our-product-navi .menu-left-content .catrgory-navigation .menu-title a").unbind("click").bind("click", function (e) {
             e.preventDefault();
             <?php if (!Mage::getSingleton('core/cookie')->get('currentVehicle')):  ?>
-                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>",
-                    {targetCategoryId: jQuery(this).data('category')},
+                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>", 
+                    {
+                        catId: jQuery(this).parent().siblings('.catId').val(), 
+                        brand: jQuery(this).parent().siblings('.catBrand').val(), 
+                        targetCategoryId: jQuery(this).data('category')
+                    },
                     function (data) {
                         jQuery("#vehicle-modal .modal-content").html(data);
                         jQuery("#vehicle-modal").fadeIn();

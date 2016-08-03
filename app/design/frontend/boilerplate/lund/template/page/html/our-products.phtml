@@ -24,6 +24,11 @@
                 <?php 
                     foreach ($sortedCats as $_category):
                         $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, Mage::getModel('catalog/category')->load($_category->getId())->getThumbnail());
+                
+                        $parentCategory = $_category->getParentCategory();
+                        if ($parentCategory && $parentCategory->getName() !== 'Default Category') {
+                            $brand = strtolower($parentCategory->getName());
+                        }
                 ?>
                     <li>
                         <div class="catrgory-navigation">
@@ -31,6 +36,8 @@
                                 <img alt="<?php echo $_category->getName() ?>" src="<?php echo $image_url ?>" />
                             </a>
                             <div class="menu-details">
+                                <input type="hidden" class="catId" value="<?php echo $_category->getId() ?>"/>
+                                <input type="hidden" class="catBrand" value="<?php echo $brand ?>"/>
                                 <div class="menu-title"><a href="<?php echo $_helper->getCategoryUrl($_category); ?>"><span><?php echo $_category->getName() ?></span></a></div>
                                 <div class="menu-description"><?php echo $_category->getShortDescription() ?></div>
                             </div>

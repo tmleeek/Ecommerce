@@ -88,6 +88,9 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         $model = $request->getParam('model');
         $targetCategoryId = $request->getParam('targetCategoryId');
 
+        $catId = $request->getParam('catId');
+        $brand= $request->getParam('brand');
+        
         $_vehicle = Mage::getModel("vehicle/ulymm")
                 ->getCollection()
                 ->addFieldToFilter('year', $year)
@@ -99,13 +102,10 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
 
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
-        if ($customerId !== 'false')
-            $garageModel = Mage::getModel('vehicle/ulgarage')
-                            ->getCollection()
-                            ->addFieldToFilter('customer_id', $customerId);
-        else
-            $garageModel = false;
-
+        $garageModel = Mage::getModel('vehicle/ulgarage')
+                        ->getCollection()
+                        ->addFieldToFilter('customer_id', $customerId);
+       
         $vehicleBlock = $this->getLayout()->getBlockSingleton('vehicle/vehicle');
 
         // Set cookie for vehicle
@@ -124,9 +124,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         else
             $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
 
-        if (!$garageModel) {
-            echo $redirectUrl;
-            return;
+        if ($catId != "" && $brand != "") {
+            $redirectUrl .= "?category=" . Mage::getSingleton('catalog/category')->load($catId)->getUrlKey() . "&brand=" . $brand;
         }
 
         if ($garageModel->count() == 1) {
