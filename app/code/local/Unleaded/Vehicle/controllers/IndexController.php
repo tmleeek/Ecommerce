@@ -119,13 +119,14 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
 
         // If there is a targetCategoryId then we need to direct them to the product
         // that exists in this category and also fits this vehicle
-        if ($targetCategoryId && $targetCategoryId !== 'undefined')
+        /*if ($targetCategoryId && $targetCategoryId !== 'undefined'):
             $redirectUrl = Mage::helper('unleaded_ymm')->getProductUrl($year, $make, $model, $targetCategoryId);
-        else
+        else:
             $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
+        endif;*/
 
         if ($catId != "" && $brand != "") {
-            $redirectUrl .= "?category=" . Mage::getSingleton('catalog/category')->load($catId)->getUrlKey() . "&brand=" . $brand;
+            $redirectUrl = "/" . Mage::getSingleton('catalog/category')->load($catId)->getUrlKey() . "?brand=" . $brand;
         }
 
         if ($garageModel->count() == 1) {

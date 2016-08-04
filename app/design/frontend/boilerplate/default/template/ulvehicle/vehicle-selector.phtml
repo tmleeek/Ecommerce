@@ -8,8 +8,8 @@ foreach ($vehicles as $_vehicle) {
 }
 rsort($years);
 ?>
-<input type="hidden" class="catId" value="<?php echo Mage::app()->getRequest()->getParam('catId') ?>"/>
-<input type="hidden" class="catBrand" value="<?php echo Mage::app()->getRequest()->getParam('brand') ?>"/>
+<input type="hidden" id="catId" value="<?php echo Mage::app()->getRequest()->getParam('catId') ?>"/>
+<input type="hidden" id="catBrand" value="<?php echo Mage::app()->getRequest()->getParam('brand') ?>"/>
 <div class="add-vehicle-modal-title"><?php echo $this->__("Select Your Vehicle") ?></div>
 <div class="vehicle-selector-group">
     <div class="vehicle-year-selector vehicle-selector">
@@ -51,8 +51,8 @@ rsort($years);
                 var year = jQuery('.vehicle-year').val();
                 var make = jQuery('.vehicle-make').val();
                 var model = jQuery('.vehicle-model').val();
-                var catId = jQuery('.catId').val();
-                var brand = jQuery('.catBrand').val();
+                var catId = jQuery('#catId').val();
+                var brand = jQuery('#catBrand').val();
                 var customerId = "";
                 
                 <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>

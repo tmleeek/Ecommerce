@@ -35,6 +35,11 @@
 					<advanced>Unleaded_YMM_Model_CatalogSearch_Advanced</advanced>
 				</rewrite>
 			</catalogsearch>
+            <catalog>
+                <rewrite>
+                    <layer>Unleaded_YMM_Model_Catalog_Layer</layer>
+                </rewrite>
+            </catalog>
 		</models>
 		<page>
             <layouts> 

@@ -2,28 +2,28 @@
 
 class Unleaded_YMM_Helper_Category extends Mage_Catalog_Helper_Category
 {
-	protected $currentVehicleCookie = null;
-	protected $baseUrl              = null;
+    protected $currentVehicleCookie = null;
+    protected $baseUrl              = null;
     protected $urlCache             = [];
     protected $urlKeyCache          = [];
     
     public function getCurrentVehicleCookie()
     {
-    	if ($this->currentVehicleCookie === null)
-    		$this->currentVehicleCookie = Mage::getSingleton('core/cookie')->get('currentVehicle');
-    	
-    	return $this->currentVehicleCookie;
+        if ($this->currentVehicleCookie === null)
+            $this->currentVehicleCookie = Mage::getSingleton('core/cookie')->get('currentVehicle');
+        
+        return $this->currentVehicleCookie;
     }
 
     public function getBaseUrl()
     {
-    	if ($this->baseUrl === null) 
-    		$this->baseUrl = Mage::getBaseUrl();
+        if ($this->baseUrl === null) 
+            $this->baseUrl = Mage::getBaseUrl();
 
-    	return $this->baseUrl;	
+        return $this->baseUrl;  
     }
 
-	public function getCategoryUrl($category)
+    public function getCategoryUrl($category)
     {
         if (!$category instanceof Mage_Catalog_Model_Category)
             $category = Mage::getModel('catalog/category')->setData($category->getData());
@@ -35,12 +35,14 @@ class Unleaded_YMM_Helper_Category extends Mage_Catalog_Helper_Category
 
         $url = $this->getBaseUrl();
 
+/*
         // If we have vehicle make sure to route through models/ and add vehicle
         if ($this->getCurrentVehicleCookie())
             $url .= 'models/' . $this->getCurrentVehicleCookie();
+        */
 
         // Have to do category next because it can be a segment or query param
-        if (!$this->getCurrentVehicleCookie()) {
+        //if (!$this->getCurrentVehicleCookie()) {
             // Sub category support
             if ($category->getLevel() === '5') {
                 // We need to get the parent category's url
@@ -63,10 +65,10 @@ class Unleaded_YMM_Helper_Category extends Mage_Catalog_Helper_Category
             } else {
                 $url .= $category->getUrlKey();
             }
-        } else {
+        //} else {
             // If we do have a vehicle, category becomes query parameter
-            $url .= '?category=' . $category->getUrlKey();
-        }
+        //    $url .= '?category=' . $category->getUrlKey();
+        //}
 
         // Now add brand, which will always be a query param and is dependent on the 
         // category's parent
