@@ -35,7 +35,7 @@
             <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
                 customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
             <?php else: ?>
-                customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+                customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
             <?php endif; ?>
             jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/clearall') ?>", {customerId: customerId},
             function (data) {
@@ -49,7 +49,7 @@
             <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
                 customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
             <?php else: ?>
-                customerId = '<?php echo Mage::helper('core/http')->getRemoteAddr() ?>';
+                customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
             <?php endif; ?>
             jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/changeselection') ?>", {vehicleId: vehicleId, customerId: customerId},
             function (data) {

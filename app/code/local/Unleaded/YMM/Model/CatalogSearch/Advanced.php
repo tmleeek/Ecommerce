@@ -101,16 +101,7 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced extends Mage_CatalogSearch_Model
         Mage::getSingleton('catalog/product_visibility')->addVisibleInSearchFilterToCollection($collection);
 
         if ($this->category) {
-        	$collection
-                ->clear()
-                ->joinField('category_id',
-                    'catalog/category_product',
-                    'category_id',
-                    'product_id = entity_id',
-                    null,
-                    'left')
-                ->addAttributeToFilter('category_id', $this->category->getId())
-                ->load();
+        	$collection->addCategoryFilter($this->category);
         }
 
         return $this;

@@ -21,6 +21,17 @@
                 <class>Unleaded_Vehicle_Block</class>
             </vehicle>
         </blocks>
+        <events>
+            <controller_front_init_before>
+                <observers>
+                    <vehicle>
+                        <type>singleton</type>
+                        <class>Unleaded_Vehicle_Model_Observer</class>
+                        <method>performEssentials</method>
+                    </vehicle>
+                </observers>
+            </controller_front_init_before>
+        </events>
         <models>
             <catalogsearch>
                 <rewrite>

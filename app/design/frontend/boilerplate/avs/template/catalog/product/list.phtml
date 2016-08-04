@@ -102,7 +102,7 @@ $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollecti
     <?php $i=0; foreach ($_productCollection as $_product): ?>
         
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
-                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(276, 170); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                <a href="<?php echo $_product->getProductUrl() . "?brand=avs" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(276, 170); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
                 
                 <?php if ($_product->getData('brand')): ?>         
                 	<?php if($_product->getResource()->getAttribute('brand')->getFrontend()->getValue($_product) == 'AVS'): ?>
@@ -114,7 +114,7 @@ $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollecti
                 
                 
                 
-                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() . "?brand=avs" ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
                 
                 <div class="desc std">
                 	<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>

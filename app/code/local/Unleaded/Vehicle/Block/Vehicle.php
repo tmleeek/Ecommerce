@@ -7,10 +7,10 @@ class Unleaded_Vehicle_Block_Vehicle extends Mage_Core_Block_Template {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             return $customer->getGarage();
         } else {
-            $remoteAddr = Mage::helper('core/http')->getRemoteAddr();
+            $guestUnique = Mage::getSingleton('core/cookie')->get('guestUnique');
 
             $guestGarageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
-            $guestGarageModel->addFieldToFilter('customer_id', $remoteAddr);
+            $guestGarageModel->addFieldToFilter('customer_id', $guestUnique);
 
             return json_decode($guestGarageModel->getFirstItem()->getVehicles());
         }
@@ -21,9 +21,9 @@ class Unleaded_Vehicle_Block_Vehicle extends Mage_Core_Block_Template {
             $customer = Mage::getSingleton('customer/session')->getCustomer();
             return $customer->getSelectedVehicle();
         } else {
-            $remoteAddr = Mage::helper('core/http')->getRemoteAddr();
+            $guestUnique = Mage::getSingleton('core/cookie')->get('guestUnique');
             $garageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
-            $garageModel->addFieldToFilter('customer_id', $remoteAddr);
+            $garageModel->addFieldToFilter('customer_id', $guestUnique);
 
             return $garageModel->getFirstItem()->getSelectedVehicle();
         }
