@@ -1,5 +1,5 @@
 /*
- *  jQuery OwlCarousel v1.3.2
+ *  jQuery OwlCarousel v1.3.3
  *
  *  Copyright (c) 2013 Bartosz Wojciechowski
  *  http://www.owlgraphic.com/owlcarousel/
@@ -65,8 +65,10 @@ if (typeof Object.create !== "function") {
         logIn : function () {
             var base = this;
 
-            base.$elem.data("owl-originalStyles", base.$elem.attr("style"))
-                      .data("owl-originalClasses", base.$elem.attr("class"));
+            base.$elem.data({
+                "owl-originalStyles": base.$elem.attr("style"),
+                "owl-originalClasses": base.$elem.attr("class")
+            });
 
             base.$elem.css({opacity: 0});
             base.orignalItems = base.options.items;
@@ -555,7 +557,7 @@ if (typeof Object.create !== "function") {
                 return false;
             }
 
-            base.currentItem += base.options.scrollPerPage === true ? base.options.items : 4;
+            base.currentItem += base.options.scrollPerPage === true ? base.options.items : 1;
             if (base.currentItem > base.maximumItem + (base.options.scrollPerPage === true ? (base.options.items - 1) : 0)) {
                 if (base.options.rewindNav === true) {
                     base.currentItem = 0;
@@ -578,7 +580,7 @@ if (typeof Object.create !== "function") {
             if (base.options.scrollPerPage === true && base.currentItem > 0 && base.currentItem < base.options.items) {
                 base.currentItem = 0;
             } else {
-                base.currentItem -= base.options.scrollPerPage === true ? base.options.items : 4;
+                base.currentItem -= base.options.scrollPerPage === true ? base.options.items : 1;
             }
             if (base.currentItem < 0) {
                 if (base.options.rewindNav === true) {
@@ -1163,7 +1165,9 @@ if (typeof Object.create !== "function") {
                     follow = true;
                 }
                 if (follow && itemNumber < base.currentItem + base.options.items && $lazyImg.length) {
-                    base.lazyPreload($item, $lazyImg);
+                    $lazyImg.each(function() {
+                        base.lazyPreload($item, $(this));
+                    });
                 }
             }
         },
@@ -1371,9 +1375,10 @@ if (typeof Object.create !== "function") {
                 }
             }
             base.clearEvents();
-            base.$elem
-                .attr("style", base.$elem.data("owl-originalStyles") || "")
-                .attr("class", base.$elem.data("owl-originalClasses"));
+            base.$elem.attr({
+                style: base.$elem.data("owl-originalStyles") || "",
+                class: base.$elem.data("owl-originalClasses")
+            });
         },
 
         destroy : function () {
@@ -1471,7 +1476,7 @@ if (typeof Object.create !== "function") {
         navigation : false,
         navigationText : ["prev", "next"],
         rewindNav : true,
-        scrollPerPage : true,
+        scrollPerPage : false,
 
         pagination : true,
         paginationNumbers : false,

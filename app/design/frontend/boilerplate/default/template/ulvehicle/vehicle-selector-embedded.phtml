@@ -45,11 +45,7 @@ foreach ($vehicles as $_vehicle) {
                 var make = jQuery('#vehicle-make-embeded').val();
                 var model = jQuery('#vehicle-model-embeded').val();
 
-                <?php if (Mage::getSingleton('customer/session')->getCustomer()): ?>
-                    var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
-                <?php endif; ?>
-
-                jQuery.post("<?php echo Mage::getUrl('vehicle/index/addvehicleandredirect/') ?>", {year: year, make: make, model: model, customerId: customerId},
+                jQuery.post("<?php echo Mage::getUrl('vehicle/index/addvehicleandredirect/') ?>", {year: year, make: make, model: model},
                 function (data) {
                     window.location.href = data;
                 });

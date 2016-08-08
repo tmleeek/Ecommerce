@@ -240,7 +240,7 @@ jQuery(document).ready(function() {
 
 jQuery(document).ready(function() {
 	(function () { 
-		var node = jQuery(".page-title h1").contents().filter(function () { return this.nodeType == 3 }).first(),
+		var node = jQuery(".page-title h1").not(".category-title h1").contents().filter(function () { return this.nodeType == 3 }).first(),
 			text = node.text(),
 			first = text.slice(0, text.indexOf(" "));
 	

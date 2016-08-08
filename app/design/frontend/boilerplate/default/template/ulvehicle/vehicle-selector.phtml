@@ -53,20 +53,12 @@ rsort($years);
                 var model = jQuery('.vehicle-model').val();
                 var catId = jQuery('#catId').val();
                 var brand = jQuery('#catBrand').val();
-                var customerId = "";
-                
-                <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
-                    customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
-                <?php else: ?>
-                    customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
-                <?php endif; ?>
 
                 jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", 
                 {
                     year: year, 
                     make: make, 
                     model: model, 
-                    customerId: customerId, 
                     catId: catId, 
                     brand: brand
                 },

@@ -47,6 +47,19 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 		return $vehicleIds;
 	}
 
+	public function getVehicleName($vehicleId)
+	{
+		$vehicleCollection = Mage::getModel('vehicle/ulymm')
+							->getCollection()
+							->addFieldToFilter('ymm_id', $vehicleId);
+
+		$vehicleName = [];
+		foreach ($vehicleCollection as $_vehicle)
+			$vehicleName[] = $_vehicle['year'] . " " . $_vehicle['make'] . " " . $_vehicle['model'];
+
+		return $vehicleName;
+	}
+
 	public function getProductResource()
 	{
 		if (!$this->productResource)

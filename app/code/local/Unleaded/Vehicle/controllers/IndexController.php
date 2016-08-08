@@ -100,7 +100,11 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
 
         $vehicleId = $_vehicle->getId();
 
-        $customerId = Mage::app()->getRequest()->getParam('customerId');
+        if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+            $customerId = Mage::getSingleton('customer/session')->getCustomer();
+        } else {
+            $customerId = Mage::getSingleton('core/cookie')->get('guestUnique');
+        }
 
         $garageModel = Mage::getModel('vehicle/ulgarage')
                         ->getCollection()
@@ -122,8 +126,9 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         /*if ($targetCategoryId && $targetCategoryId !== 'undefined'):
             $redirectUrl = Mage::helper('unleaded_ymm')->getProductUrl($year, $make, $model, $targetCategoryId);
         else:
-            $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
         endif;*/
+
+        $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
 
         if ($catId != "" && $brand != "") {
             $redirectUrl = "/" . Mage::getSingleton('catalog/category')->load($catId)->getUrlKey() . "?brand=" . $brand;

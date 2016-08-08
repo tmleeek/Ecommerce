@@ -192,6 +192,7 @@ div.block-layered-nav dd a.amshopby-attr, div.block-layered-nav dd a.amshopby-at
 div.block-layered-nav dd a.amshopby-attr-selected{ color:#FFF; font-weight:900;}
 
 .product-essential .product-img-box .more-views ul li{ margin:0; text-align:center;}
+.chat-main-banner{ position:fixed; bottom:0; right:0; z-index:99999;}
 
 @media (min-width: 1200px) {
 .pro-three-box{ display:block !important;}

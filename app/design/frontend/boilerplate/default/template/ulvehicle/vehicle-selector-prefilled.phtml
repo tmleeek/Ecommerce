@@ -86,10 +86,6 @@
             $submit.on('click', function () {
                 if (allFieldsHaveValues()) {
 
-                    <?php if (Mage::getSingleton('customer/session')->getCustomer()): ?>
-                        var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
-                    <?php endif; ?>
-
                     $.ajax({
                         url: '<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>',
                         method: 'POST',
@@ -97,7 +93,6 @@
                             year: $year.val(),
                             make: $make.val(),
                             model: $model.val(),
-                            customerId: customerId,
                             targetCategoryId: targetCategoryId
                         },
                         success: function(data) {
