@@ -14,22 +14,41 @@ class Unleaded_Vehicle_Model_CatalogSearch_Layer extends Mage_CatalogSearch_Mode
              */
             $attributes = Mage::getSingleton('catalog/product')->getAttributes();
 
-            Mage::log(print_r($_REQUEST, 1));
+            $request = Mage::app()->getRequest();
+
+            Mage::log(print_r($request->getParams(), 1));
+
             foreach ($attributes as $attribute) {
                 $attribute_code = $attribute->getAttributeCode();
                 //Mage::log("--->>". $attribute_code);
                 if ($attribute_code == "price")//since i am not using price attribute
                     continue;
 
-                if (empty($_REQUEST[$attribute_code])) {
+                if (!$attribute_value = $request->getParam($attribute_code)) {
                     //Mage::log("nothing found--> $attribute_code");
                     continue;
                 }
-                if (!empty($_REQUEST[$attribute_code]) && is_array($_REQUEST[$attribute_code]))
-                    $collection->addAttributeToFilter($attribute_code, array('in' => $_REQUEST[$attribute_code]));
-                else
-                if (!empty($_REQUEST[$attribute_code]))
+
+                if (is_array($attribute_value)) {
+                    $collection->addAttributeToFilter($attribute_code, array('in' => $attribute_value));
+                } else {
                     $collection->addAttributeToFilter($attribute_code, array('like' => "%" . $_REQUEST[$attribute_code] . "%"));
+                }
+            }
+
+            // We need to add compatible vehicles
+            if ($currentVehicle = Mage::getSingleton('core/cookie')->get('currentVehicle')) {
+
+                $vehicleIds = Mage::helper('unleaded_ymm')->getVehicleIdsFromSegment($currentVehicle);
+
+                $filter = [];
+                foreach ($vehicleIds as $vehicleId) {
+                    $filter[] = [
+                        'attribute' => 'compatible_vehicles',
+                        'finset' => $vehicleId
+                    ];
+                }
+                $collection->addAttributeToFilter($filter);
             }
 
             $collection->setStore(Mage::app()->getStore())

@@ -317,14 +317,14 @@ foreach ($categoryIds as $id) {
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getFlareHeight()): ?>
+                                    <?php if ($_product->getFlareHeight() && $_product->getResource()->getAttribute('flare_height')->getFrontend()->getValue($_product) != "0.00"): ?>
                                         <tr>
                                             <td><?php echo $this->__("Flare Height") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('flare_height')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getFlareTireCoverage()): ?>
+                                    <?php if ($_product->getFlareTireCoverage() && $_product->getResource()->getAttribute('flare_tire_coverage')->getFrontend()->getValue($_product) != "0.00"): ?>
                                         <tr>
                                             <td><?php echo $this->__("Flare Tire Coverage") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('flare_tire_coverage')->getFrontend()->getValue($_product) ?></td>
@@ -449,12 +449,11 @@ foreach ($categoryIds as $id) {
 
 
                                         <tr>
-                                            <td class="bg-thead">
-                                            <?php if ($_product->getDimA() || $_product->getDimB() || $_product->getDimC() || $_product->getDimD() || $_product->getDimE() || $_product->getDimF() || $_product->getDimG()|| $_product->getDimG()): ?>
-											<?php echo $this->__("Product Specifications") ?>
-                                            <?php endif; ?>
-                                            
+                                            <?php if (($_product->getDimA() && $_product->getDimA() != "0.00") || ($_product->getDimB() && $_product->getDimB() != "0.00") || ($_product->getDimC() && $_product->getDimC() != "0.00") || ($_product->getDimD() && $_product->getDimD() != "0.00") || ($_product->getDimE() && $_product->getDimE() != "0.00") || ($_product->getDimF() && $_product->getDimF() != "0.00") || ($_product->getDimG() && $_product->getDimG() != "0.00")): ?>
+                                            <td class="bg-thead">					
+                                                <?php echo $this->__("Product Specifications") ?>
                                             </td>
+                                            <?php endif; ?>
                                             <td class="bg-thead">
 												<?php if ($_product->getWeight() || $_product->getHeight() || $_product->getWidth() || $_product->getLength()): ?>
                                                 <?php echo $this->__("Shipping Specifications") ?>
@@ -463,56 +462,58 @@ foreach ($categoryIds as $id) {
                                         </tr>
 
                                     <tr>
-                                        <td class="padding-none">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                <?php if ($_product->getDimA()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_A") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimA(), 'dim_a') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                        <?php if (($_product->getDimA() && $_product->getDimA() != "0.00") || ($_product->getDimB() && $_product->getDimB() != "0.00") || ($_product->getDimC() && $_product->getDimC() != "0.00") || ($_product->getDimD() && $_product->getDimD() != "0.00") || ($_product->getDimE() && $_product->getDimE() != "0.00") || ($_product->getDimF() && $_product->getDimF() != "0.00") || ($_product->getDimG() && $_product->getDimG() != "0.00")): ?>
+                                            <td class="padding-none">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <?php if ($_product->getDimA() && $_product->getDimA() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_A") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimA(), 'dim_a') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimB()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_B") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimB(), 'dim_b') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                                        <?php if ($_product->getDimB() && $_product->getDimB() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_B") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimB(), 'dim_b') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimC()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_C") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimC(), 'dim_c') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                                        <?php if ($_product->getDimC() && $_product->getDimC() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_C") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimC(), 'dim_c') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimD()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_D") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimD(), 'dim_d') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                                <?php if ($_product->getDimE()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_E") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimE(), 'dim_e') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                                        <?php if ($_product->getDimD() && $_product->getDimD() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_D") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimD(), 'dim_d') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                        <?php if ($_product->getDimE() && $_product->getDimE() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_E") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimE(), 'dim_e') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimF()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_F") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimF(), 'dim_f') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                                <?php if ($_product->getDimG()): ?>
-                                                    <tr>
-                                                        <td><?php echo $this->__("DIM_G") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimG(), 'dim_G') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                            </table>
-                                            </td>
+                                                        <?php if ($_product->getDimF() && $_product->getDimF() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_F") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimF(), 'dim_f') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                        <?php if ($_product->getDimG() && $_product->getDimG() != "0.00"): ?>
+                                                            <tr>
+                                                                <td><?php echo $this->__("DIM_G") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimG(), 'dim_G') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                    </table>
+                                                </td>
+                                            <?php endif; ?>
                                         <td class="padding-none left-border-section"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 
                                                 <?php if ($_product->getWeight()): ?>

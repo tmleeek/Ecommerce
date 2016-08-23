@@ -8,7 +8,7 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		$vehicle = [];
 
-		Mage::log($vehicleSegment);
+		// Mage::log($vehicleSegment);
 
 		// Vehicle make and model can have - and /
 		if (!preg_match('/([0-9]{4})-([a-zA-Z0-9_\-\/]*)-([a-zA-Z0-9_\-\/]*)/', $vehicleSegment, $match))
@@ -25,9 +25,9 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		$vehicle = $this->getVehicleFromSegment($vehicleSegment);
 
-		Mage::log($vehicle['year']);
-		Mage::log($vehicle['make']);
-		Mage::log($vehicle['model']);
+		// Mage::log($vehicle['year']);
+		// Mage::log($vehicle['make']);
+		// Mage::log($vehicle['model']);
 
 		return $this->getVehicleIds($vehicle);
 	}

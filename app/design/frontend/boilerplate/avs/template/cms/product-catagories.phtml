@@ -1,25 +1,22 @@
 <?php
 $_helper = $this->helper('catalog/output');
+$storeCategory = Mage::getModel('catalog/category')
+                    ->load(Mage::app()->getStore()->getRootCategoryId());
 
-$category = Mage::getResourceModel('catalog/category_collection')
-        ->addFieldToFilter('name', 'AVS')
-        ->getFirstItem();
-
-$subCategories = $category
-        ->getChildrenCategories()
-        ->addIsActiveFilter();
+$subCategories  = $storeCategory
+                    ->getChildrenCategories()
+                    ->clear()
+                    ->addIsActiveFilter()
+                    ->addAttributeToSelect('*');
 
 $sortedCats = [];
-foreach ($subCategories as $_categoryId) {
-    $category = Mage::getModel('catalog/category')->load($_categoryId->getId());
-    if ($category->getIsFeaturedCategory()) {
-        $sortedCats[$category->getName()] = $category;
-    }
-}
+foreach ($subCategories as $_category)
+    $sortedCats[$_category->getName()] = $_category;
 
 ksort($sortedCats, SORT_STRING);
-		 $imageHeight = 144;
-    	$imageWidth = 144;
+
+$imageHeight = 144;
+$imageWidth = 144;
 ?>
 
 <div class="product-categories clearfix">
@@ -45,7 +42,7 @@ ksort($sortedCats, SORT_STRING);
                                 <div class="image">
                                     <?php echo $_imgHtml ?>
                                 </div>
-                                <a href="<?php echo Mage::helper('catalog/category')->getCategoryUrl($_category) ?>?brand=avs"><?php echo $_category->getName() ?></a>
+                                <a href="<?php echo Mage::helper('catalog/category')->getCategoryUrl($_category) ?>"><?php echo $_category->getName() ?></a>
                             </div>
 
                             <?php if ($i % 2 == 0): ?>

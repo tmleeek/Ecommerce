@@ -120,9 +120,9 @@ $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollecti
                 	<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
                 </div>
               
-                 <?php echo $this->getPriceHtml($_product, true) ?>
+                 <?php echo $this->getPriceHtml($_product, true); ?>
                 <ul class="add-to-links">
-                	<?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                	<?php if ($_compareUrl = $this->getAddToCompareUrl($_product)): ?>
                     	<li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Compare') ?> <input name="<?php echo $_helper->productAttribute($_product, $_product->getId()) ?>" type="checkbox" value="" /></a></li>
                     <?php endif; ?>
                 </ul>

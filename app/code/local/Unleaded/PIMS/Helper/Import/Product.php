@@ -7,9 +7,14 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 	protected $currentSku = false;
 	protected $row 		  = [];
 	protected $vehicleType;
-
 	protected $adapter;
 	protected $categoryImporter;
+	protected $vehicles     = [];
+	protected $vehicleCache = [];
+
+    public $storeCategories = [];
+
+    public $saveWithImages = false;
 
 	public function __construct()
 	{
@@ -17,30 +22,10 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 		$this->categoryImporter = Mage::helper('unleaded_pims/import_category');
 	}
 
-	public function __destruct()
+	public function setSaveWithImages($saveWithImages)
 	{
-		$this->saveCurrentProduct();
+		$this->saveWithImages = $saveWithImages;
 	}
-
-	/*
-		[
-			$make => [
-				$model => [
-					$subModel => [
-						$subDetail => [$year1, $year2, $year3],
-					]
-				]
-			]
-		],
-		[
-			'NISSAN' => [
-				'PICKUP' => [1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994],
-				'D21'    => [1986, 1988, 1989, 1990]
-			]
-		]
-	 */
-	protected $vehicles = [];
-
 
 	public function hasSku()
 	{
@@ -49,8 +34,8 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 
 	public function newProduct($sku, $row, $vehicleType)
 	{
-		$this->saveCurrentProduct();
-
+        $this->saveCurrentProduct();
+        // Reset
 		$this->currentSku  = $sku;
 		$this->vehicles    = [];
 		$this->row         = $row;
@@ -80,17 +65,20 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 			$this->vehicles[$make][$model][$subModel][$subDetail][] = $year;
 	}
 
-	public $productLineCache = [];
+
+
 	protected function saveCurrentProduct()
 	{
-		if (!$this->hasSku())
-			return;
+		if (!$this->hasSku()) {
+		    return;
+		}
 
 		$this->debug($this->currentSku);
 
 		// See if the product exists
 		$isNewProduct = true;
 		$product      = Mage::getModel('catalog/product')->loadByAttribute('sku', $this->currentSku);
+
 		if (!$product || !$product->getId())
 			$product = Mage::getModel('catalog/product');
 		else
@@ -117,96 +105,67 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 		// Make sure the options exist for YMM
 		$this->createNewYMMOptions();
 
-		$_productData['vehicle_type']        = $this->vehicleType;		
+		$_productData['vehicle_type']        = $this->adapter->getVehicleTypeOptionId($this->vehicleType);
 		$_productData['compatible_vehicles'] = $this->getCompatibleVehicles();
 		$_productData['category_ids']        = $this->getCategories();
 
-		try {
-			if (!$isNewProduct)
-				unset($_productData['url_key']);
 
-			foreach ($_productData as $key => $value)
-				$product->setData($key, $value);
+		try {
+			if (!$isNewProduct) {
+                unset($_productData['url_key']);
+            }
+
+			foreach ($_productData as $key => $value) {
+                $product->setData($key, $value);
+            }
 
 			$product->save();
 
-			// Add to the product line cache
-			// $this->addToProductLineCache($this->row['Product Line Short Code'], $product);
 		} catch (Exception $e) {
-			$this->error($e->getMessage());
-			$this->error($e->getTraceAsString());
-		}
+            $this->error($e->getMessage());
+            $this->error($e->getTraceAsString());
+        }
 
 		// Now we need to get the images
-		$this->saveProductImages($product);
+		if ($this->saveWithImages)
+			$this->saveProductImages($product);
 
 		// Now we need to check if a configurable product is necessary		
 	}
 
-	// public function addToProductLineCache($productLine, $product)
-	// {
-	// 	if (!isset($this->productLineCache[$productLine]))
-	// 		$this->productLineCache[$productLine] = [];
-
-	// 	foreach ($this->vehicles as $make => $models) {
-	// 		foreach ($models as $model => $subModels) {
-	// 			foreach ($subModels as $subModel => $subDetails) {
-	// 				foreach ($subDetails as $subDetail => $years) {
-	// 					foreach ($years as $year) {
-	// 						if (!isset($this->productLineCache[$productLine][$make]))
-	// 							$this->productLineCache[$productLine][$make] = [];
-
-	// 						if (!isset($this->productLineCache[$productLine][$make][$model]))
-	// 							$this->productLineCache[$productLine][$make][$model] = [];
-
-	// 						if (!isset($this->productLineCache[$productLine][$make][$model][$year]))
-	// 							$this->productLineCache[$productLine][$make][$model][$year] = [];
-
-	// 						$this->productLineCache[$productLine][$make][$model][$year][] = $product;
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
+    function setStore($store) 
+    {
+        $this->storeCategories = [];
+        foreach (Mage::app()->getStores() as $_store) {
+            if (in_array($_store->getCode(), ['default', $store])) {
+                $this->storeCategories[] = $_store->getRootCategoryId();
+            }
+        }
+    }
 
 	protected function getCategories()
 	{
 		$categories = [];
 		// We will need to drop this into multiple categories, and log errors if the 
 		// category doesn't exist
-		
-		// First up is the "Product Line"
-		$categoryName = $this->row['Product Line Short Code'];
-		$category     = Mage::getModel('catalog/category')->loadByAttribute('name', $categoryName);
-		if (!$category || !$category->getId())
-			$this->error('Can\'t find category ' . $categoryName);
-		else
-			foreach (explode('/', $category->getPath()) as $categoryId)
-				$categories[] = $categoryId;
 
-		// Next is the Model -> Make -> Year
-		foreach ($this->vehicles as $make => $models) {
-			foreach ($models as $model => $subModels) {
-				foreach ($subModels as $subModel => $subDetails) {
-					foreach ($subDetails as $subDetail => $years) {
-						foreach ($years as $year) {
-							$MMY = [
-								'make'  => $make,
-								'model' => $model,
-								'year'  => $year
-							];
-							$category = $this->categoryImporter->getMMYCategory($MMY);
-							if (!$category || !$category->getId())
-								$this->error('Can\'t find MMY Category ' . implode(' - ', $MMY));
-							else
-								foreach (explode('/', $category->getPath()) as $categoryId)
-									$categories[] = $categoryId;
-						}
-					}
-				}
-			}
-		}
+		$categoryName = $this->row['Product Category Short Code'];
+
+        foreach ($this->storeCategories as $storeCategoryId) {
+			$category = Mage::getModel('catalog/category')->load($storeCategoryId);
+			$like     = '1/' . $storeCategoryId . '/%';
+
+            $category = Mage::getModel('catalog/category')
+			                ->getCollection()
+			                ->addAttributeToSelect('product_category_short_code')
+			                ->addAttributeToFilter('product_category_short_code', $categoryName)
+			                ->addFieldToFilter('path', ['like' => $like])
+			                ->getFirstItem();
+
+            foreach (explode('/', $category->getPath()) as $categoryId) {
+                $categories[] = $categoryId;
+            }
+        }
 
 		return $categories;
 	}
@@ -223,8 +182,6 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 						$subDetailOptionId = $this->adapter->getOptionId('sub_detail', ['SubDetail' => $subDetail]);
 						foreach ($years as $year) {
 							$yearOptionId = $this->adapter->getOptionId('year', ['Year' => $year]);
-							// var_dump($yearOptionId);var_dump($makeOptionId);var_dump($modelOptionId);
-							// var_dump($year);var_dump($make);var_dump($model);var_dump($subModel);var_dump($subDetail);
 						}
 					}
 				}
@@ -232,7 +189,7 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 		}
 	}
 
-	protected $vehicleCache = [];
+
 	protected function getCompatibleVehicles()
 	{
 		$vehicles = [];
@@ -242,6 +199,12 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 				foreach ($subModels as $subModel => $subDetails) {
 					foreach ($subDetails as $subDetail => $years) {
 						foreach ($years as $year) {
+							// Try to find it in the cache
+							if ($vehicleId = $this->isInVehicleCache($year, $make, $model, $subModel, $subDetail)) {
+								$vehicles[] = $vehicleId;
+								continue;
+							}
+
 							$vehicleCollection = Mage::getModel('vehicle/ulymm')
 												->getCollection()
 												->addFieldToFilter('year', $year)
@@ -357,10 +320,12 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 			'p06_mounted'       => 'P06 - Mounted',
 			'p07_unmounted'     => 'P07 - Unmounted'
 		];
+
 		foreach ($images as $attributeCode => $field) {
 			// First check to see if we have data
-			if ($this->row[$field] === '')
-				continue;
+			if ($this->row[$field] === '') {
+			    continue;
+            }
 
 			// Try to download the image
 			if (!$localPath = Mage::helper('unleaded_pims/ftp')->getPartsImage($this->row[$field]))

@@ -65,24 +65,28 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 	}
 
 	public function getPartsImage($fileName)
-	{	
+	{
+        // Make local and ftp path
+        $localPath = Mage::getBaseDir('var') . '/' . self::TEMP_IMAGE_PATH . $fileName;
+        $ftpPath = self::FTP_PARTS_ROOT . $fileName;
+        $message = 'Image - ' . $fileName . ' - FTP - ' . $ftpPath . ' - Local - ' . $localPath;
+        $this->debug($message);
+
 		if (!$this->_connection)
 			$this->ftpConnect();
 
 		// Check cache
-		if (isset($this->pathsDownloaded[$fileName]))
-			return $this->pathsDownloaded[$fileName];
+		if (isset($this->pathsDownloaded[$fileName])){
+            return $this->pathsDownloaded[$fileName];
+        } else {
+            $this->getFile($ftpPath, $localPath);
+        }
 
-		// Make local and ftp path
-		$localPath = Mage::getBaseDir('var') . '/' . self::TEMP_IMAGE_PATH . $fileName;
 
-		$ftpPath = self::FTP_PARTS_ROOT . $fileName;
+		if (!$this->getFile($ftpPath, $localPath)) {
+            return $this->error('Unable to get file');
+        }
 
-		$message = 'Image - ' . $fileName . ' - FTP - ' . $ftpPath . ' - Local - ' . $localPath;
-		$this->debug($message);
-
-		if (!$this->getFile($ftpPath, $localPath))
-			return $this->error('Unable to get file');
 
 		// Add to cache
 		$this->pathsDownloaded[$fileName] = $localPath;
@@ -116,14 +120,22 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 
 	public function getFile($ftpPath, $localPath)
 	{
-		try {
+//		try {
 			// Check if file exists locally, if it does then just return it's path
-			if (file_exists($localPath))
-				return $localPath;
+			if (file_exists($localPath)){
+                return $localPath;
+            } else {
+                $localPath = ftp_get($this->_connection, $localPath, $ftpPath, FTP_BINARY);
+            }
+
+
+
 
 			// First check that this file exists in ftp
-			if (ftp_size($this->_connection, $ftpPath) == -1)
-				return $this->error('File ' . $ftpPath . ' does not exist on FTP');
+			if (ftp_size($this->_connection, $ftpPath) == -1){
+                return $this->error('File ' . $ftpPath . ' does not exist on FTP');
+            }
+
 
 			// Make sure we are still connnected, if not reconnect
 			if (!ftp_nlist($this->_connection, '/')) {
@@ -133,13 +145,15 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 			}
 
 			// Download the file
-			if (!ftp_get($this->_connection, $localPath, $ftpPath, FTP_BINARY))
-				return $this->error('Could not download ' . $ftpPath . ' from FTP');
+			if (!ftp_get($this->_connection, $localPath, $ftpPath, FTP_BINARY)){
+                return $this->error('Could not download ' . $ftpPath . ' from FTP');
+            }
+
 
 			return $localPath;
-		} catch (Exception $e) {
-			return $this->error($e->getMessage());
-		}
+//		} catch (Exception $e) {
+//			return $this->error($e->getMessage());
+//		}
 	}
 
 	private function deleteTempImages($dirPath = null)

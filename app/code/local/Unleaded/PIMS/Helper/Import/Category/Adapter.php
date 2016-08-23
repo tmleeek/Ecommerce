@@ -15,40 +15,32 @@ class Unleaded_PIMS_Helper_Import_Category_Adapter
 		$this->_connection      = $this->_entity->getConnection('core_read');
 	}
 
-	public function getMappedValue($attribute, $row, $child = true)
+	public function getMappedValue($attribute, $row)
 	{
 		switch ($attribute) {
 			////// Standard
 			case 'name';
-				if ($child)
-					return $row['Product Line Display Name'];
 				return $row['Product Category Code'];
 
 			case 'description';
-				if ($child)
-					return $row['Product Line HTML'];
 				return $row['Brand Product Category Long Description'];
 
 			case 'is_active';
-				if ($child)
-					return $row['Product Line Disabled'] === '0' ? true : false;
 				return $row['Brand Product Category Disabled'] === '0' ? true : false;
 
 			case 'is_anchor';
 				return 1;
 				
 			case 'page_title';
-				return $this->getPageTitle($row, $child);
+				return $this->getPageTitle($row);
 
 			case 'meta_keywords';
-				return $this->getMetaKeywords($row, $child);
+				return $this->getMetaKeywords($row);
 
 			case 'meta_description';
-				return $this->getMetaDescription($row, $child);
+				return $this->getMetaDescription($row);
 
 			case 'include_in_menu';
-				if ($child);
-					return 0;
 				return 1;
 
 			case 'display_mode';
@@ -59,29 +51,13 @@ class Unleaded_PIMS_Helper_Import_Category_Adapter
 
 			/////// Custom
 			case 'short_description';
-				if ($child)
-					return $row['Product Line Description'];
 				return $row['Brand Product Category Short Description'];
 
-			case 'product_category_display_name';
-				if ($child)
-					return $row['Product Line Display Name'];
+			case 'url_key';
+				return $this->getUrlKey($row);
+
+			case 'product_category_short_code';
 				return $row['Product Category Display Name'];
-			
-			case 'product_line_features';
-				return $this->getProductLineFeatures($row);
-
-			case 'product_line_install_video';
-				return $row['Product Line Install Video'];
-
-			case 'product_line_v01_video';
-			case 'product_line_v02_video';
-			case 'product_line_v03_video';
-			case 'product_line_v04_video';
-			case 'product_line_v05_video';
-			case 'product_line_v06_video';
-				$field = str_replace('Video', '- video', ucwords(str_replace('_', ' ', $attribute)));
-				return $row[$field];
 
 			// case 'featured_image';
 				// return $this->getFeaturedImage($row);
@@ -92,23 +68,17 @@ class Unleaded_PIMS_Helper_Import_Category_Adapter
 			case 'is_featured_category';
 			case 'short_description_featured';
 			case 'featured_title';
-			case 'page_header';			
+			case 'page_header';
 
 			// Unassigned standard
-			case 'url_key';
 			default;
 				return null;
 		}
 	}
 
-	protected function getProductLineFeatures($row)
+	protected function getUrlKey($row)
 	{
-		$features = '<ul><li>';
-		for ($i = 1; $i <= 20; $i++)
-			$features .= $row['Product Line Feature - Benefits ' . $i] . '</li><li>';
-
-		$features = str_replace('<li></li>', '', substr($features, 0, -4)) . '</ul>';
-		return $features;
+		return $this->slugify($row['Product Category Code']);
 	}
 
 	protected function getImage($row)
@@ -120,24 +90,25 @@ class Unleaded_PIMS_Helper_Import_Category_Adapter
 			return null;
 
 		// First copy image to local dir
-		if (!$localPath = Mage::helper('unleaded_pims/ftp')->getCategoryImage($value))
-			return $this->error('Unable to download image');
+		if (!$localPath = Mage::helper('unleaded_pims/ftp')->getCategoryImage($value)){
+            return $this->error('Unable to download image');
+        }
 
 		return $value;
 	}
 
-	protected function getMetaDescription($row, $child)
+	protected function getMetaDescription($row)
 	{
-		return 'View all of our current ' . $this->getMappedValue('name', $row, $child) . ' products for vehicles that are available for purchase today in-store nationally or online.';
+		return 'View all of our current ' . $this->getMappedValue('name', $row) . ' products for vehicles that are available for purchase today in-store nationally or online.';
 	}
 
-	protected function getMetaKeywords($row, $child)
+	protected function getMetaKeywords($row)
 	{
 		return null;
 	}
 
-	protected function getPageTitle($row, $child)
+	protected function getPageTitle($row)
 	{
-		return $this->getMappedValue('name', $row, $child) . ' | Lund International';
+		return $this->getMappedValue('name', $row) . ' | Lund International';
 	}
 }

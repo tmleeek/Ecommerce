@@ -8,10 +8,12 @@
 <?php if($this->canShowBlock()): ?>
 <div class="block block-layered-nav">
     <div class="block-content">
+        <?php /*
         <?php echo $this->getStateHtml() ?>
         <?php if ($this->getLayer()->getState()->getFilters()): ?>
             <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
         <?php endif; ?>
+        */ ?>
         <?php if($this->canShowOptions()): ?>            
             <dl id="narrow-by-list" class="accordion">
                 <?php $_filters = $this->getFilters() ?>
@@ -25,10 +27,10 @@
                 <dd class="last even">
                     <ol>
                         <li>
-                            <a rel="nofollow" href="<?php echo $this->getUrl("") ?>all-products/avs/?brand=avs" class="amshopby-price"><?php echo $this->__('AVS') ?></a>
+                            <a rel="nofollow" href="<?php echo $this->getUrl("products") ?>?brand=avs" class="amshopby-price"><?php echo $this->__('AVS') ?></a>
                         </li>
                         <li>
-                            <a rel="nofollow" href="<?php echo $this->getUrl("") ?>all-products/lund/?brand=lund" class="amshopby-price amshopby-attr-selected"><?php echo $this->__('Lund') ?></a>
+                            <a rel="nofollow" href="<?php echo $this->getUrl("products") ?>?brand=lund" class="amshopby-price amshopby-attr-selected"><?php echo $this->__('Lund') ?></a>
                         </li>
                     </ol>
                 </dd>

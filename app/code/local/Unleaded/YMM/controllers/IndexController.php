@@ -6,15 +6,15 @@ class Unleaded_YMM_IndexController extends Mage_Core_Controller_Front_Action
 	{
 		$request = $this->getRequest();
 
-		Mage::log($this->getVehicleSegment());
+		// Mage::log($this->getVehicleSegment());
 
         try {
 			$vehicleIds                   = Mage::helper('unleaded_ymm')->getVehicleIdsFromSegment($this->getVehicleSegment());
 			$query                        = $this->getRequest()->getQuery();
 			$query['compatible_vehicles'] = $vehicleIds;
 
-            Mage::log($query);
-            Mage::log(get_class(Mage::getSingleton('catalogsearch/advanced')));
+            // Mage::log($query);
+            // Mage::log(get_class(Mage::getSingleton('catalogsearch/advanced')));
 
             Mage::getSingleton('catalogsearch/advanced')->addFilters($query);
 

@@ -33,40 +33,20 @@ class Unleaded_Vehicle_Block_Adminhtml_Ulymm_Edit_Tab_Form extends Mage_Adminhtm
             "name" => "model",
         ));
         
-        $fieldset->addField('description', 'textarea', array(
-            'label' => Mage::helper('vehicle')->__('Vehicle Description'),
-            'name' => 'description',
-        ));
-        
-        $fieldset->addField('image', 'image', array(
-            'label' => Mage::helper('vehicle')->__('Vehicle Image'),
-            'name' => 'image',
-            'note' => '(*.jpg, *.png, *.gif)',
-        ));
-        
-        $fieldset->addField("trim", "text", array(
-            "label" => Mage::helper("vehicle")->__("Trim"),
-            "name" => "trim",
-        ));
-
-        $fieldset->addField("type", "text", array(
-            "label" => Mage::helper("vehicle")->__("Type"),
-            "name" => "type",
-        ));
-
-        $fieldset->addField("sub_model", "text", array(
+        $fieldset->addField("sub_model", "select", array(
             "label" => Mage::helper("vehicle")->__("Sub Model"),
+            "values" => Mage::getModel('vehicle/source_submodel')->toOptionArray(),
+            "class" => "required-entry",
+            "required" => true,
             "name" => "sub_model",
         ));
-        
-        $fieldset->addField("body_style", "text", array(
-            "label" => Mage::helper("vehicle")->__("Body Style"),
-            "name" => "body_style",
-        ));
-        
-        $fieldset->addField("bed_length", "text", array(
-            "label" => Mage::helper("vehicle")->__("Bed Length"),
-            "name" => "bed_length",
+
+        $fieldset->addField("sub_detail", "select", array(
+            "label" => Mage::helper("vehicle")->__("Sub Detail"),
+            "values" => Mage::getModel('vehicle/source_subdetail')->toOptionArray(),
+            "class" => "required-entry",
+            "required" => true,
+            "name" => "sub_detail",
         ));
         
         if (Mage::getSingleton("adminhtml/session")->getUlymmData()) {

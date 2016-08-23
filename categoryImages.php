@@ -43,7 +43,7 @@ $map = [
 		'hero'      => 'Scoops_vents_category banner.jpg',
 	],
 	'COMBO KITS' => [
-		'thumbnail' => 'Combo_Kits_Matte.jpg',
+		'thumbnail' => 'Textured Combo Kits_127x90.jpg',
 		'hero'      => 'AVS combo kits_category banner.jpg',
 	],
 	// Lund
@@ -60,8 +60,8 @@ $map = [
 		'hero'      => 'LUND Jeep Fender Flares_category banner.jpg',
 	],
 	'Bed Accessories' => [
-		'thumbnail' => false,
-		'hero'      => 'Lund Bed Accessories_127x90.jpg',
+		'thumbnail' => 'Lund Bed Accessories_127x90.jpg',
+		'hero'      => 'LUND_Bed_Accessories_category_banner.jpg',
 	],
 	'Floor Liners' => [
 		'thumbnail' => 'Lund Flooring_127x90.jpg',
@@ -76,7 +76,7 @@ $map = [
 		'hero'      => 'LUND Nerf Bars_category banner.jpg',
 	],
 	'Air Deflectors' => [
-		'thumbnail' => 'Combo_Kits_Matte.jpg',
+		'thumbnail' => false,
 		'hero'      => 'LUND Air Deflectors_category banner.jpg',
 	],
 	'CONTRACTOR BOX TONNEAU SYSTEM' => [
@@ -119,19 +119,35 @@ $map = [
 	// 'Textured_Combo_Kit.jpg',
 ];
 
-foreach ($map as $categoryName => $data) {
-	$category = Mage::getModel('catalog/category')->loadByAttribute('name', $categoryName);
+/*
+ * Gathers the level two categories to be processed for image binding
+ */
 
-	if (!$localPath = Mage::helper('unleaded_pims/ftp')->getCategoryImage($data['hero'])) {
-		echo 'Couldn\'t get hero image' . PHP_EOL;
-	}
-	if (!$localPath = Mage::helper('unleaded_pims/ftp')->getCategoryImage($data['thumbnail'])) {
-		echo 'Couldn\'t get thumbnail image' . PHP_EOL;
-	}
+$categories = Mage::getModel('catalog/category')
+    ->getCollection()
+    ->addAttributeToSelect('*')
+    ->addFieldToFilter('level', 2);
 
-	$category
-		->setImage($data['hero'])
-		->setThumbnail($data['thumbnail'])
-		->save();
+/*
+ * For each category check the map has a corresponding value
+ */
+foreach ($categories as $category){
 
+    $data = isset($map[$category->getName()]) ? $map[$category->getName()] : false;
+
+    if(!$data){
+        continue;
+    }
+
+    if (!$localPath = Mage::helper('unleaded_pims/ftp')->getCategoryImage($data['hero'])) {
+        echo 'Couldn\'t get hero image' . PHP_EOL;
+    }
+    if (!$localPath = Mage::helper('unleaded_pims/ftp')->getCategoryImage($data['thumbnail'])) {
+        echo 'Couldn\'t get thumbnail image' . PHP_EOL;
+    }
+
+    $category
+        ->setImage($data['hero'])
+        ->setThumbnail($data['thumbnail'])
+        ->save();
 }

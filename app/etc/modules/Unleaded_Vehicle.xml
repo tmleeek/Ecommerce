@@ -4,7 +4,7 @@
     <Unleaded_Vehicle>
       <active>true</active>
       <codePool>local</codePool>
-      <version>0.0.8</version>
+      <version>0.1.1</version>
     </Unleaded_Vehicle>
   </modules>
 </config>

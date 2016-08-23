@@ -12,14 +12,22 @@ class Unleaded_YMM_Model_Catalog_Layer extends Mage_Catalog_Model_Layer
     {
 
         //Check if we have a vehicle
-        if($currentVehicle = Mage::getSingleton('core/cookie')->get('currentVehicle')):
+        if ($currentVehicle = Mage::getSingleton('core/cookie')->get('currentVehicle')):
 
-        	$vehicle = Mage::helper('unleaded_ymm')->getVehicleFromSegment($currentVehicle);
-        	$vehicleId = Mage::helper('unleaded_ymm')->getVehicleIdsFromSegment($vehicle);
+        	$vehicleIds = Mage::helper('unleaded_ymm')->getVehicleIdsFromSegment($currentVehicle);
+
+            $filter = [];
+            foreach ($vehicleIds as $vehicleId) {
+                $filter[] = [
+                    'attribute' => 'compatible_vehicles',
+                    'finset' => $vehicleId
+                ];
+            }
+            $collection->addAttributeToFilter($filter);
 
 	        $collection
 	            ->addAttributeToSelect(Mage::getSingleton('catalog/config')->getProductAttributes())
-	            ->addAttributeToFilter('compatible_vehicles', array('finset' => $vehicleId[0]))
+	            ->addAttributeToFilter($filter)
 	            ->addMinimalPrice()
 	            ->addFinalPrice()
 	            ->addTaxPercents()

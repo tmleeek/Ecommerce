@@ -56,6 +56,7 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		'drilling_required'       => ['field' => 'Drilling Required',    	'options' => []],
 		'upc_code'                => ['field' => 'UPC Code',            	'options' => []],
 		'part_number'             => ['field' => 'Part Number',            	'options' => []],
+		'product_line'            => ['field' => 'Product Line Short Code', 'options' => []],
 	];
 
 	public function __construct()
@@ -64,8 +65,9 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 
 		$resourceModel          = Mage::getResourceModel('eav/entity_attribute');
 
-		foreach ($this->attributeMap as $attributeCode => $attributeData)
-			$this->attributeMap[$attributeCode]['id'] = $resourceModel->getIdByCode('catalog_product', $attributeCode);
+		foreach ($this->attributeMap as $attributeCode => $attributeData){
+            $this->attributeMap[$attributeCode]['id'] = $resourceModel->getIdByCode('catalog_product', $attributeCode);
+        }
 
 		$this->_entity     = new Mage_Eav_Model_Entity_Setup('core_setup');
 		$this->_connection = $this->_entity->getConnection('core_read');
@@ -96,8 +98,7 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 			case 'tax_class_id';
 				return 2;
 			case 'country_of_manufacture';
-				return $this->getOptionId($attribute, $row);
-
+				return $this->countryOfManufacture($attribute, $row);
 			case 'meta_title';
 				return $this->getMetaTitle($row);
 			case 'meta_description';
@@ -109,7 +110,6 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 			case 'pop_code';
 			case 'i_sheet';
 			case 'model_type';
-			case 'vehicle_type';
 			case 'flare_tire_coverage';
 			case 'flare_height';
 			case 'width';
@@ -129,11 +129,6 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 			case 'brand_short_code';
 				return $this->getOptionId($attribute, $row);
 
-			// case 'year';
-			// case 'make';
-			// case 'model';
-			// case 'sub_model';
-			// case 'sub_detail';
 			case 'bed_type';
 			case 'bed_length';
 			case 'color';
@@ -155,6 +150,10 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 			case 'upc_code';
 				return $row[$this->attributeMap[$attribute]['field']];
 
+			// Custom
+			case 'product_line';
+				return $this->getProductLine($row);
+
 			case 'dim_a';
 			case 'dim_b';
 			case 'dim_c';
@@ -173,6 +172,30 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 	{
 		$name = $row['Product Line Short Code'];
 		return preg_replace('/\s+/', ' ', $name);
+	}
+
+	protected function getProductLine($row)
+	{
+		// Get the value
+		$field = $this->attributeMap['product_line']['field'];
+		$value = $row[$field];
+
+		// See if the value is in the cache
+		if (isset($this->attributeMap['product_line']['options'][$value]))
+			return $this->attributeMap['product_line']['options'][$value];
+
+		// Otherwise load it and throw it in the cache
+		$productLine = Mage::getModel('unleaded_productline/productline')
+						->getCollection()
+						->addFieldToFilter('product_line_short_code', $value)
+						->getFirstItem();
+
+		if (!$productLine || !$productLine->getId()) {
+			$this->error('Unable to find product line for ' . $this->getMappedValue('sku', $row));
+			return null;
+		}
+
+		return $productLine->getId();
 	}
 
 	protected function getMetaDescription($row)
@@ -224,6 +247,42 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		return substr($this->slugify($sku), 0, 64);
 	}
 
+
+	protected function countryOfManufacture($attributeCode, $row){
+        $field = $this->attributeMap[$attributeCode]['field'];
+        $value = $row[$field];
+
+
+//		if ($value == 0) {
+//            return null;
+//        }
+
+        // Check cache and return if we have option id for this value
+        if (isset($this->attributeMap[$attributeCode]['options'][$value])){
+            return $this->attributeMap[$attributeCode]['options'][$value];
+        }
+
+
+        $attributeId = $this->attributeMap[$attributeCode]['id'];
+
+        $attribute  = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
+        $allOptions = $attribute->getSource()->getAllOptions(true, true);
+        foreach ($allOptions as $option) {
+            if ($option['label'] == $value) {
+                $this->attributeMap[$attributeCode]['options'][$value] = $option['value'];
+                return $option['value'];
+            }
+        }
+
+        // If we couldn't find one, we have to add it as an option
+        if ($optionId = $this->addAttributeOption($attributeId, $value)) {
+            return $this->attributeMap[$attributeCode]['options'][$value] = $value;
+        } else {
+            return null;
+        }
+    }
+
+
 	protected function getShortDescription($row)
 	{
 		$shortDescription = trim($row['Short Description']);
@@ -259,19 +318,24 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		$field = $this->attributeMap[$attributeCode]['field'];
 		$value = $row[$field];
 
-		if ($value == 0)
-			return null;
+
+
+//		if ($value == 0) {
+//            return null;
+//        }
 
 		// Check cache and return if we have option id for this value
-		if (isset($this->attributeMap[$attributeCode]['options'][$value]))
-			return $this->attributeMap[$attributeCode]['options'][$value];
+		if (isset($this->attributeMap[$attributeCode]['options'][$value])){
+            return $this->attributeMap[$attributeCode]['options'][$value];
+        }
+
 
 		$attributeId = $this->attributeMap[$attributeCode]['id'];
 
 		$attribute  = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
 		$allOptions = $attribute->getSource()->getAllOptions(true, true);
 		foreach ($allOptions as $option) {
-			if ($option['label'] === $value) {
+			if ($option['label'] == $value) {
 				$this->attributeMap[$attributeCode]['options'][$value] = $option['value'];
 				return $option['value'];
 			}
@@ -285,6 +349,28 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 	    	return null;
 	    }
 	}
+
+	/*
+	 * This method sets the vehicle option id
+	 */
+
+	public function getVehicleTypeOptionId($value){
+	    $attributeCode = 'vehicle_type';
+
+        $attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
+        $allOptions = $attribute->getSource()->getAllOptions(true, true);
+
+        foreach($allOptions as $option) {
+             if($option['label'] == $value){
+                 return $option['value'];
+             }
+        }
+
+
+
+    }
+
+
 
 	public function getOptionIdWithNA($attributeCode, $row)
 	{
@@ -361,7 +447,7 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 
 	public function getAttributeSetData($attributeSetId)
 	{
-		// Check cache and return if we have it
+//		// Check cache and return if we have it
 		if (isset($this->attributeSetData[$attributeSetId]))
 			return $this->attributeSetData[$attributeSetId];
 

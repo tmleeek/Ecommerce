@@ -2,6 +2,8 @@
 <config>
 	<menu>
 		<unleaded module="unleaded_pims">
+                    <title>PIMS Dashboard</title>
+                    <sort_order>100</sort_order>
 			<children>
 				<pims_import module="unleaded_pims">
 					<title>PIMS Dashboard</title>

@@ -6,7 +6,7 @@ jQuery(function() {
           });
   jQuery(".youtube").colorbox({iframe:true, innerWidth:640, innerHeight:390});
 
-    jQuery('.welcome-tabs').css("background-image","url("+jQuery('[data-tab].active').data('image')+")");
+
     jQuery('[data-tab]').click(function(e){
         e.preventDefault();
         jQuery(this).addClass('active').siblings().removeClass('active').parents('.welcome-tabs').css("background-image","url("+jQuery(this).data('image')+")");

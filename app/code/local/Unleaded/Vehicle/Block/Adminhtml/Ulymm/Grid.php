@@ -29,13 +29,25 @@ class Unleaded_Vehicle_Block_Adminhtml_Ulymm_Grid extends Mage_Adminhtml_Block_W
             "header" => Mage::helper("vehicle")->__("Vehicle Year"),
             "index" => "year",
         ));
+
         $this->addColumn("make", array(
             "header" => Mage::helper("vehicle")->__("Vehicle Make"),
             "index" => "make",
         ));
+
         $this->addColumn("model", array(
             "header" => Mage::helper("vehicle")->__("Vehicle Model"),
             "index" => "model",
+        ));
+
+        $this->addColumn("sub_model", array(
+            "header" => Mage::helper("vehicle")->__("Sub Model"),
+            "index" => "sub_model",
+        ));
+
+        $this->addColumn("sub_detail", array(
+            "header" => Mage::helper("vehicle")->__("Sub Detail"),
+            "index" => "sub_detail",
         ));
 
         $this->addExportType('*/*/exportCsv', Mage::helper('sales')->__('CSV'));

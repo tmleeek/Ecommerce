@@ -73,6 +73,76 @@
         
         
 <?php else: ?>
+    <?php
+        $searchTerms = Mage::app()->getRequest()->getParams();
+        $vehicleFlag = FALSE;
+        if (count($searchTerms) == 3) {
+            $vehicle = Mage::getModel("vehicle/ulymm")->getCollection();
+            foreach ($searchTerms as $term => $value) {
+                if ($term == 'year' || $term == 'make' || $term == 'model') {
+                    $product = Mage::getModel('catalog/product')
+                            ->setStoreId(Mage::app()->getStore()->getStoreId())
+                            ->setData($term, $value);
+                    $optionLabel = $product->getAttributeText($term);
+
+                    $vehicle->addFieldToFilter($term, $optionLabel);
+
+                    $vehicleFlag = TRUE;
+                } else {
+                    $vehicleFlag = FALSE;
+                }
+            }
+            if ($vehicleFlag) {
+                $imageUrl = Mage::getBaseUrl('media') . $vehicle->getFirstItem()->getImage();
+            }
+        }
+        $searchCriterias = $this->getSearchCriterias();
+        $searchCriteriasCombined = array_merge($searchCriterias['left'], $searchCriterias['right']);
+        
+        $Vehiclename = '';
+        foreach ($searchCriteriasCombined as $_criteria) {
+            if ($_criteria['name'] === 'Compatible Vehicles') {
+                $values = array_unique(explode(', ', $_criteria['value']));
+                foreach ($values as $value)
+                    $Vehiclename .= $value . ' ';        
+            } else {
+                $Vehiclename .= $_criteria['value'] . ' ';
+            }
+        }
+    ?>
+    <ul class="breadcrumb">
+        <li class="home"><a title="<?php echo $this->__("Go to Home Page") ?>" href="<?php echo $this->getUrl('') ?>"><?php echo $this->__("Home") ?></a></li>
+        <li class="home"><a title="<?php echo $this->getStore()->getName(); ?>" href="<?php echo $this->getUrl('') ?>"><?php echo $this->getStore()->getName(); ?></a></li>
+        <li class="search_result"><strong> <?php echo $Vehiclename ?></strong></li>
+    </ul>
+
+
+    <div class="page-title2">
+        <h1 class="vehicle-search-criteria">
+            <?php echo $Vehiclename ?>
+            <span class="criteria-sub"><?php echo $this->getCategory() ? $this->getCategory()->getName() : ''; ?></span>
+        </h1>
+    </div>
+
+    <?php if ($vehicleFlag): ?>
+        <div class="vehicle-description">
+            <?php echo $vehicle->getFirstItem()->getDescription(); ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($vehicleFlag): ?>
+        <div class="verhical-search-sec">
+            <div class="container">
+                <div class="vehicle-search-criteria">
+                    <h2><?php echo $Vehiclename ?></h2>
+                    <div class="cat-short-description" >
+                        <?php echo $this->getCategory() ? $this->getCategory()->getName() : ''; ?>
+                    </div>
+                </div>
+            </div>
+            <img src="<?php echo $imageUrl ?>" alt="<?php echo $Vehiclename ?>" title="<?php echo $Vehiclename ?>"  />
+        </div>
+    <?php endif; ?>
     <p class="error-msg">
         <?php echo $this->helper('catalogsearch')->__('No Products were with this year, make and model.'); ?> 
     </p>

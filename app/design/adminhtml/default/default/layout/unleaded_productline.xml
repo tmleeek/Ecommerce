@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<unleaded_productline_adminhtml_productline_index>
+		<reference name="content">
+			<block type="unleaded_productline/adminhtml_productline" name="unleaded_productline" />
+		</reference>
+	</unleaded_productline_adminhtml_productline_index>
+</layout>

@@ -22,6 +22,10 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 	public $productHandle;
 	public $productHeaders;
 
+    public $storeCategories = [];
+
+	private $canImport;
+
 	public function __construct()
 	{
 		// Necessities
@@ -30,7 +34,7 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		ini_set('max_input_time', -1);
 		set_time_limit(-1);
 
-	$this->entity     = new Mage_Eav_Model_Entity_Setup('core_setup');
+		$this->entity     = new Mage_Eav_Model_Entity_Setup('core_setup');
 		$this->connection = $this->entity->getConnection('core_read');
 	}
 
@@ -71,16 +75,17 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		return $this;
 	}
 
-	public function products()
+	public function products($store)
 	{
+
 		$importer = Mage::helper('unleaded_pims/import_product');
 		Mage::app()->setCurrentStore(self::ADMIN_STORE_ID);
+        $importer->setStore($store);
 
 		try {
 			while (($_row = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
-
 				/// Sku will be just part number and upc code
-				// We need to grab every row, in order, that matches the sku
+				// We need to grab every row, in order, that matches the s ku
 				// This becomes one product
 				// We then need to make sure that each vehicle configuration exists in the YMM
 				// Then attach those vehicles to the product
@@ -92,7 +97,7 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 				// Check if this is a new sku
 				if ($importer->isNewSku($sku)) {
 					// If this is a new sku, we need to reference the next row because it has the data
-					// But we need to save the vehicle data from this row because 
+					// But we need to save the vehicle data from this row because
 					// this is the only place it exists
 					$_dataRow = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER);
 					$dataRow  = array_combine($this->productHeaders, $_dataRow);
@@ -109,13 +114,22 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		} catch (Exception $e) {
 			$this->error($e->getMessage());
 			$this->error($e->getTraceAsString());
+
+			return $this;
 		}
+
+		return $this;
 	}
 
 	public function categories($storeCode = 'admin')
 	{
 		$importer = Mage::helper('unleaded_pims/import_category');
-		$importer->setStore($storeCode);
+		
+		if (!$importer->setStore($storeCode)) {
+			$this->canImport = false;
+			$this->error('Unable to load store with code ' . $storeCode);
+			return $this;
+		}
 
 		try {
 			while (($_row = fgetcsv($this->categoryHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
@@ -126,6 +140,12 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 			}
 		} catch (Exception $e) {
 			$this->error($e->getMessage());
+
+			return $this;
 		}
+
+		$importer->saveCategoryBrands();
+		
+		return $this;
 	}
 }

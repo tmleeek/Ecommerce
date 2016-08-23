@@ -6,4 +6,11 @@
             <block type="core/template" name="lund.chat.tracking" template="page/html/chat-tracking.phtml"/>
         </reference>
     </default>
+    <expressionengine_integratee>
+    	
+		<block type="cms/block" name="installation-guides">
+			<action method="setBlockId"><block_id>installation-guides</block_id></action>
+		</block>
+		
+	</expressionengine_integratee>
 </layout>

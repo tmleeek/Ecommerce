@@ -1,4 +1,5 @@
 <?php
+
 $vehicles = Mage::getModel("vehicle/ulymm")->getCollection()->addFieldToSelect('year');
 $years = [];
 foreach ($vehicles as $_vehicle) {
@@ -8,8 +9,14 @@ foreach ($vehicles as $_vehicle) {
 }
 rsort($years);
 ?>
-<input type="hidden" id="catId" value="<?php echo Mage::app()->getRequest()->getParam('catId') ?>"/>
-<input type="hidden" id="catBrand" value="<?php echo Mage::app()->getRequest()->getParam('brand') ?>"/>
+
+<?php if ($this->getTargetCategoryId()): ?>
+    <input type="hidden" id="target-category" value="<?php echo $this->getTargetCategoryId(); ?>"/>
+<?php endif; ?>
+<?php if ($this->getBrands()): ?>
+    <input type="hidden" id="brands" value="<?php echo $this->getBrands(); ?>"/>
+<?php endif; ?>
+
 <div class="add-vehicle-modal-title"><?php echo $this->__("Select Your Vehicle") ?></div>
 <div class="vehicle-selector-group">
     <div class="vehicle-year-selector vehicle-selector">
@@ -48,22 +55,24 @@ rsort($years);
     jQuery(document).ready(function () {
         jQuery('#add-vehicle-to-garage').on('click', function () {
             if (jQuery('.vehicle-year').val() !== "0" && jQuery('.vehicle-make').val() !== "0" && jQuery('.vehicle-model').val() !== "0") {
-                var year = jQuery('.vehicle-year').val();
-                var make = jQuery('.vehicle-make').val();
-                var model = jQuery('.vehicle-model').val();
-                var catId = jQuery('#catId').val();
-                var brand = jQuery('#catBrand').val();
+                var data = {
+                    year: jQuery('.vehicle-year').val(),
+                    make: jQuery('.vehicle-make').val(),
+                    model: jQuery('.vehicle-model').val()    
+                };
 
-                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", 
-                {
-                    year: year, 
-                    make: make, 
-                    model: model, 
-                    catId: catId, 
-                    brand: brand
-                },
-                function (data) {
-                    window.location.href = data;
+                if (jQuery('#brands'))
+                    data.brands = jQuery('#brands').val();
+                if (jQuery('#target-category'))
+                    data.targetCategoryId = jQuery('#target-category').val();
+
+                jQuery.ajax({
+                    method: 'POST',
+                    url: "<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>", 
+                    data: data,
+                    success: function (data) {
+                        window.location.href = data;
+                    }
                 });
             } else {
                 alert("Year, Make Or Model Fields can not be empty.");

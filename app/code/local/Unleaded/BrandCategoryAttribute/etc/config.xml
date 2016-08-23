@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Unleaded_BrandCategoryAttribute>
+            <version>0.0.1</version>
+        </Unleaded_BrandCategoryAttribute>
+    </modules>
+    <global>
+        <models>
+            <unleaded_brandcategoryattribute>
+                <class>Unleaded_BrandCategoryAttribute_Model</class>
+            </unleaded_brandcategoryattribute>
+        </models>
+        <resources>
+            <BrandCategoryAttribute_setup>
+                <setup>
+                    <module>Unleaded_BrandCategoryAttribute</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </BrandCategoryAttribute_setup>
+            <BrandCategoryAttribute_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </BrandCategoryAttribute_write>
+            <BrandCategoryAttribute_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </BrandCategoryAttribute_read>
+        </resources>
+    </global>
+</config>

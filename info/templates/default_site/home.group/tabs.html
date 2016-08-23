@@ -1,18 +1,22 @@
 {exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
 <div class="top-slider-section">
     <div class="welcome-tabs-main">
+      <div class="container">
         <div class="welcome-tabs">
             <div class="tab-top-gep">
                 <ul class="nav nav-pills ">
                  {tabs}
-                    <li data-tab="{tabs:count}" data-image="{tabs:tab_background}" {if tabs:count=='1'} class="active"{/if}><a>{tabs:tab_title}</a></li>
+                    <li data-tab="{tabs:count}"  {if tabs:count=='1'} class="active"{/if}><a>{tabs:tab_title}</a></li>
                  {/tabs}
                 </ul>
                 <div class="tab-content panes">
                   {tabs}
                     <div id="tab{tabs:count}" class="tab-pane {if tabs:count=='1'} active{/if}">
-                        <div class="tab-bg">
+                        <div class="tab-bg clearfix">
+
+                           <div class="pic"> {exp:ce_img:pair src="{tabs:tab_background}" width="580" height="320" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}  </div>
                             {tabs:tab_content}
+
                         </div>
                     </div>
                   {/tabs}
@@ -20,6 +24,8 @@
 
             </div>
         </div>
+        </div>
+
     </div>
 
     <div class="main-second-ban">

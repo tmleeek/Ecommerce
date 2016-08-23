@@ -39,12 +39,19 @@
         $_imgHtml = '<p><img src="'.$_imgUrl.'" alt="'.$this->escapeHtml($_category->getName()).'" title="'.$this->escapeHtml($_category->getName()).'" /></p>';
         $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
     }
+    $vehicle = Mage::getModel('core/cookie')->get('currentVehicle');
+    $vehicleName = "";
+    if($vehicle != ''):
+        $vehicleId = $this->helper('unleaded_ymm')->getVehicleIdsFromSegment($vehicle);
+        $vehicleName = $this->helper('unleaded_ymm')->getVehicleName($vehicleId[0]);
+        $vehicleName = $vehicleName[0];
+    endif;
 ?>
 <div class="page-title category-title">
     <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
         <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
     <?php endif; ?>
-    <h1><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
+    <h1><span><?php echo $vehicleName; ?></span> <?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></h1>
 </div>
 
 <?php echo $this->getMessagesBlock()->toHtml() ?>

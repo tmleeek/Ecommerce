@@ -3,27 +3,28 @@
 class Unleaded_PIMS_Helper_Import_Category extends Unleaded_PIMS_Helper_Data
 {
 	const ADMIN_STORE_ID      = 0;
-	const DEFAULT_CATEGORY_ID = 2;
 
 	protected $adapter;
+	protected $productLineImporter;
 	protected $parentPath;
 	protected $storeId;
 	protected $storeCategoryPath;
-
-	protected $parentsUpdated = [];
+    protected $defaultStore;
+    protected $defaultCategoryPath;
 
 	protected $fields = [
 		'name',
 		'description',
+		'short_description',
 		'is_active',
 		'is_anchor',
 		'page_title',
 		'meta_description',
-		'image',
+		'small_image',
 		'include_in_menu',
 		'display_mode',
-		'short_description',
-		'product_category_display_name'
+		'url_key',
+		'product_category_short_code'
 	];
 
 	const AVS_SHORTCODE  = 'avs';
@@ -31,110 +32,175 @@ class Unleaded_PIMS_Helper_Import_Category extends Unleaded_PIMS_Helper_Data
 	const LUND_SHORTCODE = 'lund';
 	const LUND_CATEGORY  = 'Lund';
 
+	protected $parentCategories = [
+		'store'   => [],
+		'default' => []
+	];
+
 	public function __construct()
 	{
-		$this->adapter  = Mage::helper('unleaded_pims/import_category_adapter');
-		$this->rootPath = Mage::getModel('catalog/category')->load(2)->getPath();
+		$this->adapter             = Mage::helper('unleaded_pims/import_category_adapter');
+		$this->productLineImporter = Mage::helper('unleaded_pims/import_productline');
+	}
+
+	public function saveCategoryBrands()
+	{
+		// There will be some circumstances where the a category has both brands, 
+		// for example, 'Hood Protection', we need to go through all top level categories 
+		// after the import to make sure we have assigned the correct brands to the default store's
+		// categories. This attribute will not be used within an individual store view, for example
+		// AVS or Lund, but in the Lund International store view we need to know what categories exist
+		// in what brand (store) categories
+
+		$this->defaultStore        = Mage::getModel('core/store')->load('default', 'code');
+		$this->defaultCategoryPath = '1/' . $this->defaultStore->getRootCategoryId();
+
+		$storeRoots = [];
+		foreach (Mage::app()->getStores() as $store) {
+        	if ($store->getCode() === 'default')
+        		continue;
+        	$storeRoots[$store->getRootCategoryId()] = $store->getCode();
+        }
+
+		// First grab all second level categories to the default store's root category
+		$categoriesToCheck = Mage::getModel('catalog/category')
+								->getCollection()
+								->addAttributeToSelect('name')
+								->addFieldToFilter('path', ['like' => $this->defaultCategoryPath . '/%'])
+								->addFieldToFilter('level', 2);
+
+		// Loop through and compile the brands
+		foreach ($categoriesToCheck as $category) {
+			// Now see what store root categories this category also exists in
+			$brandCategories = Mage::getModel('catalog/category')
+								->getCollection()
+								->addAttributeToSelect('name')
+								->addFieldToFilter('name', $category->getName())
+								->addFieldToFilter('path', ['nlike' => $this->defaultCategoryPath . '/%'])
+								->addFieldToFilter('level', 2);
+			// Compile the store codes and save them to the category we are checking
+			$_categoryBrands = '';
+			foreach ($brandCategories as $brandCategory) {
+				// Check if we have this root category's store code and add it if we do
+				$rootCategoryId = $brandCategory->getParentCategory()->getId();
+				if (isset($storeRoots[$rootCategoryId]))
+					$_categoryBrands .= $storeRoots[$rootCategoryId] . ',';
+			}
+			$_categoryBrands = rtrim($_categoryBrands, ',');
+
+			try {
+				// Now save it to the category
+				$category->setData('category_brands', $_categoryBrands)->save();
+				$this->info($category->getName() . ' saved with brands ' . $_categoryBrands);
+			} catch (Exception $e) {
+				$this->error($e->getMessage());
+			}
+		}
 	}
 
 	public function setStore($storeCode)
 	{
-		// $this->storeId  = Mage::getModel('core/store')->loadConfig($storeCode)->getId();
+		// Try to load the store via code
+		if (!$this->store = Mage::getModel('core/store')->load($storeCode, 'code'))
+			return false;
 
-		switch ($storeCode) {
-			case self::AVS_SHORTCODE;
-				$name = self::AVS_CATEGORY;
-				break;
-			case self::LUND_SHORTCODE;
-				$name = self::LUND_CATEGORY;
-				break;
-			default;
-				$name = false;
-		}
+		// Set the store category path
+		$this->storeCategoryPath = '1/' . $this->store->getRootCategoryId();
+		// Set the current store
+		Mage::app()->setCurrentStore(self::ADMIN_STORE_ID);
 
-		$this->storeCategoryPath = Mage::getModel('catalog/category')
-									->getCollection()
-									->addAttributeToFilter('name', $name)
-									->getFirstItem()
-									->getPath();
+		// Also set up the default store "Lund International"
+		$this->defaultStore        = Mage::getModel('core/store')->load('default', 'code');
+		$this->defaultCategoryPath = '1/' . $this->defaultStore->getRootCategoryId();
+
+		// We need to save the category to this store and also the default store
+		$this->saveToStores = [
+			'store' => [
+				'id'   => $this->store->getId(),
+				'path' => $this->storeCategoryPath,
+				'name' => $this->store->getName(),
+				'code' => $this->store->getCode()
+			],
+			'default' => [
+				'id'   => $this->defaultStore->getId(),
+				'path' => $this->defaultCategoryPath,
+				'name' => $this->defaultStore->getName(),
+				'code' => $this->defaultStore->getCode()
+			]
+		];
+
+		return true;
 	}
 
-	protected $parentCategories = [];
 	public function import($row)
 	{
 		$_category = [];
-		Mage::app()->setCurrentStore(self::ADMIN_STORE_ID);
 
 		// Each row is a "Product Line"
 		// First check to see if this Product Line's parent category exists
-		$productLineName    = $this->adapter->getMappedValue('name', $row, true);
-		$parentCategoryName = $this->adapter->getMappedValue('name', $row, false);
+		$productLineName    = $this->productLineImporter->adapter->getMappedValue('name', $row);
+		$parentCategoryName = $this->adapter->getMappedValue('name', $row);
 		
-		// First check cache
-		if (isset($this->parentCategories[$productLineName]))
-			$parentCategory = $this->parentCategories[$productLineName];
-		else
-			$parentCategory = Mage::getModel('catalog/category')->loadByAttribute('name', $parentCategoryName);
-
-		// Check that we have parent category
-		if (!$parentCategory || !$parentCategory->getId()) {
-			// This is a parent category that does not exist yet, so we need
-			// to create it with the path set to the store's (brand's) category
-			if (!$parentCategory = $this->newParentCategory($row)) {
-				$this->error('Unable to create parent category');
-				return;
+		// We need to save all categories to their 'store' (Lund, AVS, etc...) 
+		// and also the default store (Lund International)
+		foreach ($this->saveToStores as $identifier => $storeData) {
+			// First check cache
+			if (isset($this->parentCategories[$identifier][$productLineName])) {
+                $parentCategory = $this->parentCategories[$identifier][$productLineName];
+            } else {
+				// If it's not in the cache, we need to search for it
+				$parentCategory = Mage::getModel('catalog/category')
+									->getCollection()
+									->addFieldToFilter('path', ['like' => $storeData['path'] . '/%'])
+									->addFieldToFilter('name', $parentCategoryName)
+									->getFirstItem();
 			}
+
+			// Check that we have found a parent category
+			if (!$parentCategory || !$parentCategory->getId()) {
+				// This is a parent category that does not exist yet, so we need
+				// to create it with the path set to the store's (brand's) category
+				if (!$parentCategory = $this->newParentCategory($row, $storeData)) {
+					$this->error('Unable to create parent category');
+					return;
+				}
+			} else {
+				// Update the parent category
+				if (!$parentCategory = $this->updateParentCategory($row, $parentCategory)) {
+					$this->error('Unable to update the parent category');
+					return;
+				}
+			}
+
+			// Since we may have just loaded or created a category, add it to the cache
+			if (!isset($this->parentCategories[$identifier][$productLineName]))
+				$this->parentCategories[$identifier][$productLineName] = $parentCategory;
+
+			// Now we check out this product line and make updates but only if this 
+			// is the actual store parent category
+			if ($identifier === 'default')
+				continue;
+
+			$this->productLineImporter->import($parentCategory, $row);
 		}
-
-		// Since we may have just loaded or created a category, add it to the cache
-		if (!isset($this->parentCategories[$productLineName]))
-			$this->parentCategories[$productLineName] = $parentCategory;
-
-		// Now we check out this category (product line) and make updates
-		$category = Mage::getModel('catalog/category')->loadByAttribute('name', $productLineName);
-		if (!$category || !$category->getId()) {
-			// Category doesn't exist, needs to be created
-			$category  = Mage::getModel('catalog/category');
-			$_category = [
-				'store_id' => self::ADMIN_STORE_ID,
-				'path'	   => $parentCategory->getPath()
-			];
-		} else {
-			// We already have this category, just perform updates
-			$_category = [];
-		}
-
-		foreach ($this->fields as $field)
-			$_category[$field] = $this->adapter->getMappedValue($field, $row, true);
-
-		try {
-	    	foreach ($_category as $key => $value)
-	    		$category->setData($key, $value);
-
-	    	$category->save();
-
-	    	// Save image to global also
-	    	// Mage::app()->setCurrentStore(0);
-	    	// $category = Mage::getModel('catalog/category')->loadByAttribute('name', $name);
-	    	// $category->setData('image', $_category['image'])->save();
-
-	    	$this->debug('Category imported successfully - ' . $category->getName());
-	    } catch (Exception $e) {
-	    	$this->error($e->getMessage());
-	    }
 	}
 
-	public function newParentCategory($row)
+	public function newParentCategory($row, $storeData)
 	{
+		$categoryData = [];
+
+		// Map category data
+		foreach ($this->fields as $field)
+			$categoryData[$field] = $this->adapter->getMappedValue($field, $row);
+
+		// Get new category model
 		$category  = Mage::getModel('catalog/category');
 
-		$_category = [
-			'store_id' => self::ADMIN_STORE_ID,
-			'path'	   => $this->storeCategoryPath
-		];
-
-		foreach ($this->fields as $field)
-			$_category[$field] = $this->adapter->getMappedValue($field, $row, false);
+		// Merge data we previously collected with this store's info
+		$_category = array_merge($categoryData, [
+			'store_id' => $storeData['id'],
+			'path'	   => $storeData['path']
+		]);
 
 		try {
 	    	foreach ($_category as $key => $value)
@@ -147,7 +213,7 @@ class Unleaded_PIMS_Helper_Import_Category extends Unleaded_PIMS_Helper_Data
 	    	// $category = Mage::getModel('catalog/category')->loadByAttribute('name', $name);
 	    	// $category->setData('image', $_category['image'])->save();
 
-	    	$this->debug('Category imported successfully - ' . $category->getName());
+	    	$this->debug('Category imported successfully - ' . $category->getName() . ' for store ' . $storeData['name']);
 
 	    	return $category;
 	    } catch (Exception $e) {
@@ -156,213 +222,31 @@ class Unleaded_PIMS_Helper_Import_Category extends Unleaded_PIMS_Helper_Data
 	    }
 	}
 
-	public $MMYBaseCategory = false;
-	public function getMMYBaseCategory()
+	public function updateParentCategory($row, $parentCategory)
 	{
-		if ($this->MMYBaseCategory)
-			return $this->MMYBaseCategory;
-		if (!$this->MMYBaseCategory = Mage::getModel('catalog/category')->loadByAttribute('name', 'MMY'))
-			if (!$this->createMMYBaseCategory())
-				return $this->error('Could not load MMY base category');
+		$categoryData = [];
 
-		return $this->MMYBaseCategory;
-	}
+		// Map category data
+		foreach ($this->fields as $field)
+			$categoryData[$field] = $this->adapter->getMappedValue($field, $row);
 
-	public function createMMYBaseCategory()
-	{
-		$category  = Mage::getModel('catalog/category');
-		$_category = [
-			'store_id'          => self::ADMIN_STORE_ID,
-			'path'              => '1/' . self::DEFAULT_CATEGORY_ID,
-			'name'              => 'MMY',
-			'description'       => 'Year Make Model',
-			'is_active'         => 1,
-			'is_anchor'         => 1,
-			'page_title'        => 'Year Make Model',
-			'include_in_menu'   => 0,
-			'display_mode'      => 'PAGE',
-			'short_description' => 'Year Make Model',
-		];
 		try {
-	    	foreach ($_category as $key => $value)
-	    		$category->setData($key, $value);
+	    	foreach ($categoryData as $key => $value)
+	    		$parentCategory->setData($key, $value);
 
-	    	$category->save();
-	    	$this->debug('MMY base category created successfully');
+	    	$parentCategory->save();
 
-	    	// Put in cache
-	    	$this->MMYBaseCategory = $category;
-	    	return true;
+	    	// Save image to global also
+	    	// Mage::app()->setCurrentStore(0);
+	    	// $category = Mage::getModel('catalog/category')->loadByAttribute('name', $name);
+	    	// $category->setData('image', $_category['image'])->save();
+
+	    	$this->debug('Category updated successfully - ' . $parentCategory->getName());
+
+	    	return $parentCategory;
 	    } catch (Exception $e) {
 	    	$this->error($e->getMessage());
 	    	return false;
 	    }
-	}
-
-	public $MMY = [];
-	public function getMMYCategory($MMY)
-	{
-		// Check cache for category
-		if (!isset($this->MMY[$MMY['make']]))
-			if (!$this->cacheMakeCategory($MMY['make']))
-				return $this->error('Could not create Make category - ' . implode(' - ', $MMY));
-
-		if (!isset($this->MMY[$MMY['make']]['subcategories'][$MMY['model']]))
-			if (!$this->cacheModelCategory($MMY['model'], $MMY['make']))
-				return $this->error('Could not create Model category - ' . implode(' - ', $MMY));
-
-		if (!isset($this->MMY[$MMY['make']]['subcategories'][$MMY['model']]['subcategories'][$MMY['year']]))
-			if (!$this->cacheYearCategory($MMY['year'], $MMY['model'], $MMY['make']))
-				return $this->error('Could not create Year category - ' . implode(' - ', $MMY));
-		
-		return $this->MMY[$MMY['make']]['subcategories'][$MMY['model']]['subcategories'][$MMY['year']];
-	}
-
-	public function cacheMakeCategory($make)
-	{
-		// See if we have this make in the MMY Base
-		$like     = '1/2/' . $this->getMMYBaseCategory()->getId() . '/%';
-		$category = Mage::getModel('catalog/category')
-					->getCollection()
-					->addAttributeToFilter('name', $make)
-					->addAttributeToFilter('path', ['like' => $like])
-					->getFirstItem();
-
-		if (!$category || !$category->getId()) {
-			// If we can't find the category we need to create it
-			$category  = Mage::getModel('catalog/category');
-			$_category = [
-				'store_id'          => self::ADMIN_STORE_ID,
-				'path'              => $this->getMMYBaseCategory()->getPath(),
-				'name'              => $make,
-				'description'       => $make . ' Vehicles',
-				'is_active'         => 1,
-				'is_anchor'         => 1,
-				'page_title'        => $make . ' Vehicles',
-				'include_in_menu'   => 0,
-				'display_mode'      => 'PRODUCTS',
-				'short_description' => $make . ' Vehicles',
-			];
-			try {
-		    	foreach ($_category as $key => $value)
-		    		$category->setData($key, $value);
-
-		    	$category->save();
-		    	$this->debug('Make category created successfully - ' . $make);
-
-		    	// Create bucket for make in cache
-		    	$this->MMY[$make] = [
-					'category'      => $category,
-					'subcategories' => []
-		    	];
-		    	return true;
-		    } catch (Exception $e) {
-		    	$this->error($e->getMessage());
-		    	return false;
-		    }
-		} else {
-			$this->MMY[$make] = [
-				'category'      => $category,
-				'subcategories' => []
-	    	];
-	    	return true;
-		}
-	}
-
-	public function cacheModelCategory($model, $make)
-	{
-		// See if we have this make in the MMY Base
-		$like     = '1/2/' . $this->getMMYBaseCategory()->getId() . '/' . $this->MMY[$make]['category']->getId() . '/%';
-		$category = Mage::getModel('catalog/category')
-					->getCollection()
-					->addAttributeToFilter('name', $model)
-					->addAttributeToFilter('path', ['like' => $like])
-					->getFirstItem();
-		if (!$category || !$category->getId()) {
-			$makeModel = $make . ' ' . $model;
-			// If we can't find the category we need to create it
-			$category  = Mage::getModel('catalog/category');
-			$_category = [
-				'store_id'          => self::ADMIN_STORE_ID,
-				'path'              => $this->MMY[$make]['category']->getPath(),
-				'name'              => $model,
-				'description'       => $makeModel . ' Vehicles',
-				'is_active'         => 1,
-				'is_anchor'         => 1,
-				'page_title'        => $makeModel . ' Vehicles',
-				'include_in_menu'   => 0,
-				'display_mode'      => 'PRODUCTS',
-				'short_description' => $makeModel . ' Vehicles',
-			];
-			try {
-		    	foreach ($_category as $key => $value)
-		    		$category->setData($key, $value);
-
-		    	$category->save();
-		    	$this->debug('Make Model category created successfully - ' . $makeModel);
-
-		    	// Create bucket for make in cache
-		    	$this->MMY[$make]['subcategories'][$model] = [
-					'category'      => $category,
-					'subcategories' => []
-		    	];
-		    	return true;
-		    } catch (Exception $e) {
-		    	$this->error($e->getMessage());
-		    	return false;
-		    }
-		} else {
-			$this->MMY[$make]['subcategories'][$model] = [
-				'category'      => $category,
-				'subcategories' => []
-	    	];
-	    	return true;
-		}
-	}
-
-	public function cacheYearCategory($year, $model, $make)
-	{
-		// See if we have this make in the MMY Base
-		$like     = '1/2/' . $this->getMMYBaseCategory()->getId() . '/' . $this->MMY[$make]['category']->getId() . '/' 
-				. $this->MMY[$make]['subcategories'][$model]['category']->getId() . '/%';
-		$category = Mage::getModel('catalog/category')
-					->getCollection()
-					->addAttributeToFilter('name', $year)
-					->addAttributeToFilter('path', ['like' => $like])
-					->getFirstItem();
-		if (!$category || !$category->getId()) {
-			$makeModelYear = $make . ' ' . $model . ' ' . $year;
-			// If we can't find the category we need to create it
-			$category  = Mage::getModel('catalog/category');
-			$_category = [
-				'store_id'          => self::ADMIN_STORE_ID,
-				'path'              => $this->MMY[$make]['subcategories'][$model]['category']->getPath(),
-				'name'              => $year,
-				'description'       => $makeModelYear . ' Vehicles',
-				'is_active'         => 1,
-				'is_anchor'         => 1,
-				'page_title'        => $makeModelYear . ' Vehicles',
-				'include_in_menu'   => 0,
-				'display_mode'      => 'PRODUCTS',
-				'short_description' => $makeModelYear . ' Vehicles',
-			];
-			try {
-		    	foreach ($_category as $key => $value)
-		    		$category->setData($key, $value);
-
-		    	$category->save();
-		    	$this->debug('Make Model Year category created successfully - ' . $makeModelYear);
-
-		    	// Create bucket for make in cache
-		    	$this->MMY[$make]['subcategories'][$model]['subcategories'][$year] = $category;
-		    	return true;
-		    } catch (Exception $e) {
-		    	$this->error($e->getMessage());
-		    	return false;
-		    }
-		} else {
-			$this->MMY[$make]['subcategories'][$model]['subcategories'][$year] = $category;
-			return true;
-		}
 	}
 }

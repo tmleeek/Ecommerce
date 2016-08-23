@@ -359,7 +359,8 @@ background: -o-linear-gradient(top, #efefef, #cfcfcf); }
 .compatible-main-list table {width:98%; border-collapse: collapse;  }
 .compatible-main-list table tr:nth-of-type(odd) {background: #fff; }
 .compatible-main-list table th {background: #0079c2;  color: white; font-weight: bold; }
-.compatible-main-list table td {font-size: 14px; padding:5px 0 5px 20px; text-align: left; text-transform: uppercase; width: 16%;}
+.compatible-main-list table td {font-size: 14px; padding:5px 0 5px 20px; text-align: left; text-transform: uppercase; width: 15%;}
+.compatible-main-list table td:first-child {width: 5%;}
 #ex3::-webkit-scrollbar{width:22px; background-color:#c2c0c0; } 
 #ex3::-webkit-scrollbar-thumb{background-color:#0079c2; border-radius:0; height:20px;}
 #ex3::-webkit-scrollbar-thumb:hover{background-color:#0079c2;  }
@@ -368,7 +369,8 @@ background: -o-linear-gradient(top, #efefef, #cfcfcf); }
 
 
 .year-length-main {background: #0079c2 none repeat scroll 0 0; display: table; height: 35px;  margin: 40px 0 0;  padding: 0;  width:96.65%;}
-.year-length-main tbody tr th {color:#fff; font-size:14px; padding:0 0 0 20px; margin:0; width:10%;}
+.year-length-main tbody tr th {color:#fff; font-size:14px; padding:0 0 0 20px; margin:0; width:15%;}
+.year-length-main tbody tr th:first-child {width:5%;}
 
 .banner-second{margin:10px 0 20px 0; padding:0px;  width:100%;}
 

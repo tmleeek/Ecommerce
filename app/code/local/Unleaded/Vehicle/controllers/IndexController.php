@@ -6,11 +6,17 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
     {
         $this->loadLayout();
         $layout = Mage::getSingleton('core/layout');
-        $html = $layout
-                ->createBlock('core/template')
-                ->setTemplate('ulvehicle/vehicle-selector.phtml')
-                ->toHtml();
-        echo $html;
+        $block = $layout
+                    ->createBlock('core/template')
+                    ->setTemplate('ulvehicle/vehicle-selector.phtml');
+
+        if ($targetCategoryId = Mage::app()->getRequest()->getParam('targetCategoryId'))
+            $block->setData('target_category_id', $targetCategoryId);
+
+        if ($brands = Mage::app()->getRequest()->getParam('brands'))
+            $block->setData('brands', $brands);
+
+        echo $block->toHtml();
     }
 
     public function removeVehicleAction()
@@ -83,13 +89,12 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
     {
         $request = $this->getRequest();
 
-        $year = $request->getParam('year');
-        $make = $request->getParam('make');
-        $model = $request->getParam('model');
+        $year             = $request->getParam('year');
+        $make             = $request->getParam('make');
+        $model            = $request->getParam('model');
         $targetCategoryId = $request->getParam('targetCategoryId');
-
+        $brands           = $request->getParam('brands');      
         $catId = $request->getParam('catId');
-        $brand= $request->getParam('brand');
         
         $_vehicle = Mage::getModel("vehicle/ulymm")
                 ->getCollection()
@@ -121,17 +126,19 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
                 '/'
         );
 
-        // If there is a targetCategoryId then we need to direct them to the product
-        // that exists in this category and also fits this vehicle
-        /*if ($targetCategoryId && $targetCategoryId !== 'undefined'):
-            $redirectUrl = Mage::helper('unleaded_ymm')->getProductUrl($year, $make, $model, $targetCategoryId);
-        else:
-        endif;*/
-
         $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
 
-        if ($catId != "" && $brand != "") {
-            $redirectUrl = "/" . Mage::getSingleton('catalog/category')->load($catId)->getUrlKey() . "?brand=" . $brand;
+        if ($targetCategoryId) {
+            $targetCategory = Mage::getSingleton('catalog/category')->load($targetCategoryId);
+            // If this target category exists in more than one brand, there will be no brand query param
+            if ($brands) {
+                $brands = explode(',', $brands);
+                if (count($brands) === 2) {
+                    $redirectUrl = '/' . $targetCategory->getUrlKey();
+                } else {
+                    $redirectUrl = '/' . $targetCategory->getUrlKey() . '?brand=' . $brands[0];
+                }
+            }
         }
 
         if ($garageModel->count() == 1) {

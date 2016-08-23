@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unleaded_Vehicle>
-            <version>0.1.0</version>
+            <version>0.1.1</version>
         </Unleaded_Vehicle>
     </modules>
     <global>
@@ -118,7 +118,7 @@
     <adminhtml>
         <menu>
             <vehicle module="vehicle">
-                <title>UL Vehicles</title>
+                <title>Manage Vehicles</title>
                 <sort_order>100</sort_order>
                 <children>
                     <!--<vehiclebackend module="vehicle">

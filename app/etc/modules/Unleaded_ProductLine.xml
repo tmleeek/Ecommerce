@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Unleaded_ProductLine>
+		<active>true</active>
+		<codePool>local</codePool>
+		<version>0.0.5</version>
+    </Unleaded_ProductLine>
+  </modules>
+</config>

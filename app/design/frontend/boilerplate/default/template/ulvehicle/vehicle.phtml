@@ -16,18 +16,18 @@
     jQuery(document).ready(function () {
         jQuery('.garage-container').on('click', '.add-vehicle', function () {
             jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>",
-                    function (data) {
-                        jQuery("#vehicle-modal .modal-content").html(data);
-                        jQuery("#vehicle-modal").fadeIn();
-                    });
+                function (data) {
+                    jQuery("#vehicle-modal .modal-content").html(data);
+                    jQuery("#vehicle-modal").fadeIn();
+                });
         });
 
         jQuery('.navbar-nav').on('click', '.our-vehicle-menu', function () {
             jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>",
-                    function (data) {
-                        jQuery("#vehicle-modal .modal-content").html(data);
-                        jQuery("#vehicle-modal").fadeIn();
-                    });
+                function (data) {
+                    jQuery("#vehicle-modal .modal-content").html(data);
+                    jQuery("#vehicle-modal").fadeIn();
+                });
         });
 
         jQuery('.garage-container').on('click', '.clear-garage', function () {
@@ -76,18 +76,21 @@
         });
 
         jQuery(".our-product-navi .menu-left-content .catrgory-navigation .menu-title a").unbind("click").bind("click", function (e) {
+            var $this = jQuery(this);
             e.preventDefault();
             <?php if (!Mage::getSingleton('core/cookie')->get('currentVehicle')):  ?>
-                jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>", 
-                    {
-                        catId: jQuery(this).parent().siblings('.catId').val(), 
-                        brand: jQuery(this).parent().siblings('.catBrand').val(), 
-                        targetCategoryId: jQuery(this).data('category')
+                jQuery.ajax({
+                    method: 'POST',
+                    url: "<?php echo Mage::getUrl('ulvehicle/index/index') ?>", 
+                    data: {
+                        brands: $this.data('brands'),
+                        targetCategoryId: $this.data('category')
                     },
-                    function (data) {
+                    success: function (data) {
                         jQuery("#vehicle-modal .modal-content").html(data);
                         jQuery("#vehicle-modal").fadeIn();
-                    });
+                    }
+                });
             <?php else: ?>
                 window.location.href = jQuery(this).attr('href');
             <?php endif; ?>

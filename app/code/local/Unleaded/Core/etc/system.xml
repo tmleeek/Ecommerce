@@ -2,7 +2,7 @@
 <config>
     <tabs>
         <unleaded translate="label" module="core">
-            <label><![CDATA[<img style="display: block; margin-top: 7px; float: left;" src="/skin/adminhtml/default/default/images/unleaded/unleaded.ico" /><p style="display: inline-block; margin-left: 5px; margin-top: 6px;">Unleaded</p>]]></label>
+            <label>CUSTOM</label>
             <sort_order>0</sort_order>
         </unleaded>
     </tabs>
