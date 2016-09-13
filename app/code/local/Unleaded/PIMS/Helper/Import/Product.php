@@ -63,11 +63,15 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 
 		if (!in_array($year, $this->vehicles[$make][$model][$subModel][$subDetail]))
 			$this->vehicles[$make][$model][$subModel][$subDetail][] = $year;
+
+		// $this->info($year);
+		// $this->info($make);
+		// $this->info($model);
+		// $this->info($subModel);
+		// $this->info($subDetail);
 	}
 
-
-
-	protected function saveCurrentProduct()
+	public function saveCurrentProduct()
 	{
 		if (!$this->hasSku()) {
 		    return;
@@ -193,7 +197,6 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 	protected function getCompatibleVehicles()
 	{
 		$vehicles = [];
-
 		foreach ($this->vehicles as $make => $models) {
 			foreach ($models as $model => $subModels) {
 				foreach ($subModels as $subModel => $subDetails) {

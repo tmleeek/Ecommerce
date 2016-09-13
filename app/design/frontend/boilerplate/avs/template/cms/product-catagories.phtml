@@ -27,7 +27,7 @@ $imageWidth = 144;
             <div class="right-section">
                 <ul>
                     <?php $i = 0 ?>
-                    <?php foreach ($sortedCats as $_category): ?>
+                    <?php foreach ($subCategories as $_category): ?>
                         <?php
                         $_imgHtml = "";
 						$image_url = Mage::getModel("imageresize/resize")->getResizedImageHome($imageWidth, $imageHeight, Mage::getModel('catalog/category')->load($_category->getId())->getSmallImage());

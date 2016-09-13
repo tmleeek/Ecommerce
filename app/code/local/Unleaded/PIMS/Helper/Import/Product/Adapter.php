@@ -199,20 +199,20 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 	}
 
 	protected function getMetaDescription($row)
-	{	
-		return $this->brandMap[$row['Brand Short Code']] . ' '
-				. $this->getMappedValue('name', $row) . ' '
-				. $this->getModelId($row) . ' - '
-				. $row['Product Category Short Code'] . ' | '
-				. 'Lund International';
+	{
+        return 'Learn about the ' . $this->brandMap[$row['Brand Short Code']] . ' '
+        . $this->getMappedValue('name', $row) . ' by viewing it\'s '
+        . $this->getModelId($row) . ' specs and check to see if this '
+        . $this->getMappedValue('name', $row) . ' model is the right model for your exact vehicle.';
 	}
 
 	protected function getMetaTitle($row)
 	{
-		return 'Learn about the ' . $this->brandMap[$row['Brand Short Code']] . ' '
-				. $this->getMappedValue('name', $row) . ' by viewing it\'s '
-				. $this->getModelId($row) . ' specs and check to see if this '
-				. $this->getMappedValue('name', $row) . ' model is the right model for your exact vehicle.';
+        return $this->brandMap[$row['Brand Short Code']] . ' '
+        . $this->getMappedValue('name', $row) . ' '
+        . $this->getModelId($row) . ' - '
+        . $row['Product Category Short Code'] . ' | '
+        . 'Lund International';
 	}
 
 	protected function getModelId($row)
@@ -228,40 +228,22 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 
 	protected function getSku($row)
 	{
-		// if ($row['Year'] === '0') {
-			// If it is a configurable product, the SKU will be just the part number
-			$sku = $row['Part Number'];
-		// } else {
-		// 	// Otherwise it is the part number, year, make, model, submodel, subdetail
-		// 	$pieces = [
-		// 		$row['Part Number'], 
-		// 		$row['Year'],
-		// 		$row['Make'],
-		// 		$row['Model'],
-		// 		$row['SubModel'],
-		// 		$row['SubDetail']
-		// 	];
-		// 	$sku = implode('-', $pieces);
-		// }
-		
-		return substr($this->slugify($sku), 0, 64);
+		return strtoupper($row['Part Number']);
 	}
 
-
-	protected function countryOfManufacture($attributeCode, $row){
+	protected function countryOfManufacture($attributeCode, $row)
+	{
         $field = $this->attributeMap[$attributeCode]['field'];
         $value = $row[$field];
 
-
-//		if ($value == 0) {
-//            return null;
-//        }
-
-        // Check cache and return if we have option id for this value
-        if (isset($this->attributeMap[$attributeCode]['options'][$value])){
-            return $this->attributeMap[$attributeCode]['options'][$value];
+		if ($value == 0) {
+           return null;
         }
 
+        // Check cache and return if we have option id for this value
+        if (isset($this->attributeMap[$attributeCode]['options'][$value])) {
+            return $this->attributeMap[$attributeCode]['options'][$value];
+        }
 
         $attributeId = $this->attributeMap[$attributeCode]['id'];
 
@@ -318,14 +300,12 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		$field = $this->attributeMap[$attributeCode]['field'];
 		$value = $row[$field];
 
-
-
-//		if ($value == 0) {
-//            return null;
-//        }
+		if ($value == 0) {
+           return null;
+        }
 
 		// Check cache and return if we have option id for this value
-		if (isset($this->attributeMap[$attributeCode]['options'][$value])){
+		if (isset($this->attributeMap[$attributeCode]['options'][$value])) {
             return $this->attributeMap[$attributeCode]['options'][$value];
         }
 
@@ -353,24 +333,19 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 	/*
 	 * This method sets the vehicle option id
 	 */
-
-	public function getVehicleTypeOptionId($value){
+	public function getVehicleTypeOptionId($value)
+	{
 	    $attributeCode = 'vehicle_type';
 
         $attribute = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
         $allOptions = $attribute->getSource()->getAllOptions(true, true);
 
         foreach($allOptions as $option) {
-             if($option['label'] == $value){
-                 return $option['value'];
-             }
+            if($option['label'] == $value) {
+                return $option['value'];
+            }
         }
-
-
-
     }
-
-
 
 	public function getOptionIdWithNA($attributeCode, $row)
 	{
@@ -447,7 +422,7 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 
 	public function getAttributeSetData($attributeSetId)
 	{
-//		// Check cache and return if we have it
+		// Check cache and return if we have it
 		if (isset($this->attributeSetData[$attributeSetId]))
 			return $this->attributeSetData[$attributeSetId];
 

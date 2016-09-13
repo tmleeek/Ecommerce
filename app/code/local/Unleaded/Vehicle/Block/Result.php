@@ -1,7 +1,7 @@
 <?php
 
-class Unleaded_Vehicle_Block_Result extends Mage_CatalogSearch_Block_Advanced_Result {
-
+class Unleaded_Vehicle_Block_Result extends Mage_CatalogSearch_Block_Advanced_Result 
+{
     protected function _prepareLayout() 
     {
         parent::_prepareLayout();

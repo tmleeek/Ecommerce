@@ -14,9 +14,9 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 		if (!preg_match('/([0-9]{4})-([a-zA-Z0-9_\-\/]*)-([a-zA-Z0-9_\-\/]*)/', $vehicleSegment, $match))
 			return $vehicle;
 
-		$vehicle['year']  = str_replace('_', ' ', $match[1]);
-		$vehicle['make']  = str_replace('_', ' ', $match[2]);
-		$vehicle['model'] = str_replace('_', ' ', $match[3]);
+		$vehicle['year']  = $match[1];
+		$vehicle['make']  = str_replace('_', '-', $match[2]);
+		$vehicle['model'] = str_replace('_', '-', $match[3]);
 
 		return $vehicle;
 	}

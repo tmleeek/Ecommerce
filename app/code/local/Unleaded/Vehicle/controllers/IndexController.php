@@ -21,6 +21,7 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
 
     public function removeVehicleAction()
     {
+        Mage::getModel('core/cookie')->delete("currentVehicle");
         $vehicleId = Mage::app()->getRequest()->getParam('vehicleId');
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
@@ -76,6 +77,9 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         $garageData->setSelectedVehicle($vehicleId);
         $garageData->save();
 
+        $vehicle = Mage::getModel("vehicle/ulymm")->load($vehicleId);
+        Mage::getSingleton('core/cookie')->set('currentVehicle', Mage::helper('unleaded_ymm')->getVehicleSegment($vehicle->getYear(), $vehicle->getMake(), $vehicle->getModel()));
+        
         $this->loadLayout();
         $layout = Mage::getSingleton('core/layout');
         $html = $layout
@@ -90,11 +94,11 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         $request = $this->getRequest();
 
         $year             = $request->getParam('year');
-        $make             = $request->getParam('make');
-        $model            = $request->getParam('model');
+        $make             = str_replace('-', '_', $request->getParam('make'));
+        $model            = str_replace('-', '_', $request->getParam('model'));
         $targetCategoryId = $request->getParam('targetCategoryId');
         $brands           = $request->getParam('brands');      
-        $catId = $request->getParam('catId');
+        $brand            = $request->getParam('brand');
         
         $_vehicle = Mage::getModel("vehicle/ulymm")
                 ->getCollection()
@@ -106,7 +110,7 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         $vehicleId = $_vehicle->getId();
 
         if (Mage::getSingleton('customer/session')->isLoggedIn()) {
-            $customerId = Mage::getSingleton('customer/session')->getCustomer();
+            $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
         } else {
             $customerId = Mage::getSingleton('core/cookie')->get('guestUnique');
         }
@@ -139,6 +143,10 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
                     $redirectUrl = '/' . $targetCategory->getUrlKey() . '?brand=' . $brands[0];
                 }
             }
+        }
+        
+        if($brand){
+            $redirectUrl .= '/' . '?brand=' . $brand;
         }
 
         if ($garageModel->count() == 1) {

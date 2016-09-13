@@ -507,3 +507,13 @@ jQuery(document).ready(function() {
 	jQuery("#locator #online-search select.select-brand option[value='Brand']").remove();
 	jQuery("#locator #online-search select.select-categories option[value='Category']").remove();
 });
+
+
+jQuery(window).on("load resize",function(e){
+	var max = 0;
+	jQuery('#blog .post').each(function() {
+		jQuery(this).height('auto');
+		var h = jQuery(this).height();
+		max = Math.max(max, h);
+		}).height(max);
+});

@@ -43,8 +43,6 @@
         </p>
 		<div class="sort-by">
             <label><?php echo $this->__('Sort By:') ?></label>
-            <div class="sort-by">
-            <label><?php echo $this->__('Sort By:') ?></label>
             <select onchange="setLocation(this.value)" class="custom-style">
             <?php foreach($this->getAvailableOrders() as $_key=>$_order): ?>
             
@@ -79,7 +77,6 @@
 
             <?php endforeach; ?>
             </select>
-        </div>
         </div>
         <div class="limiter">
             <label><?php echo $this->__('Show:') ?></label>

@@ -490,3 +490,12 @@ jQuery(document).ready(function() {
 		jQuery(this).parent().addClass("selectd");
 	});
 });
+
+jQuery(window).on("load resize",function(e){
+	var max = 0;
+	jQuery('#blog .post').each(function() {
+		jQuery(this).height('auto');
+		var h = jQuery(this).height();
+		max = Math.max(max, h);
+		}).height(max);
+});

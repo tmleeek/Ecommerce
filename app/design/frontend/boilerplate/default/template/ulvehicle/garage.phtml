@@ -24,11 +24,15 @@
                 <?php foreach ($garage as $vehicleId) : ?>
                     <?php $_vehicle = Mage::getModel('vehicle/ulymm')->load($vehicleId) ?>
                     <?php $searchUrl = $this->getSearchQuery($_vehicle); ?>
+                    <?php $vehicleName = $_vehicle->getYear() . " " . $_vehicle->getMake() . " " . $_vehicle->getModel() ?>
+                    <?php if ($this->getRequest()->getParam('brand')): ?>
+                        <?php $searchUrl .= "?brand=" . $this->getRequest()->getParam('brand'); ?>
+                    <?php endif; ?>
                     <li class="vehicle-item">
                         <span class="remove-vehicle">X</span>
                         <input type="hidden" value="<?php echo $_vehicle->getId() ?>" />
-                        <div class="vehicle-name">
-                            <?php echo $_vehicle->getYear() . " " . $_vehicle->getMake() . " " . $_vehicle->getModel() ?>
+                        <div class="vehicle-name" title="<?php echo $this->__("Change to %s", $vehicleName) ?>">
+                            <?php echo $vehicleName ?>
                         </div>
                         <div class="view-products">
                             <a class="search-vehicle-products" href="<?php echo $searchUrl ?>"><?php echo $this->__('View Products') ?></a>

@@ -106,4 +106,78 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced extends Mage_CatalogSearch_Model
 
         return $this;
     }
+
+    /**
+     * Add data about search criteria to object state
+     *
+     * @param   Mage_Eav_Model_Entity_Attribute $attribute
+     * @param   mixed $value
+     * @return  Mage_CatalogSearch_Model_Advanced
+     */
+    protected function _addSearchCriteria($attribute, $value)
+    {
+        $name = $attribute->getStoreLabel();
+
+        if (is_array($value)) {
+            if (isset($value['from']) && isset($value['to'])) {
+                if (!empty($value['from']) || !empty($value['to'])) {
+                    if (isset($value['currency'])) {
+                        $currencyModel = Mage::getModel('directory/currency')->load($value['currency']);
+                        $from = $currencyModel->format($value['from'], array(), false);
+                        $to = $currencyModel->format($value['to'], array(), false);
+                    } else {
+                        $currencyModel = null;
+                    }
+
+                    if (strlen($value['from']) > 0 && strlen($value['to']) > 0) {
+                        // -
+                        $value = sprintf('%s - %s',
+                            ($currencyModel ? $from : $value['from']), ($currencyModel ? $to : $value['to']));
+                    } elseif (strlen($value['from']) > 0) {
+                        // and more
+                        $value = Mage::helper('catalogsearch')->__('%s and greater', ($currencyModel ? $from : $value['from']));
+                    } elseif (strlen($value['to']) > 0) {
+                        // to
+                        $value = Mage::helper('catalogsearch')->__('up to %s', ($currencyModel ? $to : $value['to']));
+                    }
+                } else {
+                    return $this;
+                }
+            }
+        }
+
+        if (($attribute->getFrontendInput() == 'select' || $attribute->getFrontendInput() == 'multiselect')
+            && is_array($value)
+        ) {
+            foreach ($value as $key => $val) {
+                //////// This is the modification we are making, for compatible vehicles we 
+                /// want to make sure that we are not getting the sub_model and sub_detail
+                /// back with the option text, so we pass an additional flag to the 
+                /// custom source model
+                /// Unleaded_Vehicle_Model_Source_Vehicle
+                if ($attribute->getAttributeCode() === 'compatible_vehicles') {
+                    $value[$key] = $attribute->getSource()->getShortenedOptionText($val);
+                } else {
+                    $value[$key] = $attribute->getSource()->getOptionText($val);
+                }
+                //////////////////////////////////////////////////////// 
+                
+                if (is_array($value[$key])) {
+                    $value[$key] = $value[$key]['label'];
+                }
+            }
+            $value = implode(', ', $value);
+        } else if ($attribute->getFrontendInput() == 'select' || $attribute->getFrontendInput() == 'multiselect') {
+            $value = $attribute->getSource()->getOptionText($value);
+            if (is_array($value))
+                $value = $value['label'];
+        } else if ($attribute->getFrontendInput() == 'boolean') {
+            $value = $value == 1
+                ? Mage::helper('catalogsearch')->__('Yes')
+                : Mage::helper('catalogsearch')->__('No');
+        }
+
+        $this->_searchCriterias[] = array('name' => $name, 'value' => $value);
+        return $this;
+    }
 }

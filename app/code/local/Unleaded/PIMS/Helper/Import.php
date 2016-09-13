@@ -91,7 +91,6 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 				// Then attach those vehicles to the product
 
 				$row = array_combine($this->productHeaders, $_row);
-
 				// First get the sku
 				$sku = Mage::helper('unleaded_pims/import_product_adapter')->getMappedValue('sku', $row);
 				// Check if this is a new sku
@@ -99,9 +98,17 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 					// If this is a new sku, we need to reference the next row because it has the data
 					// But we need to save the vehicle data from this row because
 					// this is the only place it exists
-					$_dataRow = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER);
+					if (!$_dataRow = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER)) {
+						// If we don't have another row, the import is complete
+						break;
+					}
 					$dataRow  = array_combine($this->productHeaders, $_dataRow);
+					// We need to add this vehicle
 					$importer->newProduct($sku, $dataRow, $row['Vehicle Type']);
+					$importer->addVehicle(
+						$dataRow['Year'], $dataRow['Make'], $dataRow['Model'],
+						$dataRow['SubModel'], $dataRow['SubDetail']
+					);
 				// If this is not a new sku, but we do have a sku, then this is an additional
 				// vehicle row and must be added to the product
 				} else if ($importer->hasSku()) {
@@ -111,6 +118,8 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 					throw new Exception('Not really sure how we got here but we are missing something somewhere');
 				}
 			}
+			// Need to save the last product
+			$importer->saveCurrentProduct();
 		} catch (Exception $e) {
 			$this->error($e->getMessage());
 			$this->error($e->getTraceAsString());

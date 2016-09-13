@@ -16,7 +16,7 @@ class Unleaded_PIMS_Helper_Data extends Mage_Core_Helper_Abstract
 		// remove duplicate -
 		$text = preg_replace('~-+~', '-', $text);
 		// lowercase
-		$text = strtolower($text);
+//		$text = strtolower($text);
 		if (empty($text))
 			return 'n-a';
 		return $text;

@@ -53,26 +53,30 @@
 .home-slider .text h2{ font-size:18px; padding:0;}
 .home-slider .text p{ font-size:14px; line-height:20px; padding-bottom:20px;}
 .home-slider .text a.video-btn span{ height:37px; line-height:37px; padding:0 10px;}
-.home-main-slider .bx-prev, .home-main-slider .bx-next{ display:none;}
 .home-slider .text{ left:72px; right:72px;}
-
-.home-slider .text{ left:15px; top:10px;}
-.home-slider .text.text-right-align{ right:15px; left:inherit; text-align:right;}
+.home-slider .text{ left:0; top:10px; padding:0 60px}
+.home-slider .text.text-right-align{ right:0; left:inherit; text-align:right;}
+.bx-wrapper .bx-prev {top:50%; margin-top:-27px; left:0; }
+.bx-wrapper .bx-next {top:50%; margin-top:-27px; right:0; }
+.bx-wrapper .bx-next:hover {background-position: 0 0; }
 }
 @media (max-width: 599px) {
 .home-slider .text h2{ font-size:18px; padding:0;}
 .home-slider .text p{ font-size:14px; line-height:20px; padding-bottom:20px;}
 .home-slider .text a.video-btn:hover span, .home-slider .text a.video-btn, .home-slider .text a.video-btn span{ background:none; height:auto; line-height:normal; padding:0; box-shadow: inherit; font-size:14px; font-weight:700; color:#5fadfa;}
 
-.home-main-slider .bx-prev, .home-main-slider .bx-next{display:none;}
-.home-slider .text{ left:13px; right:13px; top:5px;}
+.home-slider .text{ left:0; right:0; top:5px; padding:0 25px;}
 
 .home-slider .text h2{ font-size:18px; padding:0;}
 .home-slider .text p{ font-size:14px; line-height:20px; padding-bottom:20px;}
 .home-slider .text a.video-btn span{ height:37px; line-height:37px; padding:0 10px;}
-.home-main-slider .bx-prev, .home-main-slider .bx-next{ display:none;}
 .home-slider .text{ left:72px; right:72px;}
 .home-slider .text{ left:15px; top:10px;}
-.home-slider .text.text-right-align{ right:15px; left:inherit; text-align:right;}
+.home-slider .text.text-right-align{ right:0; left:inherit; text-align:right; padding:0 25px;}
+
+.bx-wrapper .bx-prev {left: 1%; background: url(../images/m-arrow-prev.png) no-repeat 0 0px; display:block; top:50%; margin-top:-12px; height:25px; width:25px;}
+.bx-wrapper .bx-next {right: 1%; background: url(../images/m-arrow-next.png) no-repeat 0 0px; display:block; top:50%; margin-top:-12px; height:25px; width:25px;}
+.bx-wrapper .bx-next:hover {background-position: 0 0; }
+
 
 }

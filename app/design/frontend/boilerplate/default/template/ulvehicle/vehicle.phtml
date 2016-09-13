@@ -15,7 +15,13 @@
 <script type="text/javascript">
     jQuery(document).ready(function () {
         jQuery('.garage-container').on('click', '.add-vehicle', function () {
-            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/index') ?>",
+            
+            <?php $url = Mage::getUrl('ulvehicle/index/index') ?>
+            <?php if ($this->getRequest()->getParam('brand')): ?>
+                <?php $url .= "?brand=" . $this->getRequest()->getParam('brand') ?>
+            <?php endif; ?>
+                
+            jQuery.post("<?php echo $url ?>",
                 function (data) {
                     jQuery("#vehicle-modal .modal-content").html(data);
                     jQuery("#vehicle-modal").fadeIn();
@@ -59,9 +65,14 @@
 
         jQuery('.garage-container').on('click', '.remove-vehicle', function () {
             var vehicleId = jQuery(this).next('input').val();
-            <?php if (Mage::getSingleton('customer/session')->getCustomer()): ?>
-                var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+            var customerId = "";
+            
+            <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+            <?php else: ?>
+                customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
             <?php endif; ?>
+                
             jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/removevehicle') ?>", {vehicleId: vehicleId, customerId: customerId},
             function (data) {
                 jQuery("#ul-vehicle-container .garage-container").html(data);

@@ -17,6 +17,12 @@
                     <html_pager>Unleaded_Vehicle_Block_Html_Pager</html_pager>
                 </rewrite>
             </page>
+            <catalog>
+                <rewrite>
+                    <product_list>Unleaded_Vehicle_Block_Catalog_Product_List</product_list>
+                    <product_list_toolbar>Unleaded_Vehicle_Block_Catalog_Product_List_Toolbar</product_list_toolbar>
+                </rewrite>
+            </catalog>
             <vehicle>
                 <class>Unleaded_Vehicle_Block</class>
             </vehicle>
@@ -98,6 +104,17 @@
         </routers>
     </admin>
     <frontend>
+        <events>
+            <customer_login>
+                <observers>
+                    <vehicle>
+                        <type>model</type>
+                        <class>Unleaded_Vehicle_Model_Customer_Observer</class>
+                        <method>vehicleCarryForward</method>
+                    </vehicle>
+                </observers>
+            </customer_login>
+        </events>
         <routers>
             <ulvehicle>
                 <use>standard</use>

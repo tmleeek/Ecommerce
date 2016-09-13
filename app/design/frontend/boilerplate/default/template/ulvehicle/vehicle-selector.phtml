@@ -61,6 +61,10 @@ rsort($years);
                     model: jQuery('.vehicle-model').val()    
                 };
 
+                <?php if ($this->getRequest()->getParam('brand')): ?>
+                    data.brand = "<?php echo $this->getRequest()->getParam('brand') ?>";
+                <?php endif; ?>
+                
                 if (jQuery('#brands'))
                     data.brands = jQuery('#brands').val();
                 if (jQuery('#target-category'))

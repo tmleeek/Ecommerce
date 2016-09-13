@@ -42,11 +42,9 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
 
         if ($this->isCatalogSearch()){
             $url = $base . 'catalogsearch/result/';
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
         elseif ($this->isNewOrSale()) {
             $url = $base . $this->moduleName;
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
         elseif ($this->getCurrentLandingKey()) {
             $url = $base . $this->getCurrentLandingKey();
@@ -56,11 +54,9 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
             } else {
                 $url = $this->getUrlHelper()->checkAddSuffix($url);
             }
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
         elseif ($this->isCategorySearch()) {
             $url = $base . 'categorysearch/categorysearch/search/';
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
         elseif ($this->moduleName == 'cms' && $this->getCategoryId() == $rootId) { // homepage,
             $hasFilter = false;
@@ -84,10 +80,10 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
             else {
                 $url = $base;
             }
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
         elseif ($this->getCategoryId() == $rootId) {
             $url = $base;
+
             switch ($this->mode) {
                 case Amasty_Shopby_Model_Source_Url_Mode::MODE_DISABLED:
                     $needUrlKey = true;
@@ -107,17 +103,9 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
                     $url .=  '/';
                 }
             }
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
         else { // we have a valid category
-        	// We need to check if this is the 'All Products' category,
-        	// if it is, and we have a current vehicle cookie set, we need to just send
-        	// them to that vehicle page under /models/2016-vehicle-here_superduty
-        	$category = $this->getCategoryObject();
-        	if ($category->getName() === 'All Products' && $this->getCurrentVehicleCookie()) {
-        		return $base . 'models/' . $this->getCurrentVehicleCookie();
-        	}
-            $url = $category->getUrl();
+            $url = $this->getCategoryObject()->getUrl();
             $pos = strpos($url,'?');
             $url = $pos ? substr($url, 0, $pos) : $url;
 
@@ -128,11 +116,8 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
                 }
                 $url.= '/';
             }
-            // echo __LINE__ . ' ';var_dump($url);echo '<br>';
         }
 
-        if ($this->getCurrentVehicleCookie())
-        	return $url . '/' . $this->getCurrentVehicleCookie();
 
         return $url;
     }

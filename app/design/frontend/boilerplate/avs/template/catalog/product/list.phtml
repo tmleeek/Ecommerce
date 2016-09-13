@@ -104,10 +104,10 @@ $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollecti
             <li class="item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
                 <a href="<?php echo $_product->getProductUrl() . "?brand=avs" ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(276, 170); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
                 
-                <?php if ($_product->getData('brand')): ?>         
-                	<?php if($_product->getResource()->getAttribute('brand')->getFrontend()->getValue($_product) == 'AVS'): ?>
+                <?php if ($_product->getData('brand_short_code')): ?>         
+                	<?php if($_product->getResource()->getAttribute('brand_short_code')->getFrontend()->getValue($_product) == 'AVS'): ?>
                     	<p><img src="<?php echo $this->getSkinUrl("images/avs-pro-logo.png") ?>" /></p>
-                    <?php elseif($_product->getResource()->getAttribute('brand')->getFrontend()->getValue($_product) == 'Lund'): ?>
+                    <?php elseif($_product->getResource()->getAttribute('brand_short_code')->getFrontend()->getValue($_product) == 'LUND'): ?>
 						<p><img src="<?php echo $this->getSkinUrl("images/lund-small-logo.png") ?>" /></p>
                     <?php endif;?>
 				<?php endif;?>

@@ -1,4 +1,5 @@
 .bx-wrapper {position: relative; margin: 0 auto ; padding: 0; 	*zoom: 1;}
+.bx-wrapper .home-slider{ margin:0; padding:0;}
 .bx-wrapper img {width: 100%; display: block;}
 .bx-wrapper .bx-viewport { -webkit-transform: translatez(0); -moz-transform: translatez(0);  -ms-transform: translatez(0); -o-transform: translatez(0); transform: translatez(0);}
 .bx-wrapper .bx-pager,.bx-wrapper .bx-controls-auto {position: absolute; bottom: -30px; width: 100%; display:none;}
@@ -11,7 +12,7 @@
 .bx-wrapper .bx-next {right: 12%; background: url(../images/ban-icon-home.png) no-repeat -65px 0px;}
 .bx-wrapper .bx-prev:hover {background-position: 0 0; }
 .bx-wrapper .bx-next:hover {background-position: -65px 0; }
-.bx-wrapper .bx-controls-direction a {position: absolute; top: 50%; margin-top: -16px; outline: 0; width: 55px; height: 55px; text-indent: -9999px; z-index: 9999;}
+.bx-wrapper .bx-controls-direction a {position: absolute; top: 50%; margin-top: -16px; outline: 0; width: 55px; height: 55px; text-indent: -9999px; z-index: 999;}
 .bx-wrapper .bx-controls-direction a.disabled {display: none; }
 .bx-wrapper .bx-controls-auto {text-align: center;}
 .bx-wrapper .bx-controls-auto .bx-start {display: block; text-indent: -9999px; width: 10px;	height: 11px; outline: 0; background: url(../img/ban/controls.png) -86px -11px no-repeat; margin: 0 3px;}
@@ -78,17 +79,22 @@
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
-.bx-wrapper .bx-prev, .bx-wrapper .bx-next {display:none;}
 .ban-button {background:none; float: right; margin: 0; padding: 4px 0 0; text-align: right;}
-.main-wapper .ban-slide-one { left:15px; margin: 0; padding: 0;  position: absolute;  top: 20px;  width: 100%;}
+.main-wapper .ban-slide-one { left:15px; margin: 0; padding:0 60px;  position: absolute;  top: 20px;  width: 100%;}
 .ban-slide-one p { font-size: 32px; line-height: 32px;  text-shadow: none;}
 
-.main-wapper .ban-slide-one.text-right-align{ right:15px; left:inherit; text-align:right;}
+.main-wapper .ban-slide-one.text-right-align{ right:0; left:inherit; text-align:right; padding:0 60px;}
 .main-wapper .ban-button { top: 0; }
 .ban-slide-one h2{ font-size:24px; line-height:31px;}
+.bx-wrapper .bx-prev {left:0;}
+.bx-wrapper .bx-next {right:0;}
+.main-wapper .ban-button {  background:url(../images/buttan-teblet.png) no-repeat right center; height:46px; margin:20px 0 0;  padding:10px 0 0;  text-align: center;  width: 150px;}
+.main-vehicle-section .select-go {height: 50px; padding: 0;}
+.main-vehicle-section .select-go a {background: #6fb500 none repeat scroll 0 0; border-radius: 6px; color: #ffffff; display: block; font-size: 20px;  font-weight: 700;  height: 50px !important;  line-height: 50px !important;  margin: 0;  padding: 0;  text-align: center;  text-decoration: none;  width: 100%;}
+
 }
 @media (max-width: 599px) {
-.bx-wrapper .bx-prev, .bx-wrapper .bx-next {display:none;}
+
 .ban-slide-one {top: 10px; width: 100%; right: 418px;}
 .ban-slide-one p {font-size: 25px;line-height: 25px; text-shadow:2px 2px 2px #FFF;}
 .ban-button {background:none; float: right; margin: 0; padding: 4px 0 0; text-align: right;}
@@ -103,4 +109,8 @@
 .ban-slide-one { text-align:center;}
 .ban-slide-one h2{ font-size:24px; line-height:31px; text-align:center;}
 .main-wapper { background:#8f8f8f;}
+
+.bx-wrapper .bx-prev {left: 1%; background: url(../images/m-arrow-prev.png) no-repeat 0 0px; display:block;}
+.bx-wrapper .bx-next {right: 1%; background: url(../images/m-arrow-next.png) no-repeat 0 0px; display:block;}
+.bx-wrapper .bx-next:hover {background-position: 0 0; }
 }

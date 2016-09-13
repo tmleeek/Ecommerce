@@ -12,13 +12,11 @@
              <div class="featured">
                      <p>Featured Article <span></span></p>
                      <h1>{exp:ce_str:ing word_limit="7"}{title}{/exp:ce_str:ing}</h1>
-                     <a href="{url_title_path=news/post}" class="button">Read More</a>
              </div>
           </div>
         </div>
    {/exp:channel:entries}
 
-    {embed='news/filter'}
 {if segment_2!="category"}
     <div class="container">
         <div class="layout layout-1-col">
@@ -33,7 +31,6 @@
                        {/if}
                          <h3><a href="{url_title_path=news/post}">{title}</a></h3>
                          <p>{sentence_summary}</p>
-                         <p><a href="{url_title_path=news/post}">Read More</a></p>
                     </div>
                 {/exp:channel:entries}
             </div>
@@ -46,7 +43,6 @@
          <div class="featured">
                  <p>Featured Article <span></span></p>
                  <h2>{exp:ce_str:ing word_limit="7"}{title}{/exp:ce_str:ing}</h2>
-                 <a href="{url_title_path=news/post}" class="button">Read More</a>
          </div>
       </div>
     </div>
@@ -67,7 +63,6 @@
                {/if}
                  <h3><a href="{url_title_path=news/post}">{title}</a></h3>
                  <p>{sentence_summary}</p>
-                 <p><a href="{url_title_path=news/post}">Read More</a></p>
             </div>
              {paginate}
                {pagination_links}

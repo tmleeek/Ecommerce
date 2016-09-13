@@ -37,7 +37,7 @@
 .header-right .login-section .additional-vehicles .vehicle-title{ font-size:14px; color:#0079c2; font-weight:700; line-height:14px; text-transform:none; padding:0 0 0 20px; }
 .header-right .login-section .additional-vehicles .vehicle-list li.vehicle-item{ display:block; width:100%; position:relative; padding:10px 85px 10px 20px; border-bottom:solid 1px #c0c0c0; }
 .header-right .login-section .additional-vehicles .vehicle-list li:after{ display:none !important;}
-.header-right .login-section .additional-vehicles .vehicle-list li .vehicle-name{ font-size:15px; color:#303133; line-height:15px;}
+.header-right .login-section .additional-vehicles .vehicle-list li .vehicle-name{ font-size:15px; color:#303133; line-height:15px; cursor: pointer;}
 .header-right .login-section .additional-vehicles .vehicle-list li .remove-vehicle{ position:absolute; left:0; top:10px; font-size:11px; cursor:pointer; line-height:15px; width:20px; text-align:center; text-transform:none;}
 .header-right .login-section .additional-vehicles .vehicle-list li .view-products{ position:absolute; right:0; top:10px; font-size:12px; cursor:pointer; line-height:15px; color:#0079c2; text-transform:none;}
 .header-right .login-section .additional-vehicles .vehicle-list li .view-products .search-vehicle-products{color:#0079c2;font-size:12px; cursor:pointer; line-height:15px; color:#0079c2; text-transform:none;}

@@ -23,10 +23,12 @@
                 $imageUrl = Mage::getBaseUrl('media') . $vehicle->getFirstItem()->getImage();
             }
         }
+
         $searchCriterias = $this->getSearchCriterias();
         $searchCriteriasCombined = array_merge($searchCriterias['left'], $searchCriterias['right']);
         
         $Vehiclename = '';
+
         foreach ($searchCriteriasCombined as $_criteria) {
             if ($_criteria['name'] === 'Compatible Vehicles') {
                 $values = array_unique(explode(', ', $_criteria['value']));

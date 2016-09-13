@@ -33,6 +33,9 @@
 <?php $_helper = $this->helper('catalog/output'); ?>
 <?php $_product = $this->getProduct(); ?>
 <?php
+$productLineId = $_product->getProductLine();
+$productLine = Mage::getModel('unleaded_productline/productline')->load($productLineId);
+
 $categoryIds = $_product->getCategoryIds();
 $considersList = [];
 foreach ($categoryIds as $id) {
@@ -63,45 +66,45 @@ foreach ($categoryIds as $id) {
                 <div class="product-img-box"> <?php echo $this->getChildHtml('media') ?> 
                     <div class="car-pic-main">
                         <ul>
-                            <?php if ($_category->getProductLineV01Video()): ?>
+                            <?php if ($productLine->getProductLineV01Video()): ?>
                                 <li>
-                                    <a href="https://www.youtube.com/watch?v=<?php echo $_category->getProductLineV01Video() ?>">
-                                        <img src="<?php echo "http://img.youtube.com/vi/" . $_category->getProductLineV01Video() . "/maxresdefault.jpg" ?>" />
+                                    <a href="https://www.youtube.com/watch?v=<?php echo $productLine->getProductLineV01Video() ?>">
+                                        <img src="<?php echo "http://img.youtube.com/vi/" . $productLine->getProductLineV01Video() . "/maxresdefault.jpg" ?>" />
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($_category->getProductLineV02Video()): ?>
+                            <?php if ($productLine->getProductLineV02Video()): ?>
                                 <li>
-                                    <a href="https://www.youtube.com/watch?v=<?php echo $_category->getProductLineV02Video() ?>">
-                                        <img src="<?php echo "http://img.youtube.com/vi/" . $_category->getProductLineV02Video() . "/maxresdefault.jpg" ?>" />
+                                    <a href="https://www.youtube.com/watch?v=<?php echo $productLine->getProductLineV02Video() ?>">
+                                        <img src="<?php echo "http://img.youtube.com/vi/" . $productLine->getProductLineV02Video() . "/maxresdefault.jpg" ?>" />
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($_category->getProductLineV03Video()): ?>
+                            <?php if ($productLine->getProductLineV03Video()): ?>
                                 <li>
-                                    <a href="https://www.youtube.com/watch?v=<?php echo $_category->getProductLineV03Video() ?>">
-                                        <img src="<?php echo "http://img.youtube.com/vi/" . $_category->getProductLineV03Video() . "/maxresdefault.jpg" ?>" />
+                                    <a href="https://www.youtube.com/watch?v=<?php echo $productLine->getProductLineV03Video() ?>">
+                                        <img src="<?php echo "http://img.youtube.com/vi/" . $productLine->getProductLineV03Video() . "/maxresdefault.jpg" ?>" />
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($_category->getProductLineV04Video()): ?>
+                            <?php if ($productLine->getProductLineV04Video()): ?>
                                 <li>
-                                    <a href="https://www.youtube.com/watch?v=<?php echo $_category->getProductLineV04Video() ?>">
-                                        <img src="<?php echo "http://img.youtube.com/vi/" . $_category->getProductLineV04Video() . "/maxresdefault.jpg" ?>" />
+                                    <a href="https://www.youtube.com/watch?v=<?php echo $productLine->getProductLineV04Video() ?>">
+                                        <img src="<?php echo "http://img.youtube.com/vi/" . $productLine->getProductLineV04Video() . "/maxresdefault.jpg" ?>" />
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($_category->getProductLineV05Video()): ?>
+                            <?php if ($productLine->getProductLineV05Video()): ?>
                                 <li>
-                                    <a href="https://www.youtube.com/watch?v=<?php echo $_category->getProductLineV05Video() ?>">
-                                        <img src="<?php echo "http://img.youtube.com/vi/" . $_category->getProductLineV05Video() . "/maxresdefault.jpg" ?>" />
+                                    <a href="https://www.youtube.com/watch?v=<?php echo $productLine->getProductLineV05Video() ?>">
+                                        <img src="<?php echo "http://img.youtube.com/vi/" . $productLine->getProductLineV05Video() . "/maxresdefault.jpg" ?>" />
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if ($_category->getProductLineV06Video()): ?>
+                            <?php if ($productLine->getProductLineV06Video()): ?>
                                 <li>
-                                    <a href="https://www.youtube.com/watch?v=<?php echo $_category->getProductLineV06Video() ?>">
-                                        <img src="<?php echo "http://img.youtube.com/vi/" . $_category->getProductLineV06Video() . "/maxresdefault.jpg" ?>" />
+                                    <a href="https://www.youtube.com/watch?v=<?php echo $productLine->getProductLineV06Video() ?>">
+                                        <img src="<?php echo "http://img.youtube.com/vi/" . $productLine->getProductLineV06Video() . "/maxresdefault.jpg" ?>" />
                                     </a>
                                 </li>
                             <?php endif; ?>
@@ -111,14 +114,18 @@ foreach ($categoryIds as $id) {
                 <div class="product-shop">
                     <?php echo $this->getChildHtml('vehicle-reference') ?>
                     <div class="product-name">
-                        <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+                        <h1><?php echo $productLine->getName(); ?></h1>
                     </div>
 
-                    <p class="part-code"><?php echo $this->__("Part Number:") ?> <?php echo $_helper->productAttribute($_product, $_product->getSku(), 'name') ?> <?php if ($_product->getData('color')): ?>| <?php echo $this->__("Color:") ?> <?php echo $_product->getResource()->getAttribute('color')->getFrontend()->getValue($_product) ?><?php endif; ?></p>
+                    <p class="part-code">
+                        <?php 
+                            echo $this->__("Part Number:") . ' ' . strtoupper($_helper->productAttribute($_product, $_product->getSku(), 'name')) . ' ';
 
-
-
-
+                            if ($_product->getData('color')) {
+                                echo '| ' . $this->__("Color:") . ' ' . $_product->getResource()->getAttribute('color')->getFrontend()->getValue($_product);
+                            }
+                        ?>
+                    </p>
 
                     <?php echo $this->getReviewsSummaryHtml($_product, false, true) ?>
                     <?php echo $this->getChildHtml('alert_urls') ?>
@@ -228,41 +235,41 @@ foreach ($categoryIds as $id) {
                                     </div>
                                 </div>
                             <?php endif; ?>
-                            <?php if ($_category->getProductLineInstallVideo()): ?>
+                            <?php if ($productLine->getProductLineInstallVideo()): ?>
                                 <div class="video-first-part">
                                     <div class="car-video-head">
                                         <h3><?php echo $this->__("Install video") ?></h3>
                                     </div>
                                     <div class="four-box-pic">
-                                        <iframe width="275" height="232" src="https://www.youtube.com/embed/<?php echo $_category->getProductLineInstallVideo() ?>" frameborder="0" allowfullscreen></iframe>
+                                        <iframe width="275" height="232" src="https://www.youtube.com/embed/<?php echo $productLine->getProductLineInstallVideo() ?>" frameborder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>
                              <?php else: ?>
                              &nbsp;
                             <?php endif; ?>
                         </div>
-                        <?php if ($_category->getDescription()): ?>
+                        <?php if ($productLine->getDescription()): ?>
                             <div class="pro-second-part">
                                 <div class="description-main">
                                     <div class="description-main-head">
                                         <h3><?php echo $this->__("Description") ?></h3>
                                     </div>
                                     <div class="description-main-lund">
-                                        <?php echo $_category->getDescription() ?>
+                                        <?php echo $productLine->getDescription() ?>
                                     </div>
                                 </div>
                             </div>
                         <?php else: ?>
                              &nbsp;
                         <?php endif; ?>
-                        <?php if ($_category->getProductLineFeatureBenefits()): ?>
+                        <?php if ($productLine->getProductLineFeatureBenefits()): ?>
                             <div class="pro-third-part">
                                 <div class="description-main">
                                     <div class="description-main-head">
                                         <h3><?php echo $this->__("Highlights") ?></h3>
                                     </div>
                                     <div class="description-main-lund">
-                                        <?php echo $_category->getProductLineFeatureBenefits() ?>
+                                        <?php echo $productLine->getProductLineFeatureBenefits() ?>
                                     </div>
                                 </div>
                             </div>
@@ -287,10 +294,10 @@ foreach ($categoryIds as $id) {
                                         <td><?php echo $_helper->productAttribute($_product, $_product->getSku(), 'sku') ?></td>
                                     </tr>          
 
-                                    <?php if ($_product->getData('brand')): ?>
+                                    <?php if ($_product->getData('brand_short_code')): ?>
                                         <tr>
                                             <td><?php echo $this->__("Brand Name") ?></td>
-                                            <td><?php echo $_product->getResource()->getAttribute('brand')->getFrontend()->getValue($_product) ?></td>
+                                            <td><?php echo $_product->getResource()->getAttribute('brand_short_code')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
@@ -315,14 +322,14 @@ foreach ($categoryIds as $id) {
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getFlareHeight()): ?>
+                                    <?php if ($_product->getFlareHeight() && $_product->getResource()->getAttribute('flare_height')->getFrontend()->getValue($_product) != "0.00"): ?>
                                         <tr>
                                             <td><?php echo $this->__("Flare Height") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('flare_height')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getFlareTireCoverage()): ?>
+                                    <?php if ($_product->getFlareTireCoverage() && $_product->getResource()->getAttribute('flare_tire_coverage')->getFrontend()->getValue($_product) != "0.00"): ?>
                                         <tr>
                                             <td><?php echo $this->__("Flare Tire Coverage") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('flare_tire_coverage')->getFrontend()->getValue($_product) ?></td>
@@ -447,12 +454,11 @@ foreach ($categoryIds as $id) {
 
 
                                         <tr>
-                                            <td class="bg-thead">
-                                            <?php if ($_product->getDimA() || $_product->getDimB() || $_product->getDimC() || $_product->getDimD() || $_product->getDimE() || $_product->getDimF() || $_product->getDimG()|| $_product->getDimG()): ?>
-											<?php echo $this->__("Product Specifications") ?>
-                                            <?php endif; ?>
-                                            
+                                            <?php if (($_product->getDimA() && $_product->getDimA() != "0.00") || ($_product->getDimB() && $_product->getDimB() != "0.00") || ($_product->getDimC() && $_product->getDimC() != "0.00") || ($_product->getDimD() && $_product->getDimD() != "0.00") || ($_product->getDimE() && $_product->getDimE() != "0.00") || ($_product->getDimF() && $_product->getDimF() != "0.00") || ($_product->getDimG() && $_product->getDimG() != "0.00")): ?>
+                                            <td class="bg-thead">					
+                                                <?php echo $this->__("Product Specifications") ?>
                                             </td>
+                                            <?php endif; ?>
                                             <td class="bg-thead">
 												<?php if ($_product->getWeight() || $_product->getHeight() || $_product->getWidth() || $_product->getLength()): ?>
                                                 <?php echo $this->__("Shipping Specifications") ?>
@@ -461,56 +467,58 @@ foreach ($categoryIds as $id) {
                                         </tr>
 
                                     <tr>
-                                        <td class="padding-none">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                <?php if ($_product->getDimA()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_A") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimA(), 'dim_a') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                        <?php if (($_product->getDimA() && $_product->getDimA() != "0.00") || ($_product->getDimB() && $_product->getDimB() != "0.00") || ($_product->getDimC() && $_product->getDimC() != "0.00") || ($_product->getDimD() && $_product->getDimD() != "0.00") || ($_product->getDimE() && $_product->getDimE() != "0.00") || ($_product->getDimF() && $_product->getDimF() != "0.00") || ($_product->getDimG() && $_product->getDimG() != "0.00")): ?>
+                                            <td class="padding-none">
+                                                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                        <?php if ($_product->getDimA() && $_product->getDimA() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_A") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimA(), 'dim_a') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimB()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_B") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimB(), 'dim_b') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                                        <?php if ($_product->getDimB() && $_product->getDimB() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_B") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimB(), 'dim_b') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimC()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_C") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimC(), 'dim_c') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                                        <?php if ($_product->getDimC() && $_product->getDimC() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_C") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimC(), 'dim_c') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimD()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_D") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimD(), 'dim_d') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                                <?php if ($_product->getDimE()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_E") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimE(), 'dim_e') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
+                                                        <?php if ($_product->getDimD() && $_product->getDimD() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_D") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimD(), 'dim_d') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                        <?php if ($_product->getDimE() && $_product->getDimE() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_E") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimE(), 'dim_e') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
 
-                                                <?php if ($_product->getDimF()): ?>
-                                                    <tr class="border-main-bottom">
-                                                        <td><?php echo $this->__("DIM_F") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimF(), 'dim_f') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                                <?php if ($_product->getDimG()): ?>
-                                                    <tr>
-                                                        <td><?php echo $this->__("DIM_G") ?></td>
-                                                        <td><?php echo $_helper->productAttribute($_product, $_product->getDimG(), 'dim_G') ?></td>
-                                                    </tr>
-                                                <?php endif; ?>
-                                            </table>
-                                            </td>
+                                                        <?php if ($_product->getDimF() && $_product->getDimF() != "0.00"): ?>
+                                                            <tr class="border-main-bottom">
+                                                                <td><?php echo $this->__("DIM_F") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimF(), 'dim_f') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                        <?php if ($_product->getDimG() && $_product->getDimG() != "0.00"): ?>
+                                                            <tr>
+                                                                <td><?php echo $this->__("DIM_G") ?></td>
+                                                                <td><?php echo $_helper->productAttribute($_product, $_product->getDimG(), 'dim_G') ?></td>
+                                                            </tr>
+                                                        <?php endif; ?>
+                                                    </table>
+                                                </td>
+                                            <?php endif; ?>
                                         <td class="padding-none left-border-section"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 
                                                 <?php if ($_product->getWeight()): ?>
