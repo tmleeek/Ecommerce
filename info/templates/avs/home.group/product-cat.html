@@ -1,0 +1,45 @@
+<div class="product-categories clearfix">
+    <div class="container">
+        <h2 class="title">Product Categories</h2>
+        <div class="clearfix">
+
+        {exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
+          {product_cat_left}
+            <div class="left-section">
+                <div class="img">
+                    {exp:ce_img:pair src="{product_cat_left:image}" width="473" height="498" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+
+                    <div class="text">
+                        <h3>{product_cat_left:blue_title}</h3>
+                        <p>{product_cat_left:white_text}</p>
+                    </div>
+                </div>
+            </div>
+          {/product_cat_left}
+
+            <div class="right-section">
+                <ul>
+                    {product_categories}
+                        {if product_categories:count == 1}
+                            <li>
+                        {/if}
+                            <div class="list-devider">
+                                <div class="image">
+                                     {exp:ce_img:pair src="{product_categories:cat_image}" width="173" height="143" crop="yes|center,center" allow_scale_larger="yes"}<a href="{product_categories:cat_link}"><img src="{made}" alt="" width="{width}" height="{height}" /></a>{/exp:ce_img:pair}
+                                </div>
+                                <a href="{product_categories:cat_link}">{product_categories:cat_name}</a>
+                            </div>
+                        {if product_categories:count == product_categories:total_rows}
+                            </li>
+                        {if:elseif product_categories:count % 2 == 0}
+                            </li>
+                            <li>
+                        {/if}
+                    {/product_categories}
+                </ul>
+            </div>
+          {/exp:channel:entries}
+        </div>
+    </div>
+</div>
+

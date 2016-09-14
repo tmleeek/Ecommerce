@@ -84,6 +84,11 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
         elseif ($this->getCategoryId() == $rootId) {
             $url = $base;
 
+            $category = $this->getCategoryObject();
+            if($category->getLevel() == 1 && $this->getCurrentVehicleCookie()){
+                return $url . 'models/' . $this->getCurrentVehicleCookie();
+            }
+            
             switch ($this->mode) {
                 case Amasty_Shopby_Model_Source_Url_Mode::MODE_DISABLED:
                     $needUrlKey = true;
@@ -105,7 +110,13 @@ class Unleaded_YMM_Model_Url_Builder extends Amasty_Shopby_Model_Url_Builder
             }
         }
         else { // we have a valid category
-            $url = $this->getCategoryObject()->getUrl();
+            
+            $category = $this->getCategoryObject();
+            if($category->getLevel() == 1 && $this->getCurrentVehicleCookie()){
+                return $base . 'models/' . $this->getCurrentVehicleCookie();
+            }
+            
+            $url = $category->getUrl();
             $pos = strpos($url,'?');
             $url = $pos ? substr($url, 0, $pos) : $url;
 

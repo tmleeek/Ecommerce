@@ -15,8 +15,8 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 			return $vehicle;
 
 		$vehicle['year']  = $match[1];
-		$vehicle['make']  = str_replace('_', '-', $match[2]);
-		$vehicle['model'] = str_replace('_', '-', $match[3]);
+		$vehicle['make']  = str_replace('_', '%', $match[2]);
+		$vehicle['model'] = str_replace('_', '%', $match[3]);
 
 		return $vehicle;
 	}
@@ -37,8 +37,8 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 		$vehicleCollection = Mage::getModel('vehicle/ulymm')
 							->getCollection()
 							->addFieldToFilter('year', $vehicle['year'])
-							->addFieldToFilter('make', $vehicle['make'])
-							->addFieldToFilter('model', $vehicle['model']);
+							->addFieldToFilter('make', ['like' => $vehicle['make']])
+							->addFieldToFilter('model', ['like' => $vehicle['model']]);
 
 		$vehicleIds = [];
 		foreach ($vehicleCollection as $_vehicle)

@@ -10,7 +10,11 @@
     <div class="block-content">
     	<?php echo $this->getStateHtml() ?>
         <?php if ($this->getLayer()->getState()->getFilters()): ?>
-            <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
+            <?php if ($this->getRequest()->getParam('brand')): ?>
+                <div class="actions"><a href="<?php echo $this->getClearUrl() . "?brand=" . $this->getRequest()->getParam('brand') ?>"><?php echo $this->__('Clear All') ?></a></div>
+            <?php else: ?>
+                <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
+            <?php endif; ?>
         <?php endif; ?>
         
         <?php if($this->canShowOptions()): ?>            
