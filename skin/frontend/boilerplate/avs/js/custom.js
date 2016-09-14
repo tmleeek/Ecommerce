@@ -93,7 +93,7 @@ jQuery(document).ready(function() {
 
 jQuery(window).on("load resize",function(e){
 	var max = 0;
-	jQuery('.product-categories .right-section ul li .list-devider a').each(function() {
+	jQuery('.product-categories .right-section ul li .list-devider').each(function() {
 		jQuery(this).height('auto');
 		var h = jQuery(this).height();
 		max = Math.max(max, h);
