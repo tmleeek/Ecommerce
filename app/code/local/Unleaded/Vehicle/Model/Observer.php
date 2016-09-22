@@ -19,8 +19,8 @@ class Unleaded_Vehicle_Model_Observer {
         switch ($brand) {
 
             case "lund": {
-                  Mage::app()->setCurrentStore('lund');
-                  break;
+                Mage::app()->setCurrentStore('lund');
+                break;
             }
             case "avs": {
                 Mage::app()->setCurrentStore('avs');

@@ -22,7 +22,9 @@
    {about_section}
         <section class="one sections">
           <div class="container">
+              {if title}
              <h2 class="header">{title}</h2>
+              {/if}
              {three_images}
                {exp:ce_img:pair src="{url}" width="387" height="250" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" class="photo"/>{/exp:ce_img:pair}
              {/three_images}
@@ -37,7 +39,9 @@
     <section class="two sections" style="background-image: {exp:ce_img:pair src='{background_image}' max_width='1920' max_height='527' crop='yes|center,center'}url({made}) {/exp:ce_img:pair};">
       <div class="container">
          <div class="text">
+              {if title}
            <h2>{title}</h2>
+            {/if}
            {copy}
            {if button_link}<div class="btn"><a href="{button_link}">Read More</a></div>{/if}
          </div>
@@ -86,7 +90,9 @@
     {grey_section}
         <section class="grey sections" style="background-image: url(/info/assets/images/grey-bkg.png);">
           <div class="container">
+              {if grey_title}
                <h2 class="title">{grey_title}</h2>
+              {/if}
                <div class="photo">
                    {exp:ce_img:pair src="{grey_photo}" width="316" height="539" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" class="photo"/>{/exp:ce_img:pair}
                </div>

@@ -2,38 +2,78 @@
 $helper = Mage::helper('guideindexer');
 $lundGuides = $helper->getBrandGuides('347');
 $avsGuides = $helper->getBrandGuides('348');
-$limit = 6;
-$lundCnt = 1;
-$avsCnt = 1;
+//$limit = 6;
+//$lundCnt = 1;
+//$avsCnt = 1;
 ?>
-<section class="clearfix">
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+<style type="text/css">
+    .item{display:none;}
+</style>
+
+<script type="text/javascript">
+    $.noConflict();
+    jQuery(document).ready(function ($) {
+        LundItems = jQuery('.lundGuides div.item');
+        LitemCount = LundItems.length;
+        LshowStart = 0;
+        LshowFinish = 0;
+        LshowIncrementer = 9;
+        //wrapper = jQuery("#lund_int");
+        AVSItems = jQuery('.avsGuides div.item');
+        AitemCount = AVSItems.length;
+        AshowStart = 0;
+        AshowFinish = 0;
+        AshowIncrementer = 9;
+
+        LundItems.slice(LshowStart,LshowIncrementer).slideDown('fast');
+        LshowFinish = LshowIncrementer;
+        AVSItems.slice(AshowStart,AshowIncrementer).slideDown('fast');
+        AshowFinish = AshowIncrementer;
+
+        jQuery('.lundGuides div.paginate button').click(function () {
+            if (LshowFinish <= LitemCount){
+                LshowFinish += LshowIncrementer;
+                LundItems.slice(LshowStart+LshowIncrementer,LshowFinish+LshowIncrementer).slideDown('fast');
+                LshowStart += LshowIncrementer;
+            } else {
+               return;
+           }
+       });
+       jQuery('.avsGuides div.paginate button').click(function () {
+            if (AshowFinish <= AitemCount){
+                AVSItems.slice(AshowStart+AshowIncrementer,AshowFinish+AshowIncrementer).slideDown('fast');
+                AshowStart += AshowIncrementer;
+                AshowFinish += AshowIncrementer;
+            } else {
+               return;
+           }
+       });
+    });
+</script>
+
+<section class="clearfix lundGuides">
     <h2 class="title"><?php echo $this->__('Lund') ?></h2>
     <?php foreach ($lundGuides as $_lundGuide): ?>
-        <?php if ($lundCnt > 6) break; ?>
+        <?php //if ($lundCnt > 12) break; ?>
         <div class="item">
             <h3><a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_lundGuide . ".pdf" ?>"><?php echo $_lundGuide ?></a></h3>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
         </div>
-        <?php $lundCnt++ ?>
     <?php endforeach; ?>
-
-    <?php if (count($lundGuides) > 6): ?>
-        <div class="paginate"> <a class="button" href="http://lunddev.build.moe/info/customer-care/installation-guides/P6"><?php echo $this->__('Load More') ?></a> </div>
-    <?php endif; ?>
+           <div class="paginate">
+               <button class="button"><?php echo $this->__('Load More') ?></button>
+           </div>
 </section>
 
-<section class="clearfix">
+<section class="clearfix avsGuides">
     <h2 class="title"><?php echo $this->__('AVS') ?></h2>
     <?php foreach ($avsGuides as $_avsGuide): ?>
-        <?php if ($avsCnt > 6) break; ?>
         <div class="item">
             <h3><a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_avsGuide .".pdf" ?>"><?php echo $_avsGuide ?></a></h3>
-            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
         </div>
-        <?php $avsCnt++ ?>
     <?php endforeach; ?>
-
-    <?php if (count($avsGuides) > 6): ?>
-        <div class="paginate"> <a class="button" href="http://lunddev.build.moe/info/customer-care/installation-guides/P6"><?php echo $this->__('Load More') ?></a> </div>
-    <?php endif; ?>
+        <div class="paginate">
+            <button class="button"><?php echo $this->__('Load More') ?></button>
+        </div>
 </section>

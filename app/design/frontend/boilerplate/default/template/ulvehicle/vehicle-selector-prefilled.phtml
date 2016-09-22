@@ -85,7 +85,17 @@
         function listenToSubmit() {
             $submit.on('click', function () {
                 if (allFieldsHaveValues()) {
-
+                    var brand = "";
+                    <?php if ($this->getRequest()->getParam('brand')): ?>
+                        brand = "<?php echo $this->getRequest()->getParam('brand') ?>";
+                    <?php endif; ?>
+                    
+                    <?php if (Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                        var customerId = '<?php echo Mage::getSingleton('customer/session')->getCustomer()->getId() ?>';
+                    <?php else: ?>
+                        var customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
+                    <?php endif; ?>
+                    
                     $.ajax({
                         url: '<?php echo Mage::getUrl('ulvehicle/index/addvehicleandredirect/') ?>',
                         method: 'POST',
@@ -93,7 +103,9 @@
                             year: $year.val(),
                             make: $make.val(),
                             model: $model.val(),
-                            targetCategoryId: targetCategoryId
+                            targetCategoryId: targetCategoryId,
+                            brand: brand, 
+                            customerId: customerId
                         },
                         success: function(data) {
                             console.log(data);

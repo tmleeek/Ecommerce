@@ -91,7 +91,7 @@
                         {exp:gmap:results order_by="distance" limit="10" channel="dealer_locator" category_search_type="OR" match_categories_exact="yes" cache_post="false" parse_tags="true"}
                             {if has_searched}
                                     <a href="#accordion-{entry_id}" class="title"><b class="count"><?php { echo $count++; } ?></b>{title} <span class="distance">(Distance: {distance}{metric})</span><span class="arrow">&nbsp;</span></a>
-                                <div class="location clearfix">
+                                <div class="location clearfix" id="accordion-{entry_id}">
                                     <div class="addy">
                                         <address>
                                             {locator_location:address_component type="street_number"} {locator_location:address_component type="street"}<br/>

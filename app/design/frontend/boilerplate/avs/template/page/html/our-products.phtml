@@ -1,18 +1,20 @@
-<?php 
-    $_helper  = Mage::helper('catalog/category');
-    $category = Mage::getResourceModel('catalog/category_collection')
-                    ->addFieldToFilter('name', 'AVS')
-                    ->getFirstItem();
+<?php
+    $_helper       = Mage::helper('catalog/category');
+    $storeCategory = Mage::getModel('catalog/category')
+                        ->load(Mage::app()->getStore()->getRootCategoryId());
 
-    $subCategories  = $category
+    $subCategories  = $storeCategory
                         ->getChildrenCategories()
-                        ->addIsActiveFilter();
+                        ->clear()
+                        ->addIsActiveFilter()
+                        ->addAttributeToSelect('*');
+
     $imageHeight = 52;
     $imageWidth  = 92;
 
     $sortedCats = [];
-    foreach ($subCategories as $category)
-        $sortedCats[$category->getName()] = $category;
+    foreach ($subCategories as $_category)
+        $sortedCats[$_category->getName()] = $_category;
 
     ksort($sortedCats, SORT_STRING);
 ?>
@@ -23,25 +25,25 @@
             <ul>
                 <?php 
                     foreach ($sortedCats as $_category):
-                        $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, Mage::getModel('catalog/category')->load($_category->getId())->getThumbnail());
+                        $image_url = Mage::getModel("imageresize/resize")->getResizedImage($imageWidth, $imageHeight, $_category->getThumbnail());
                 ?>
                     <li>
                         <div class="catrgory-navigation">
-                            <a href="<?php echo $_helper->getCategoryUrl($_category); ?>" class="category-image" data-category="<?php echo $_category->getId(); ?>">
+                            <a href="<?php echo $_helper->getCategoryUrl($_category); ?>" class="category-image">
                                 <img alt="<?php echo $_category->getName() ?>" src="<?php echo $image_url ?>" />
                             </a>
                             <div class="menu-details">
-                                <div class="menu-title"><a href="<?php echo $_helper->getCategoryUrl($_category); ?>"><span><?php echo $_category->getName() ?></span></a></div>
+                                <div class="menu-title"><a href="<?php echo $_helper->getCategoryUrl($_category); ?>" data-category="<?php echo $_category->getId(); ?>" data-brands="<?php echo $_category->getCategoryBrands(); ?>"><span><?php echo $_category->getName() ?></span></a></div>
                                 <div class="menu-description"><?php echo $_category->getShortDescription() ?></div>
                             </div>
                         </div>
                     </li>
-        <?php endforeach; ?>
+                <?php endforeach; ?>
             </ul>
         </div>
-<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('our-product-top-menu-block')->toHtml(); ?>
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('our-product-top-menu-block')->toHtml(); ?>
     </div>
     <div class="view-all-links">
-        <a href="<?php echo $this->getUrl("our-products.html")?>"><?php echo $this->__("View All Categories") ?></a>
+        <a href="<?php echo $this->getUrl("products") ?>?brand=avs"><?php echo $this->__("View All Categories") ?></a>
     </div>
 </div>

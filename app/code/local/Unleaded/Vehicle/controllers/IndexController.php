@@ -21,8 +21,13 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
 
     public function removeVehicleAction()
     {
-        Mage::getModel('core/cookie')->delete("currentVehicle");
         $vehicleId = Mage::app()->getRequest()->getParam('vehicleId');
+        
+        $vehicle = Mage::getModel("vehicle/ulymm")->load($vehicleId);
+        if(Mage::getModel('core/cookie')->get("currentVehicle") == Mage::helper('unleaded_ymm')->getVehicleSegment($vehicle->getYear(), $vehicle->getMake(), $vehicle->getModel())){
+            Mage::getModel('core/cookie')->delete("currentVehicle");
+        }
+        
         $customerId = Mage::app()->getRequest()->getParam('customerId');
 
         $garageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
@@ -52,7 +57,8 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
     public function clearAllAction()
     {
         $customerId = Mage::app()->getRequest()->getParam('customerId');
-
+        $brand = Mage::app()->getRequest()->getParam('brand');
+        
         $garageModel = Mage::getModel('vehicle/ulgarage')->getCollection();
         $garageModel->addFieldToFilter('customer_id', $customerId);
 
@@ -62,7 +68,11 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         // Clear cookie
         Mage::getSingleton('core/cookie')->delete('currentVehicle');
 
-        echo Mage::getBaseUrl();
+        if($brand === ""){
+            echo Mage::getBaseUrl();
+        } else {
+            echo Mage::getBaseUrl() . "?brand=".$brand;
+        }
     }
 
     public function changeSelectionAction()
@@ -146,7 +156,7 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         }
         
         if($brand){
-            $redirectUrl .= '/' . '?brand=' . $brand;
+            $redirectUrl .= '?brand=' . $brand;
         }
 
         if ($garageModel->count() == 1) {
@@ -158,18 +168,18 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
                     $garageData->setVehicles(json_encode(array_values($garage)));
                     $garageData->setSelectedVehicle($vehicleId);
                     $garageData->save();
-                    echo $redirectUrl;
+                    echo str_replace("/?", "?", $redirectUrl);
                 } else {
                     $garageData->setSelectedVehicle($vehicleId);
                     $garageData->save();
-                    echo $redirectUrl;
+                    echo str_replace("/?", "?", $redirectUrl);
                 }
             } else {
                 $garage = [$vehicleId];
                 $garageData->setVehicles(json_encode(array_values($garage)));
                 $garageData->setSelectedVehicle($vehicleId);
                 $garageData->save();
-                echo $redirectUrl;
+                echo str_replace("/?", "?", $redirectUrl);
             }
         } else {
             $newGarage = Mage::getModel('vehicle/ulgarage');
@@ -177,7 +187,7 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
             $newGarage->setVehicles(json_encode([$vehicleId]));
             $newGarage->setSelectedVehicle($vehicleId);
             $newGarage->save();
-            echo $redirectUrl;
+            echo str_replace("/?", "?", $redirectUrl);
         }
     }
 

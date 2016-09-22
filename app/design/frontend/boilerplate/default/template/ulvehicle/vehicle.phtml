@@ -43,7 +43,13 @@
             <?php else: ?>
                 customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
             <?php endif; ?>
-            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/clearall') ?>", {customerId: customerId},
+              
+            var brand = "";
+            <?php if ($this->getRequest()->getParam('brand')): ?>
+                brand = "<?php echo $this->getRequest()->getParam('brand') ?>";
+            <?php endif; ?>
+                
+            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/clearall') ?>", {customerId: customerId, brand: brand},
             function (data) {
                 window.location.href = data;
             });
@@ -72,8 +78,12 @@
             <?php else: ?>
                 customerId = '<?php echo Mage::getSingleton('core/cookie')->get('guestUnique') ?>';
             <?php endif; ?>
-                
-            jQuery.post("<?php echo Mage::getUrl('ulvehicle/index/removevehicle') ?>", {vehicleId: vehicleId, customerId: customerId},
+              
+            <?php $rmurl = Mage::getUrl('ulvehicle/index/removevehicle') ?>
+            <?php if ($this->getRequest()->getParam('brand')): ?>
+                <?php $rmurl .= "?brand=" . $this->getRequest()->getParam('brand') ?>
+            <?php endif; ?>    
+            jQuery.post("<?php echo $rmurl ?>", {vehicleId: vehicleId, customerId: customerId},
             function (data) {
                 jQuery("#ul-vehicle-container .garage-container").html(data);
             });

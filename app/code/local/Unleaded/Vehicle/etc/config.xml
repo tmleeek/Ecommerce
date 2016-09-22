@@ -17,6 +17,11 @@
                     <html_pager>Unleaded_Vehicle_Block_Html_Pager</html_pager>
                 </rewrite>
             </page>
+            <amshopby>
+                <rewrite>
+                    <advanced>Unleaded_Vehicle_Block_Amasty_Advanced</advanced>
+                </rewrite>
+            </amshopby>
             <catalog>
                 <rewrite>
                     <product_list>Unleaded_Vehicle_Block_Catalog_Product_List</product_list>
@@ -183,4 +188,16 @@
             </updates>
         </layout>
     </adminhtml>
+    <crontab>
+        <jobs>
+            <unleaded_chaindrive_product_import>
+                <schedule>
+                    <cron_expr>0 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>vehicle/cron::clearGuestGarages</model>
+                </run>
+            </unleaded_chaindrive_product_import>
+        </jobs>
+    </crontab>
 </config> 
