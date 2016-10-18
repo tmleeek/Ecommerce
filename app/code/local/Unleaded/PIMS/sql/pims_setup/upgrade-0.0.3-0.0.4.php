@@ -1,4 +1,4 @@
-exit<?php
+<?php
 // http://inchoo.net/magento/how-to-add-new-custom-category-attribute-in-magento/
 $installer = $this;
 $installer->startSetup();

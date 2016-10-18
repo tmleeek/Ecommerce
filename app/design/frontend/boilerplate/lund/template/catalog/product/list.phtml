@@ -45,7 +45,6 @@
                             if($_product->getRatingSummary())
                                 echo $this->getReviewsSummaryHtml($_product);
                         
-                            echo $this->getPriceHtml($_product, true) 
                         ?>
 
                         <?php if($_product->isSaleable()): ?>
@@ -106,7 +105,6 @@
                 	<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
                 </div>
               
-                <?php echo $this->getPriceHtml($_product, true); ?>
                 <ul class="add-to-links">
                 	<?php if ($_compareUrl = $this->getAddToCompareUrl($_product)): ?>
                     	<li>

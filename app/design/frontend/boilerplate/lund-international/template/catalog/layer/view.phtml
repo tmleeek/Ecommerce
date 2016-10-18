@@ -4,64 +4,65 @@
  *
  * @see Mage_Catalog_Block_Layer_View
  */
+$_filters = $this->getFilters();
+
+$currentUrl = Mage::helper('core/url')->getCurrentUrl();
+
+if (preg_match('/^(.*)([\&|\?]brand=([a-z]*))(.*)$/', $currentUrl, $matches)) {
+    // Mage::log(print_r($matches, true));
+    $currentUrl = $matches[1] . $matches[4];
+}
+if (strstr($currentUrl, '?')) {
+    $avsBrandUrl  = $currentUrl . '&brand=avs';
+    $lundBrandUrl = $currentUrl . '&brand=lund';
+} else {
+    $avsBrandUrl  = $currentUrl . '?brand=avs';
+    $lundBrandUrl = $currentUrl . '?brand=lund';
+}
+
 ?>
 <?php if($this->canShowBlock()): ?>
 <div class="block block-layered-nav">
     <div class="block-content">
-     <?php if ($this->getLayer()->getState()->getFilters()): ?>
-            <style type="text/css">
-            .hide-filter-search{ display:none;}
-			.hide-filter-search-new{ display:block !important;}
-            </style>
-        <?php endif; ?>
-        
-		<?php echo $this->getStateHtml() ?>
+
+		<?php echo $this->getStateHtml(); ?>
+
         <?php if ($this->getLayer()->getState()->getFilters()): ?>
-            <div class="actions"><a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a></div>
+            <div class="actions">
+                <a href="<?php echo $this->getClearUrl() ?>"><?php echo $this->__('Clear All') ?></a>
+            </div>
         <?php endif; ?>
         
-        <?php if($this->canShowOptions()): ?>            
+        <?php if ($this->canShowOptions()): ?>            
             <dl id="narrow-by-list" class="accordion">
-                <?php $_filters = $this->getFilters() ?>
+
+                <dt class="first odd"><?php echo $this->__('BRANDS') ?></dt>
+                <dd class="first odd">
+                    <ol>
+                        <li>
+                            <a rel="nofollow" href="<?php echo $avsBrandUrl; ?>" class="amshopby-attr"><?php echo $this->__('AVS') ?></a>
+                        </li>
+                        <li>
+                            <a rel="nofollow" href="<?php echo $lundBrandUrl; ?>" class="amshopby-attr"><?php echo $this->__('Lund') ?></a>
+                        </li>
+                    </ol>
+                </dd>
+
                 <?php foreach ($_filters as $_filter): ?>
-                <?php if($_filter->getItemsCount()): ?>
-                    <dt class="<?php if($_filter->getName() == "Vehicle Type" || $_filter->getName() == "Model Type" || $_filter->getName() == "SubDetail") echo "no-display" ?>"><?php echo $this->__($_filter->getName()) ?></dt>
-                    <dd class="<?php if($_filter->getName() == "Vehicle Type" || $_filter->getName() == "Model Type" || $_filter->getName() == "SubDetail") echo "no-display" ?>"><?php echo $_filter->getHtml() ?></dd>
-                <?php endif; ?>
+                    <?php if($_filter->getItemsCount()): ?>
+                        <dt class="<?php if($_filter->getName() == "Vehicle Type" || $_filter->getName() == "Model Type" || $_filter->getName() == "SubDetail") echo "no-display" ?>">
+                            <?php echo $this->__($_filter->getName()) ?>
+                        </dt>
+                        <dd class="<?php if($_filter->getName() == "Vehicle Type" || $_filter->getName() == "Model Type" || $_filter->getName() == "SubDetail") echo "no-display" ?>">
+                            <?php echo $_filter->getHtml() ?>
+                        </dd>
+                    <?php endif; ?>
                 <?php endforeach; ?>
                 
-                <dt class="last even"><?php echo $this->__('BRANDS') ?></dt>
-                <dd class="last even">
-                	<?php if($this->getRequest()->getControllerName()=='result') { ?>
-                    	<ol >
-                        	<li>
-                            	<a rel="nofollow" href="<?php echo $currentUrl = Mage::helper('core/url')->getCurrentUrl(); ?>&brand=avs" class="amshopby-attr"><?php echo $this->__('AVS') ?></a>
-                            </li>
-                            <li>
-                            	<a rel="nofollow" href="<?php echo $currentUrl = Mage::helper('core/url')->getCurrentUrl(); ?>&brand=lund" class="amshopby-attr"><?php echo $this->__('Lund') ?></a>
-                            </li>
-                        </ol>
-					<?php }else{ ?>
-                    	<ol class="hide-filter-search">
-                        	<li>
-                            	<a rel="nofollow" href="<?php echo $currentUrl = Mage::helper('core/url')->getCurrentUrl(); ?>?brand=avs" class="amshopby-attr"><?php echo $this->__('AVS') ?></a>
-                            </li>
-                            <li>
-                            	<a rel="nofollow" href="<?php echo $currentUrl = Mage::helper('core/url')->getCurrentUrl(); ?>?brand=lund" class="amshopby-attr"><?php echo $this->__('Lund') ?></a>
-                            </li>
-                        </ol>
-                    <?php } ?>
-                    <ol class="hide-filter-search-new" style="display:none;">
-                        	<li>
-                            	<a rel="nofollow" href="<?php echo $currentUrl = Mage::helper('core/url')->getCurrentUrl(); ?>&brand=avs" class="amshopby-attr"><?php echo $this->__('AVS') ?></a>
-                            </li>
-                            <li>
-                            	<a rel="nofollow" href="<?php echo $currentUrl = Mage::helper('core/url')->getCurrentUrl(); ?>&brand=lund" class="amshopby-attr"><?php echo $this->__('Lund') ?></a>
-                            </li>
-                        </ol>
-                </dd>
              </dl>
+
             <script type="text/javascript">decorateDataList('narrow-by-list')</script>
+
         <?php endif; ?>
     </div>
 </div>

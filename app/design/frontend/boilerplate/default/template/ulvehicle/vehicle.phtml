@@ -95,27 +95,6 @@
         jQuery("#vehicle-modal .modal-close").unbind('click').bind('click', function () {
             jQuery("#vehicle-modal").fadeOut();
         });
-
-        jQuery(".our-product-navi .menu-left-content .catrgory-navigation .menu-title a").unbind("click").bind("click", function (e) {
-            var $this = jQuery(this);
-            e.preventDefault();
-            <?php if (!Mage::getSingleton('core/cookie')->get('currentVehicle')):  ?>
-                jQuery.ajax({
-                    method: 'POST',
-                    url: "<?php echo Mage::getUrl('ulvehicle/index/index') ?>", 
-                    data: {
-                        brands: $this.data('brands'),
-                        targetCategoryId: $this.data('category')
-                    },
-                    success: function (data) {
-                        jQuery("#vehicle-modal .modal-content").html(data);
-                        jQuery("#vehicle-modal").fadeIn();
-                    }
-                });
-            <?php else: ?>
-                window.location.href = jQuery(this).attr('href');
-            <?php endif; ?>
-        });
         
         jQuery(".product-categories .right-section .list-devider a").unbind("click").bind("click", function (e) {
             e.preventDefault();

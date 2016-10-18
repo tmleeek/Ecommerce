@@ -102,8 +102,9 @@
         
 		<reference name="content">
 		<reference name="product.info">
-                    <block type="core/template" name="product-legends" template="catalog/product/view/product-legends.phtml"/>
-                        <block type="core/template" name="product-visuals" template="catalog/product/view/product-visuals.phtml"/>
+			<block type="unleaded_productline/configurator" name="product_configurator" template="catalog/product/view/product-configurator.phtml"/>
+			<block type="core/template" name="product-legends" template="catalog/product/view/product-legends.phtml"/>
+			<block type="core/template" name="product-visuals" template="catalog/product/view/product-visuals.phtml"/>
 			<block type="fileuploader/fileuploader" name="attachments" as="attachments" template="fileuploader/attachments.phtml"/>
 			
 			<block type="enterprise_targetrule/catalog_product_list_related" name="related_products" as="related_products" template="targetrule/catalog/product/list/related.phtml">

@@ -1,31 +1,5 @@
 <?php
 /**
- * Magento Enterprise Edition
- *
- * NOTICE OF LICENSE
- *
- * This source file is subject to the Magento Enterprise Edition End User License Agreement
- * that is bundled with this package in the file LICENSE_EE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://www.magento.com/license/enterprise-edition
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magento.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magento.com for more information.
- *
- * @category    design
- * @package     base_default
- * @copyright Copyright (c) 2006-2016 X.commerce, Inc. and affiliates (http://www.magento.com)
- * @license http://www.magento.com/license/enterprise-edition
- */
-?>
-<?php
-/**
  * Product list template
  *
  * @see Mage_Catalog_Block_Product_List
@@ -34,17 +8,15 @@
 <?php
     $_productCollection=$this->getLoadedProductCollection();
     $_helper = $this->helper('catalog/output');
-?>
-<?php
-$_compareHelper = $this->helper('catalog/product_compare');
-$_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollection() : null;
+    $_compareHelper = $this->helper('catalog/product_compare');
+    $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollection() : null;
 ?>
 
-	<?php if ($_items): ?>
+<?php if ($_items): ?>
     <div class="clearfix compare-link">
-    	<a href="javascript:void(0)" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Compare Products')) ?>" class="comapre-link-product" onclick="popWin('<?php echo $_compareHelper->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"><?php echo $this->__('Compare Products') ?></a>
-        </div>
-     <?php endif; ?>
+	   <a href="javascript:void(0)" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Compare Products')) ?>" class="comapre-link-product" onclick="popWin('<?php echo $_compareHelper->getListUrl() ?>','compare','top:0,left:0,width=820,height=600,resizable=yes,scrollbars=yes')"><?php echo $this->__('Compare Products') ?></a>
+    </div>
+<?php endif; ?>
 
 <?php if(!$_productCollection->count()): ?>
 <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
@@ -67,7 +39,6 @@ $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollecti
                     <?php if($_product->getRatingSummary()): ?>
                     <?php echo $this->getReviewsSummaryHtml($_product) ?>
                     <?php endif; ?>
-                    <?php echo $this->getPriceHtml($_product, true) ?>
                     <?php if($_product->isSaleable()): ?>
                         <p><button type="button" title="<?php echo Mage::helper('core')->quoteEscape($this->__('Add to Cart')) ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
                     <?php else: ?>
@@ -120,10 +91,9 @@ $_items = $_compareHelper->getItemCount() > 0 ? $_compareHelper->getItemCollecti
                 	<?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
                 </div>
               
-                 <?php echo $this->getPriceHtml($_product, true) ?>
                 <ul class="add-to-links">
                 	<?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
-                    	<li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Compare') ?> <input name="<?php echo $_helper->productAttribute($_product, $_product->getId()) ?>" type="checkbox" value="" /></a></li>
+                    	<li><a href="<?php echo $_compareUrl ?>" class="link-compare"><?php echo $this->__('Compare') ?> <input name="<?php echo $_product->getId(); ?>" type="checkbox" value="" /></a></li>
                     <?php endif; ?>
                 </ul>
                

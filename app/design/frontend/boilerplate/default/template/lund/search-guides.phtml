@@ -1,0 +1,27 @@
+<h2>Find Your Guide</h2>
+
+<form id="guide-search" class="clearfix">
+    <input type="text" name="keywords" id="keywords" class="textbox" value="<?php echo Mage::app()->getRequest()->getParam('keywords') ?>" placeholder="Search by keyword or part #..." />
+    <button type="submit"><span class="fa fa-search"></span></button>
+</form>
+
+<?php
+$products = Mage::getResourceModel('catalog/product_collection')
+        ->addAttributeToSelect('i_sheet')
+        ->addAttributeToSelect('name')
+        ->addAttributeToSelect('i_sheet_downloads')
+        ->addAttributeToSort('i_sheet_downloads', 'DESC')
+        ->setStoreId(Mage::app()->getStore()->getId())
+        ->setPage(0, 6);
+?>
+
+<h3>Popular Downloads</h3>
+<ul>
+    <?php foreach ($products as $_productGuide): ?>
+        <li>
+            <a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_productGuide->getAttributeText('i_sheet') . ".pdf" ?>">
+                    <?php echo $_productGuide->getName() ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>

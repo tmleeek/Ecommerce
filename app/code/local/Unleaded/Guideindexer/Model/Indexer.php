@@ -40,10 +40,6 @@ class Unleaded_Guideindexer_Model_Indexer extends Mage_Index_Model_Indexer_Abstr
 
         $entity = $event->getEntity();
         switch ($entity) {
-            case Mage_Catalog_Model_Product::ENTITY:
-                $this->_registerProductEvent($event);
-                break;
-
             case Mage_Catalog_Model_Category::ENTITY:
                 $this->_registerCategoryEvent($event);
                 break;
@@ -60,36 +56,6 @@ class Unleaded_Guideindexer_Model_Indexer extends Mage_Index_Model_Indexer_Abstr
         }
         $this->_registered = true;
         return $this;
-    }
-
-    /**
-     * Register event data during product save process
-     *
-     * @param Mage_Index_Model_Event $event
-     * Call Squence 3
-     */
-    protected function _registerProductEvent(Mage_Index_Model_Event $event) {
-        $eventType = $event->getType();
-
-        if ($eventType == Mage_Index_Model_Event::TYPE_MASS_ACTION) {
-            $process = $event->getProcess();
-            $productIds = $event->getDataObject()->getData('product_ids');
-
-            foreach ($productIds as $productId) {
-                $categoryIds = Mage::getModel('catalog/product')->load($productId)->getCategoryIds();
-                $this->_productLineIds[] = end($categoryIds);
-            }
-            $this->flagIndexRequired($this->_productLineIds, 'product_line');
-        } elseif ($eventType == Mage_Index_Model_Event::TYPE_SAVE) {
-            $process = $event->getProcess();
-
-            $productId = $event->getDataObject()->getData('entity_id');
-            $categoryIds = Mage::getModel('catalog/product')->load($productId)->getCategoryIds();
-            $this->_productLineId = end($categoryIds);
-
-            $this->flagIndexRequired($this->_productId, 'product_line');
-        }
-        $process->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
     }
 
     /**
@@ -160,7 +126,7 @@ class Unleaded_Guideindexer_Model_Indexer extends Mage_Index_Model_Indexer_Abstr
         } else {
             $brandCategories = Mage::getResourceModel('catalog/category_collection')
                     ->addFieldToFilter('name', ['in' => ['AVS', 'Lund']])
-                    ->addAttributeToFilter('level', '3');
+                    ->addAttributeToFilter('level', '1');
             $data = [];
             foreach ($brandCategories as $brandCategory) {
                 if (!isset($data[$brandCategory->getId()]))
@@ -169,38 +135,30 @@ class Unleaded_Guideindexer_Model_Indexer extends Mage_Index_Model_Indexer_Abstr
                 foreach ($brandCategory->getChildrenCategories() as $childCategory) {
                     if (!isset($data[$brandCategory->getId()][$childCategory->getId()]))
                         $data[$brandCategory->getId()][$childCategory->getId()] = [];
-
-                    foreach ($childCategory->getChildrenCategories() as $productLineCategory) {
-                        if (!isset($data[$brandCategory->getId()][$childCategory->getId()][$productLineCategory->getId()]))
-                            $data[$brandCategory->getId()][$childCategory->getId()][$productLineCategory->getId()] = [];
-
-                        foreach ($productLineCategory->getProductCollection()->addAttributeToSelect('i_sheet') as $product) {
-                            if (in_array($product->getAttributeText('i_sheet'), $data[$brandCategory->getId()][$childCategory->getId()][$productLineCategory->getId()]) || $product->getAttributeText('i_sheet') == 'NONE' || $product->getAttributeText('i_sheet') == '')
-                                continue;
-
-                            $data[$brandCategory->getId()][$childCategory->getId()][$productLineCategory->getId()][] = $product->getAttributeText('i_sheet');
-                        }
-                    }
-                }
-            }
-
-            $rows = [];
-            foreach ($data as $brandId => $categories) {
-                foreach ($categories as $categoryId => $productLines) {
-                    foreach ($productLines as $productLineId => $iSheet) {
-                        if (empty($iSheet))
+                    
+                    foreach ($childCategory->getProductCollection()->addAttributeToSelect('i_sheet') as $product) {
+                        if (in_array($product->getAttributeText('i_sheet'), $data[$brandCategory->getId()][$childCategory->getId()]) || $product->getAttributeText('i_sheet') == 'NONE' || $product->getAttributeText('i_sheet') == '')
                             continue;
 
-                        $rows[] = [
-                            'brand' => $brandId,
-                            'category' => $categoryId,
-                            'product_line' => $productLineId,
-                            'i_sheet' => implode(",", $iSheet),
-                        ];
+                        $data[$brandCategory->getId()][$childCategory->getId()][] = $product->getAttributeText('i_sheet');
                     }
                 }
             }
+            
+            $rows = [];
+            foreach ($data as $brandId => $categories) {
+                foreach ($categories as $categoryId => $iSheet) {
+                    if (empty($iSheet))
+                        continue;
 
+                    $rows[] = [
+                        'brand' => $brandId,
+                        'category' => $categoryId,
+                        'i_sheet' => implode(",", $iSheet),
+                    ];
+                }
+            }
+            
             foreach ($rows as $row) {
                 try {
                     $guideModel = Mage::getModel('guideindexer/productguides');

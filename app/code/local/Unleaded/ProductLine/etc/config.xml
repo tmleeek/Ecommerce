@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unleaded_ProductLine>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </Unleaded_ProductLine>
     </modules>
     <global>
@@ -52,6 +52,17 @@
             </unleaded_productline_read>
         </resources>
     </global>
+    <frontend>
+        <routers>
+            <unleaded_productline>
+                <use>standard</use>
+                <args>
+                    <module>Unleaded_ProductLine</module>
+                    <frontName>productline</frontName>
+                </args>
+            </unleaded_productline>
+        </routers>
+    </frontend>
     <admin>
         <routers>
             <unleaded_productline>

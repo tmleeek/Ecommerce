@@ -31,14 +31,29 @@
 .main-wapper .bx-wrapper img{ height:auto;}
 
 .main-wapper .container{ position:relative;}
-.ban-button { background: url(../images/ban-button.png) no-repeat right center;  height: 70px;  margin: 40px 0 0;  padding: 20px 0 0;  text-align: center;  width: 241px;}
-.main-wapper .ban-button {background:url(../images/ban-button.png) no-repeat right center; height: 70px;  margin: 40px 0 0;  padding: 20px 0 0;  text-align: center; display:inline-block; }
-.main-wapper .ban-button a {color:#fff; text-transform:uppercase; font-weight:700; font-size:13px;}
+.ban-button a {color: #fff; font-size: 14px; font-weight:700;  text-decoration: none;  text-transform: uppercase;}
+.ban-button a:hover{ color:#f3f3f3; text-decoration:none;}
+
+.ban-button a { display:inline-block; box-shadow:0px 10px 10px #000; padding:2px; border-radius:8px; background: #ffffff;  background: -moz-linear-gradient(top,  #ffffff 0%, #2c2c2c 100%);  background: -webkit-linear-gradient(top,  #ffffff 0%,#2c2c2c 100%);  background: linear-gradient(to bottom,  #ffffff 0%,#2c2c2c 100%);  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#2c2c2c',GradientType=0 ); }
+.ban-button a:hover{ text-decoration:none;}
+.ban-button a span{ display:block; padding:0 55px; border-radius:8px; height:61px; line-height:61px; color:#FFF; font-size:13px; text-transform:uppercase; overflow:hidden; background: #424952; background: -moz-linear-gradient(top,  #424952 0%, #000000 100%);  background: -webkit-linear-gradient(top,  #424952 0%,#000000 100%);  background: linear-gradient(to bottom,  #424952 0%,#000000 100%);  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#424952', endColorstr='#000000',GradientType=0 ); font-weight:700; }
+.ban-button a:hover span{ background: #000; background: -moz-linear-gradient(top,  #000%, #424952  100%);  background: -webkit-linear-gradient(top,  #000 0%,#424952  100%);  background: linear-gradient(to bottom,  #000 0%,#424952  100%);  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000', endColorstr='#424952 ',GradientType=0 ); text-decoration:none; }
+
 .main-wapper ul{ margin:0; padding:0;}
 
 
+.banner-button-section { position:relative;}
+.banner-button-section .ban-button{ position:absolute; bottom:40px; left:0; right:0; padding:0 15px;}
+.banner-button-section .ban-button.button-center { text-align:center;}
+.banner-button-section .ban-button.button-right { text-align:right;}
+
+.button-top-content{ max-width:1192px; width:100%; margin:-30px auto 0 auto; position:absolute; top:50%; padding:0; left:0; right:0;}
+.button-top-content .button-center-right{ text-align:right;}
+.button-top-content .button-center-center{ text-align:center;}
+
 @media (min-width: 1200px) {
 .main-wapper .ban-slide-one.text-right-align{ right:15px; left:inherit; text-align:right;}
+.button-top-content{ padding:0 75px; }
 }
 
 @media (min-width: 1200px) and (max-width: 1399px) {
@@ -64,7 +79,6 @@
 .ban-slide-one {right: 75px; top:26px;}
 .ban-slide-one p {font-size:32px; line-height:32px; }
 .lorem-text {font-size: 18px; left: 0; margin: 0; padding: 0; position: absolute;  text-align: left;}
-.main-wapper .ban-button {  background:url(../images/buttan-teblet.png) no-repeat right center; height:46px; margin:20px 0 0;  padding:10px 0 0;  text-align: center;  width: 150px;}
 .main-vehicle-section .select-go {height: 50px; padding: 0;}
 .main-vehicle-section .select-go a {background: #6fb500 none repeat scroll 0 0; border-radius: 6px; color: #ffffff; display: block; font-size: 20px;  font-weight: 700;  height: 50px !important;  line-height: 50px !important;  margin: 0;  padding: 0;  text-align: center;  text-decoration: none;  width: 100%;}
 
@@ -79,16 +93,14 @@
 }
 
 @media (min-width: 600px) and (max-width: 767px) {
-.ban-button {background:none; float: right; margin: 0; padding: 4px 0 0; text-align: right;}
 .main-wapper .ban-slide-one { left:15px; margin: 0; padding:0 60px;  position: absolute;  top: 20px;  width: 100%;}
 .ban-slide-one p { font-size: 32px; line-height: 32px;  text-shadow: none;}
-
 .main-wapper .ban-slide-one.text-right-align{ right:0; left:inherit; text-align:right; padding:0 60px;}
 .main-wapper .ban-button { top: 0; }
 .ban-slide-one h2{ font-size:24px; line-height:31px;}
 .bx-wrapper .bx-prev {left:0;}
 .bx-wrapper .bx-next {right:0;}
-.main-wapper .ban-button {  background:url(../images/buttan-teblet.png) no-repeat right center; height:46px; margin:20px 0 0;  padding:10px 0 0;  text-align: center;  width: 150px;}
+.main-wapper .ban-button { margin:20px 0 0; }
 .main-vehicle-section .select-go {height: 50px; padding: 0;}
 .main-vehicle-section .select-go a {background: #6fb500 none repeat scroll 0 0; border-radius: 6px; color: #ffffff; display: block; font-size: 20px;  font-weight: 700;  height: 50px !important;  line-height: 50px !important;  margin: 0;  padding: 0;  text-align: center;  text-decoration: none;  width: 100%;}
 
@@ -97,14 +109,13 @@
 
 .ban-slide-one {top: 10px; width: 100%; right: 418px;}
 .ban-slide-one p {font-size: 25px;line-height: 25px; text-shadow:2px 2px 2px #FFF;}
-.ban-button {background:none; float: right; margin: 0; padding: 4px 0 0; text-align: right;}
 .ban-slide-one {right: 40px; top: 10px; width: 100%;}
 .bx-wrapper .bx-controls-direction a {height: 25px; width: 25px;}
 .ban-slide-one p { font-size: 24px;  line-height: 25px; text-shadow:none; text-align:center ; padding:5px 0 0 0}
 .lorem-text {color: #ffffff; font-size: 14px; left: 0; margin: 0; padding: 0;  width:100%;  text-align: center;}
 .main-wapper .ban-slide-one {background: #969596; height:95px; left: 0; margin: 0; padding: 0; top:130px;  width: 100%; }
 .main-wapper .bx-viewport{margin:0; padding:0; height:220px !important;}
-.main-wapper .ban-button {background-image: none; margin: 0; padding: 70px 0 0; text-align: center; top: 0; width: 100%;}
+.main-wapper .ban-button {background-image: none; margin: 0; padding:0; top: 0; width: 100%;}
 .main-wapper .ban-button a {color: #0079c2; text-transform: uppercase; font-size:14px;}
 .ban-slide-one { text-align:center;}
 .ban-slide-one h2{ font-size:24px; line-height:31px; text-align:center;}
@@ -113,4 +124,9 @@
 .bx-wrapper .bx-prev {left: 1%; background: url(../images/m-arrow-prev.png) no-repeat 0 0px; display:block;}
 .bx-wrapper .bx-next {right: 1%; background: url(../images/m-arrow-next.png) no-repeat 0 0px; display:block;}
 .bx-wrapper .bx-next:hover {background-position: 0 0; }
+
+.ban-button a { display:inline-block; box-shadow:inherit; padding:0; border-radius:0; background:none;  }
+.ban-button a:hover{ text-decoration:none;}
+.ban-button a span{ display:block; padding:0; border-radius:0; height:auto; line-height:normal; color:#FFF; font-size:13px; text-transform:uppercase; overflow:hidden; background:none; }
+
 }

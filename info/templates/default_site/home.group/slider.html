@@ -3,14 +3,38 @@
          {exp:channel:entries channel="home" dynamic="no" disable="categories|category_fields|member_data|pagination"}
           {home_slider}
             <li>
+            
+            	{if home_slider:link}
+                	{if home_slider:button_position == 'Center Left' OR home_slider:button_position == 'Center Right' OR home_slider:button_position == 'Center'} 
+                	<div class="button-top-content">
+                    	<div class="ban-button {if home_slider:button_position == 'Center Left'} button-center-left {/if} {if home_slider:button_position == 'Center Right'} button-center-right {/if} {if home_slider:button_position == 'Center'} button-center-center {/if} "><a href="{home_slider:link}"><span>{home_slider:link_text}</span></a></div>
+                    </div>
+                    {/if}
+                    {/if}
+                
             	<div class="container">
                 <div class="ban-slide-one {if home_slider:text_align == 'Right'} text-right-align {/if} {if home_slider:text_align == 'Left'} text-left-align {/if} ">
                 
                     <p>{home_slider:copy}</p>
-                    {if home_slider:link}<div class="ban-button"><a href="{home_slider:link}">{home_slider:link_text}</a></div>{/if}
+                   
                 </div>
                 </div>
+                {if home_slider:link}
+                 <a href="{home_slider:link}">
+                 {/if}
                 {exp:ce_img:pair src="{home_slider:image}" width="1900" height="940" crop="yes|center,center"}<img src="{made}" alt="" width="{width}" height="{height}" />{/exp:ce_img:pair}
+                 {if home_slider:link}
+                 </a>
+                 {/if}
+                 
+                  {if home_slider:link}
+                  	{if home_slider:button_position == 'Bottom Left' OR home_slider:button_position == 'Bottom Right' OR home_slider:button_position == 'Bottom Center'}
+                  	<div class="container banner-button-section">
+                    	<div class="ban-button {if home_slider:button_position == 'Bottom Left'} button-left {/if}  {if home_slider:button_position == 'Bottom Right'} button-right {/if}  {if home_slider:button_position == 'Bottom Center'} button-center {/if} "><a href="{home_slider:link}"><span>{home_slider:link_text}</span></a></div>
+                    </div>
+                    {/if}
+                  {/if}
+                  
             </li>
           {/home_slider}
          {/exp:channel:entries}

@@ -19,9 +19,23 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		'model'                   => ['field' => 'Model', 					'options' => []],
 		'sub_model'               => ['field' => 'SubModel', 				'options' => []],
 		'sub_detail'              => ['field' => 'SubDetail', 				'options' => []],
-		'bed_type'                => ['field' => 'Bed Type', 				'options' => []],
+
 		'bed_length'              => ['field' => 'Bed Length', 				'options' => []],
+		'bed_type'                => ['field' => 'Bed Type', 				'options' => []],
+		'flare_height'            => ['field' => 'Flare Height', 			'options' => []],
+		'flare_tire_coverage'     => ['field' => 'Flare Tire Coverage', 	'options' => []],
+		'box_style'               => ['field' => 'Box Style', 				'options' => []],
+		'box_opening_type'        => ['field' => 'Box Opening Type', 		'options' => []],
 		'color'                   => ['field' => 'Color', 					'options' => []],
+		'finish'                  => ['field' => 'Finish', 					'options' => []],
+		'style'                   => ['field' => 'Style', 					'options' => []],
+		'material'                => ['field' => 'Material', 				'options' => []],
+		'material_thickness'      => ['field' => 'Material Thickness', 		'options' => []],
+		'sold_as'                 => ['field' => 'Sold As', 				'options' => []],
+		'tube_size'               => ['field' => 'Tube Size', 				'options' => []],
+		'tube_shape'              => ['field' => 'Tube Shape', 				'options' => []],
+		'liquid_storage_capacity' => ['field' => 'Liquid Storage Capacity', 'options' => []],
+
 		'dim_a'                   => ['field' => 'DIM_A', 					'options' => []],
 		'dim_b'                   => ['field' => 'DIM_B', 					'options' => []],
 		'dim_c'                   => ['field' => 'DIM_C', 					'options' => []],
@@ -32,24 +46,12 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		'pop_code'                => ['field' => 'POP Code', 				'options' => []],
 		'i_sheet'                 => ['field' => 'I-Sheet', 				'options' => []],
 		'country_of_manufacture'  => ['field' => 'Country of Origin', 		'options' => []],
-		'flare_height'            => ['field' => 'Flare Height', 			'options' => []],
-		'flare_tire_coverage'     => ['field' => 'Flare Tire Coverage', 	'options' => []],
 		'vehicle_type'            => ['field' => 'Vehicle Type', 			'options' => []],
 		'model_type'              => ['field' => 'Model Type', 				'options' => []],
 		'width'                   => ['field' => 'Width', 					'options' => []],
 		'length'                  => ['field' => 'Length', 					'options' => []],
 		'height'                  => ['field' => 'Height', 					'options' => []],
-		'finish'                  => ['field' => 'Finish', 					'options' => []],
-		'style'                   => ['field' => 'Style', 					'options' => []],
-		'material'                => ['field' => 'Material', 				'options' => []],
-		'material_thickness'      => ['field' => 'Material Thickness', 		'options' => []],
-		'sold_as'                 => ['field' => 'Sold As', 				'options' => []],
 		'warranty'                => ['field' => 'Warranty', 				'options' => []],
-		'liquid_storage_capacity' => ['field' => 'Liquid Storage Capacity', 'options' => []],
-		'tube_shape'              => ['field' => 'Tube Shape', 				'options' => []],
-		'tube_size'               => ['field' => 'Tube Size', 				'options' => []],
-		'box_style'               => ['field' => 'Box Style', 				'options' => []],
-		'box_opening_type'        => ['field' => 'Box Opening Type', 		'options' => []],
 		'brand'                   => ['field' => 'Brand Short Code', 		'options' => []],
 		'brand_short_code'        => ['field' => 'Brand Short Code', 		'options' => []],
 		'part_saleable'           => ['field' => 'Part Saleable', 	     	'options' => []],
@@ -97,8 +99,6 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 				return $row['MSRP Price'];
 			case 'tax_class_id';
 				return 2;
-			case 'country_of_manufacture';
-				return $this->countryOfManufacture($attribute, $row);
 			case 'meta_title';
 				return $this->getMetaTitle($row);
 			case 'meta_description';
@@ -107,32 +107,32 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 			////// Custom Attributes
 			
 			// Selects
-			case 'pop_code';
-			case 'i_sheet';
-			case 'model_type';
-			case 'flare_tire_coverage';
+			case 'bed_length';
+			case 'bed_type';
 			case 'flare_height';
-			case 'width';
-			case 'length';
-			case 'height';
+			case 'flare_tire_coverage';
+			case 'box_style';
+			case 'box_opening_type';
+			case 'color';
 			case 'finish';
 			case 'style';
 			case 'material';
 			case 'material_thickness';
 			case 'sold_as';
-			case 'warranty';
-			case 'liquid_storage_capacity';
 			case 'tube_shape';
 			case 'tube_size';
-			case 'box_style';
-			case 'box_opening_type';
-			case 'brand_short_code';
-				return $this->getOptionId($attribute, $row);
+			case 'liquid_storage_capacity';
 
-			case 'bed_type';
-			case 'bed_length';
-			case 'color';
-				return $this->getOptionIdWithNA($attribute, $row);
+			case 'pop_code';
+			case 'i_sheet';
+			case 'model_type';
+			case 'width';
+			case 'length';
+			case 'height';
+			case 'warranty';
+			case 'brand_short_code';
+			case 'country_of_manufacture';
+				return $this->getOptionId($attribute, $row);
 
 			// Boolean
 			case 'drilling_required';
@@ -201,18 +201,18 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 	protected function getMetaDescription($row)
 	{
         return 'Learn about the ' . $this->brandMap[$row['Brand Short Code']] . ' '
-        . $this->getMappedValue('name', $row) . ' by viewing it\'s '
-        . $this->getModelId($row) . ' specs and check to see if this '
-        . $this->getMappedValue('name', $row) . ' model is the right model for your exact vehicle.';
+	        . $this->getMappedValue('name', $row) . ' by viewing it\'s '
+	        . $this->getModelId($row) . ' specs and check to see if this '
+	        . $this->getMappedValue('name', $row) . ' model is the right model for your exact vehicle.';
 	}
 
 	protected function getMetaTitle($row)
 	{
         return $this->brandMap[$row['Brand Short Code']] . ' '
-        . $this->getMappedValue('name', $row) . ' '
-        . $this->getModelId($row) . ' - '
-        . $row['Product Category Short Code'] . ' | '
-        . 'Lund International';
+	        . $this->getMappedValue('name', $row) . ' '
+	        . $this->getModelId($row) . ' - '
+	        . $row['Product Category Short Code'] . ' | '
+	        . 'Lund International';
 	}
 
 	protected function getModelId($row)
@@ -230,40 +230,6 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 	{
 		return strtoupper($row['Part Number']);
 	}
-
-	protected function countryOfManufacture($attributeCode, $row)
-	{
-        $field = $this->attributeMap[$attributeCode]['field'];
-        $value = $row[$field];
-
-		if ($value == 0) {
-           return null;
-        }
-
-        // Check cache and return if we have option id for this value
-        if (isset($this->attributeMap[$attributeCode]['options'][$value])) {
-            return $this->attributeMap[$attributeCode]['options'][$value];
-        }
-
-        $attributeId = $this->attributeMap[$attributeCode]['id'];
-
-        $attribute  = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
-        $allOptions = $attribute->getSource()->getAllOptions(true, true);
-        foreach ($allOptions as $option) {
-            if ($option['label'] == $value) {
-                $this->attributeMap[$attributeCode]['options'][$value] = $option['value'];
-                return $option['value'];
-            }
-        }
-
-        // If we couldn't find one, we have to add it as an option
-        if ($optionId = $this->addAttributeOption($attributeId, $value)) {
-            return $this->attributeMap[$attributeCode]['options'][$value] = $value;
-        } else {
-            return null;
-        }
-    }
-
 
 	protected function getShortDescription($row)
 	{
@@ -295,12 +261,20 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
 		return 0.00;
 	}
 
+	private function isEmpty($value)
+	{
+		$empty = ['', '0', '0.0', '0.00'];
+		if ($value === 0 || in_array($value, $empty))
+			return true;
+		return false;
+	}
+
 	public function getOptionId($attributeCode, $row)
 	{
 		$field = $this->attributeMap[$attributeCode]['field'];
 		$value = $row[$field];
 
-		if ($value == 0) {
+		if ($this->isEmpty($value)) {
            return null;
         }
 
@@ -309,11 +283,11 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
             return $this->attributeMap[$attributeCode]['options'][$value];
         }
 
-
 		$attributeId = $this->attributeMap[$attributeCode]['id'];
 
 		$attribute  = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
 		$allOptions = $attribute->getSource()->getAllOptions(true, true);
+
 		foreach ($allOptions as $option) {
 			if ($option['label'] == $value) {
 				$this->attributeMap[$attributeCode]['options'][$value] = $option['value'];
@@ -346,37 +320,6 @@ class Unleaded_PIMS_Helper_Import_Product_Adapter
             }
         }
     }
-
-	public function getOptionIdWithNA($attributeCode, $row)
-	{
-		$field = $this->attributeMap[$attributeCode]['field'];
-		$value = $row[$field];
-		if ($value === '0' || $value === '')
-			$value = 'NA';
-
-		// Check cache and return if we have option id for this value
-		if (isset($this->attributeMap[$attributeCode]['options'][$value]))
-			return $this->attributeMap[$attributeCode]['options'][$value];
-
-		$attributeId = $this->attributeMap[$attributeCode]['id'];
-
-		$attribute  = Mage::getModel('eav/config')->getAttribute('catalog_product', $attributeCode);
-		$allOptions = $attribute->getSource()->getAllOptions(true, true);
-		foreach ($allOptions as $option) {
-			if ($option['label'] === $value) {
-				$this->attributeMap[$attributeCode]['options'][$value] = $option['value'];
-				return $option['value'];
-			}
-		}
-
-	    // If we couldn't find one, we have to add it as an option
-	    if ($optionId = $this->addAttributeOption($attributeId, $value)) {
-	    	$this->attributeMap[$attributeCode]['options'][$value] = $optionId;
-	    	return $optionId;
-	    } else {
-	    	return null;
-	    }
-	}
 
 	protected function addAttributeOption($attributeId, $optionValue)
 	{

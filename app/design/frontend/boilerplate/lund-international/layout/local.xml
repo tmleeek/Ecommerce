@@ -59,6 +59,7 @@
 		</reference>
 
 	</default>
+
     <expressionengine_integratee>
      <reference name="head">
         <action method="setTemplate"><template>page/html/head-ee.phtml</template></action>
@@ -72,6 +73,12 @@
     
     <block type="cms/block" name="installation-guides">
         <action method="setBlockId"><block_id>installation-guides</block_id></action>
+    </block>
+    <block type="cms/block" name="search-guides">
+        <action method="setBlockId"><block_id>search-guides</block_id></action>
+    </block>
+    <block type="cms/block" name="newest-products-guides">
+        <action method="setBlockId"><block_id>newest-products-guides</block_id></action>
     </block>
 </expressionengine_integratee>
 
@@ -100,35 +107,33 @@
 		</reference>
     </catalog_category_layered>
 	<catalog_product_view translate="label">
-        <label>Catalog Product View (Any)</label>
-        <!-- Mage_Catalog -->
-        <reference name="root">
-            <action method="setTemplate"><template>page/1column.phtml</template></action>
-        </reference>
+		<label>Catalog Product View (Any)</label>
+		<!-- Mage_Catalog -->
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
 		<reference name="content">
-		<reference name="product.info">
-			<block type="fileuploader/fileuploader" name="attachments" as="attachments" template="fileuploader/attachments.phtml"/>
-                        <block type="core/template" name="product-legends" template="catalog/product/view/product-legends.phtml"/>
-                        <block type="core/template" name="product-visuals" template="catalog/product/view/product-visuals.phtml"/>
-			<block type="enterprise_targetrule/catalog_product_list_related" name="related_products" as="related_products" template="targetrule/catalog/product/list/related.phtml">
-                <action method="setColumnCount"><columns>3</columns></action>
-                <block type="enterprise_targetrule/catalog_product_item" name="catalog.product.related.item" template="targetrule/catalog/product/list/related/item.phtml" />
-            </block>
-			
-			<block type="review/product_view_list" name="review-list" as="review-list" template="review/product/view/list.phtml">
-						<block type="review/form" name="product.review.form" as="review_form">
-					<block type="page/html_wrapper" name="product.review.form.fields.before" as="form_fields_before" translate="label">
-						<label>Review Form Fields Before</label>
+			<reference name="product.info">
+				<block type="unleaded_productline/configurator" name="product_configurator" template="catalog/product/view/product-configurator.phtml"/>
+				<block type="fileuploader/fileuploader" name="attachments" as="attachments" template="fileuploader/attachments.phtml"/>
+				<block type="core/template" name="product-legends" template="catalog/product/view/product-legends.phtml"/>
+				<block type="core/template" name="product-visuals" template="catalog/product/view/product-visuals.phtml"/>
+				<block type="enterprise_targetrule/catalog_product_list_related" name="related_products" as="related_products" template="targetrule/catalog/product/list/related.phtml">
+					<action method="setColumnCount"><columns>3</columns></action>
+					<block type="enterprise_targetrule/catalog_product_item" name="catalog.product.related.item" template="targetrule/catalog/product/list/related/item.phtml" />
+				</block>
+
+				<block type="review/product_view_list" name="review-list" as="review-list" template="review/product/view/list.phtml">
+					<block type="review/form" name="product.review.form" as="review_form">
+						<block type="page/html_wrapper" name="product.review.form.fields.before" as="form_fields_before" translate="label">
+							<label>Review Form Fields Before</label>
 							<action method="setMayBeInvisible"><value>1</value></action>
+						</block>
 					</block>
 				</block>
-			</block>
-			
+			</reference>
 		</reference>
-       </reference>
-        
-        
-    </catalog_product_view>
+	</catalog_product_view>
 	<customer_account translate="label">
         <label>Customer My Account (All Pages)</label>
 		<reference name="root">

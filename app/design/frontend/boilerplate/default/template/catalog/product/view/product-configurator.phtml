@@ -1,0 +1,306 @@
+<?php
+	$product     = Mage::registry('current_product');
+	$productLine = Mage::registry('current_product_line');
+
+	$this->initOptionLabels($productLine);
+?>
+<div class="product-configurator">
+    <h3 class="chose-heading"><?php echo $this->__("Choose Your Options.") ?></h3>
+    <?php $this->printOptions($productLine->getProductTree()); ?>
+</div>
+
+<script type="text/javascript">
+	(function($) {
+		var productTree = <?php echo $productLine->getProductTree(); ?>,
+			attributeOrder = <?php echo $this->printAttributeOrder(); ?>,
+			$attributeSelects = <?php echo $this->printInitAttributes(); ?>,
+			optionValues = <?php echo $this->printOptionLabels(); ?>,
+			vehicleAttributes = <?php echo $this->printVehicleAttributes(); ?>,
+			currentVehicle = <?php echo $this->printCurrentVehicle(); ?>,
+			currentObject;
+
+		var _autoTrigger = false;
+
+		function init() {
+			var firstAttribute = 'year';
+
+			listenToAttributeSelects();
+			populateAttribute(firstAttribute);
+			$attributeSelects[firstAttribute].parents('.select-field-options').addClass('active');
+			// Disable everything after the first attribute on init
+			disableAfter(0);
+
+			checkCurrentVehicle();
+		}
+
+		function disableAfter(index) {
+			// Since we are disabling *after*, make sure to increment
+			index++;
+			// Copy the array
+			var attributes = attributeOrder.slice(0);
+			// Find items after index
+			var disable = attributes.splice(index);
+			$.each(disable, disableAttribute);
+		}
+
+		function disableAttribute(index, attributeToDisable) {
+			$attributeSelects[attributeToDisable].prop('disabled', true);
+			$attributeSelects[attributeToDisable].parents('.select-field-options').hide();
+		}
+
+		function checkCurrentVehicle() {
+			// console.log(currentVehicle);
+			if (!currentVehicle)
+				return;
+
+			// If we do have a vehicle, we need to active the first three drop downs
+			_autoTrigger = true;
+			$attributeSelects['year'].val(currentVehicle.year).trigger('change');
+			$attributeSelects['make'].val(currentVehicle.make.toUpperCase()).trigger('change');
+			$attributeSelects['model'].val(currentVehicle.model.toUpperCase()).trigger('change');
+			_autoTrigger = false;
+		}
+
+		function enableAttribute(index, attributeToEnable) {
+			// console.log(index);
+
+			var sliceTo;
+			if (index === attributeOrder.length)
+				sliceTo = false;
+			else
+				sliceTo = index + 1;
+
+			// console.log(sliceTo);
+			// This is in place for when we are modifying the last attribute
+			if (typeof attributeToEnable === 'undefined') {
+				// Use index instead
+				if (sliceTo)
+					attributeToEnable = attributeOrder.slice(index, sliceTo)[0];
+				else
+					attributeToEnable = attributeOrder[index - 1];
+
+				// console.log(attributeToEnable);
+			}
+			// console.log($attributeSelects[attributeToEnable]);
+			removeActive(attributeToEnable);
+			$attributeSelects[attributeToEnable].prop('disabled', false);
+			$attributeSelects[attributeToEnable].parents('.select-field-options').show();
+			$attributeSelects[attributeToEnable].parents('.select-field-options').addClass('active');
+			populateAttribute(attributeToEnable);
+		}
+
+		function removeActive(except) {
+			// console.log(except);
+			$.each(attributeOrder, function(index, attributeCode) {
+				if (attributeCode === except)
+					return;
+				$attributeSelects[attributeCode].parents('.select-field-options').removeClass('active');
+			});
+		}
+
+		function hideNonApplicableSelects() {
+			// console.log('Hiding non applicable select fields');
+
+			$.each($attributeSelects, function(index, $select) {
+				// console.log($select.prop('disabled'));
+
+				if ($select.prop('disabled'))
+					return;
+
+				// console.log($select.val());
+				if ($select.val() === '') {
+					$select.hide();
+					$select.parents('.select-field-options').hide();
+				}
+			});
+		}
+
+		function showSelectsAfter(index) {
+			// Since we are showing *after*, make sure to increment
+			index++;
+			// Copy the array
+			var attributes = attributeOrder.slice(0);
+			// Find items after index
+			$.each($attributeSelects, function(_index, $select) {
+				if (_index < index)
+					return;
+				// console.log($select);
+				$select.show();
+				$select.parents('.select-field-options').show();
+			});
+		}
+
+		function listenToAttributeSelects() {
+			$.each(attributeOrder, listenAttribute);
+		}
+
+		function listenAttribute(index, attributeToListen) {
+			$attributeSelects[attributeToListen].on('change', function() {
+				// console.log(index);
+				// console.log(attributeOrder.length);
+
+				var nextIndex = index + 1;
+				if (index === attributeOrder.length - 1) {
+					// This means the user has selected everything, we need
+					// Hopefully we only have one sku!!
+					if (currentObject.length !== 1) {
+						window.alert('There was a collision, multiple skus for this configuration ' + JSON.stringify(currentObject));
+					} else {
+						$('p.part-code').html('Part Number: ' + currentObject[0]);
+						// We also need to hit the back end to get information about this SKU
+						$.ajax({
+							method: 'GET',
+							url: '/productline/part?sku=' + currentObject[0],
+							dataType: 'json',
+							success: function(response) {
+								// console.log(response);
+								// Replace compatible vehicles and price
+								$('#compatible-vehicle-list').html(response.compatibleVehicles);
+								$('span.price').html(response.price);
+							}
+						});
+					}
+				} else {
+					// And disable all after that
+					disableAfter(nextIndex);
+					// Enable the next attribute
+					enableAttribute(nextIndex);
+				}
+
+				// Check if this was the 'model' attribute, if it was, we need to save this vehicle
+				console.log(_autoTrigger);
+				if (!_autoTrigger && attributeToListen === 'model') {
+					$.ajax({
+						method: 'POST',
+						url: '/vehicle/index/addVehicle',
+						data: {
+							year: $attributeSelects['year'].val(),
+							make: $attributeSelects['make'].val(),
+							model: $attributeSelects['model'].val(),
+						},
+						dataType: 'json',
+						success: function(response) {
+							console.log(response);
+						}
+					});
+					_autoTrigger = false;
+				}
+			});
+		}
+
+		function populateAttribute(attributeCode) {
+			// First find the place of this attribute
+			var index = attributeOrder.indexOf(attributeCode);
+			// Now we need to dive into the tree to find the options
+			$.each(attributeOrder, function(_index, _attributeCode) {
+				// Skip attributes that are "after" or "before" this element in the tree
+				if (_index !== index)
+					return;
+
+				// console.log(_attributeCode);
+				// console.log(_index);
+
+				var previousAttribute = null,
+					previousValues = null;
+				// Only pertains to attributes after 'year'
+				if (_index !== 0) {
+					// _index is how deep into the tree we will go to populate
+					var previousIndex = _index - 1;
+					previousAttribute = attributeOrder.slice(previousIndex, _index)[0],
+					previousValues = getPreviousValues(previousIndex);
+				}
+
+				// console.log(previousAttribute);
+				// console.log(previousValues);
+
+				var options = getKeysRecursively(0, _index, previousValues, productTree);
+				// console.log(options);
+				appendOptions(_attributeCode, options);
+			});
+
+			// Make sure that all remaining attributes are visible
+			// showSelectsAfter(index);
+			hideNonApplicableSelects();
+
+			// If this attribute has no options, or only one option that is "", then we need to enable the next select
+			var nextAttribute = getNextAttribute(attributeCode);
+			var $select = $attributeSelects[nextAttribute][0];
+			var $firstRealOption = $($select.options[1]);
+			// console.log(nextAttribute);
+			// console.log($select.options.length);
+			// console.log($firstRealOption.val());
+			if ($select.options.length === 2 && $firstRealOption.val() === '') {
+				// console.log('No real options here');
+				$firstRealOption.prop('selected', true);
+				$($select).trigger('change');
+				hideNonApplicableSelects();
+			}
+		}
+
+		function getNextAttribute(attributeCode) {
+			var index = attributeOrder.indexOf(attributeCode);
+			return attributeOrder.slice(index, index + 1)[0];
+		}
+
+		function getPreviousValues(previousIndex) {
+			// console.log(previousIndex);
+			var values = [];
+			$.each(attributeOrder, function(index, attributeCode) {
+				if (index > previousIndex)
+					return;
+				// console.log(index);
+				// console.log(attributeCode);
+				values.push(getValue(attributeCode));
+			});
+			return values;
+		}
+
+		function getValue(attributeCode) {
+			return $attributeSelects[attributeCode].val();
+		}
+
+		function getKeysRecursively(currentDepth, targetDepth, previousValues, _currentObject) {
+			// console.log(currentDepth);
+			// console.log(targetDepth);
+			// console.log(previousValues);
+			// console.log(currentObject);
+			
+			if (currentDepth === attributeOrder.length - 1) {
+				// This is the last one
+				currentObject = _currentObject[previousValues[currentDepth - 1]];
+			}
+
+			if (currentDepth === targetDepth) {
+				return Object.keys(_currentObject);
+			}
+			// console.log(previousValues[currentDepth]);
+
+			currentObject = _currentObject[previousValues[currentDepth]];
+			return getKeysRecursively(currentDepth + 1, targetDepth, previousValues, currentObject);
+		}
+
+		function appendOptions(attributeCode, options) {
+			// First clear out old options
+			$select = $attributeSelects[attributeCode][0];
+			var length = $select.options.length;
+			for (var index = 1; index < length; index++) {
+				$select.options.remove(index);
+			}
+			// Now append options
+			$.each(options, function(index, value) {
+				if (vehicleAttributes.indexOf(attributeCode) !== -1)
+					var label = value;
+				else
+					var label = optionValues[attributeCode][value];
+
+				$attributeSelects[attributeCode].append(
+			        $('<option></option>').val(value).html(label)
+			    );
+			});
+		}
+
+		init();
+
+		// console.log(productTree);
+	}(jQuery));
+</script>

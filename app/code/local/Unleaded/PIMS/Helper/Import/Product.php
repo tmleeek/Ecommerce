@@ -300,7 +300,7 @@ class Unleaded_PIMS_Helper_Import_Product extends Unleaded_PIMS_Helper_Data
 			'is_massupdate'    => true,
 			'attribute_set_id' => $attributeSetId,
 			'category_ids'     => [],
-			'visibility'       => Mage_Catalog_Model_Product_Visibility::VISIBILITY_BOTH,
+			'visibility'       => Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE,
 			'media_gallery'    => [
 				'images'				  => []
 			],

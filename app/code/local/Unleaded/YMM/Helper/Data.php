@@ -44,6 +44,8 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 		foreach ($vehicleCollection as $_vehicle)
 			$vehicleIds[] = $_vehicle->getId();
 
+		// Mage::log($vehicleIds);
+		
 		return $vehicleIds;
 	}
 
@@ -83,7 +85,7 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
         foreach (['year', 'make', 'model'] as $variable)
             $vehiclePieces[] = strtolower(str_replace(' ', '_', $$variable));
 
-        $segment .= implode('-', $vehiclePieces);
+        $segment = implode('-', $vehiclePieces);
 
         $this->segmentCache[$key] = $segment;
         return $this->segmentCache[$key];
@@ -111,6 +113,5 @@ class Unleaded_YMM_Helper_Data extends Mage_Core_Helper_Abstract
 		foreach ($productCollection as $product) {
 			var_dump($product->getId());
 		}
-		var_dump($productCollection->getSize());exit;
 	}
 }

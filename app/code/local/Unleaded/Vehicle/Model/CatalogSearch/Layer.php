@@ -16,7 +16,7 @@ class Unleaded_Vehicle_Model_CatalogSearch_Layer extends Mage_CatalogSearch_Mode
 
             $request = Mage::app()->getRequest();
 
-            Mage::log(print_r($request->getParams(), 1));
+            // Mage::log(print_r($request->getParams(), 1));
 
             foreach ($attributes as $attribute) {
                 $attribute_code = $attribute->getAttributeCode();

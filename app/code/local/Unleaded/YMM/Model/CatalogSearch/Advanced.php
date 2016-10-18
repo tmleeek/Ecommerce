@@ -14,6 +14,7 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced extends Mage_CatalogSearch_Model
         Mage::register('currentCategory', $this->category);
 
         foreach ($attributes as $attribute) {
+            // Mage::log($attribute->getAttributeCode());
             /* @var $attribute Mage_Catalog_Model_Resource_Eav_Attribute */
             if (!isset($values[$attribute->getAttributeCode()])) {
                 continue;
@@ -46,18 +47,17 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced extends Mage_CatalogSearch_Model
                         $hasConditions = true;
                         $this->_addSearchCriteria($attribute, $value);
                     }
-                    // echo'<br>';echo'<br>';echo __LINE__ . ' ';var_dump((string)$this->getProductCollection()->getSelect());
                 }
             } else {
                 $condition = $this->_prepareCondition($attribute, $value);
                 if ($condition === false) {
                     continue;
                 }
-
+                // Mage::log(print_r($condition, true));
                 $this->_addSearchCriteria($attribute, $value);
 
                 $table = $attribute->getBackend()->getTable();
-                if ($attribute->getBackendType() == 'static'){
+                if ($attribute->getBackendType() == 'static') {
                     $attributeId = $attribute->getAttributeCode();
                 } else {
                     $attributeId = $attribute->getId();
@@ -65,8 +65,10 @@ class Unleaded_YMM_Model_CatalogSearch_Advanced extends Mage_CatalogSearch_Model
                 $allConditions[$table][$attributeId] = $condition;
             }
         }
+        // Mage::log(print_r($allConditions, true));
         if ($allConditions) {
             $this->getProductCollection()->addFieldsToFilter($allConditions);
+            // Mage::log((string)$this->getProductCollection()->getSelect());
         } else if (!$hasConditions) {
             Mage::throwException(Mage::helper('catalogsearch')->__('Please specify at least one search term.'));
         }

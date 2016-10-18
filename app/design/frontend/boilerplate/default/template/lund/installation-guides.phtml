@@ -1,10 +1,23 @@
 <?php
-$helper = Mage::helper('guideindexer');
-$lundGuides = $helper->getBrandGuides('347');
-$avsGuides = $helper->getBrandGuides('348');
-//$limit = 6;
-//$lundCnt = 1;
-//$avsCnt = 1;
+$lundCategory = Mage::getModel('catalog/category')->load(34896);
+$lundProducts = Mage::getResourceModel('catalog/product_collection')
+        ->addAttributeToSelect('i_sheet')
+        ->addAttributeToSelect('name')
+        ->addAttributeToSelect('small_image')
+        ->addAttributeToSelect('product_line')
+        ->setStoreId(Mage::app()->getStore()->getId())
+        ->addCategoryFilter($lundCategory)
+        ->setPage(0, 45);
+
+$avsCategory = Mage::getModel('catalog/category')->load(34897);
+$avsProducts = Mage::getResourceModel('catalog/product_collection')
+        ->addAttributeToSelect('i_sheet')
+        ->addAttributeToSelect('name')
+        ->addAttributeToSelect('small_image')
+        ->addAttributeToSelect('product_line')
+        ->setStoreId(Mage::app()->getStore()->getId())
+        ->addCategoryFilter($avsCategory)
+        ->setPage(0, 45);
 ?>
 <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
 
@@ -20,6 +33,12 @@ $avsGuides = $helper->getBrandGuides('348');
         LshowStart = 0;
         LshowFinish = 0;
         LshowIncrementer = 9;
+
+        var lDefaultLoad = 45;
+        var lAjaxPointer = lDefaultLoad;
+        var aDefaultLoad = 45;
+        var aAjaxPointer = aDefaultLoad;
+
         //wrapper = jQuery("#lund_int");
         AVSItems = jQuery('.avsGuides div.item');
         AitemCount = AVSItems.length;
@@ -27,53 +46,118 @@ $avsGuides = $helper->getBrandGuides('348');
         AshowFinish = 0;
         AshowIncrementer = 9;
 
-        LundItems.slice(LshowStart,LshowIncrementer).slideDown('fast');
+        LundItems.slice(LshowStart, LshowIncrementer).slideDown('fast');
         LshowFinish = LshowIncrementer;
-        AVSItems.slice(AshowStart,AshowIncrementer).slideDown('fast');
+        AVSItems.slice(AshowStart, AshowIncrementer).slideDown('fast');
         AshowFinish = AshowIncrementer;
 
+        if (!LitemCount && !AitemCount) {
+            var noDisplayMsg = "<h2>Sorry, we couldn't find a product or guide with this keyword.</h2>";
+            jQuery(".guide-listing").last().after(noDisplayMsg);
+        }
+        if (!LitemCount) {
+            jQuery('.lundGuides').hide();
+        }
+        if (!AitemCount) {
+            jQuery('.avsGuides').hide();
+        }
+        if (AitemCount < AshowIncrementer){
+            jQuery('.avsGuides div.paginate button').hide();
+        }
+        if (LitemCount < LshowIncrementer){
+            jQuery('.lundGuides div.paginate button').hide();
+        }
         jQuery('.lundGuides div.paginate button').click(function () {
-            if (LshowFinish <= LitemCount){
-                LshowFinish += LshowIncrementer;
-                LundItems.slice(LshowStart+LshowIncrementer,LshowFinish+LshowIncrementer).slideDown('fast');
+            if (LshowFinish <= LitemCount) {
+                LundItems.slice(LshowStart + LshowIncrementer, LshowFinish + LshowIncrementer).slideDown('fast');
                 LshowStart += LshowIncrementer;
+                LshowFinish += LshowIncrementer;
+
+                if (LshowFinish == lAjaxPointer) {
+                    jQuery.ajax({
+                        method: 'POST',
+                        url: "<?php echo Mage::getUrl('guideindexer') ?>",
+                        data: {
+                            categoryId: '34896',
+                            currentPointer: LshowFinish,
+                            loadTill: lDefaultLoad
+                        },
+                        success: function (data) {
+                            jQuery(".lundGuides .item").last().after(data);
+                            LundItems = jQuery('.lundGuides div.item');
+                            LitemCount = LundItems.length;
+                            lAjaxPointer = lAjaxPointer + lDefaultLoad;
+                        }
+                    });
+                }
             } else {
-               return;
-           }
-       });
-       jQuery('.avsGuides div.paginate button').click(function () {
-            if (AshowFinish <= AitemCount){
-                AVSItems.slice(AshowStart+AshowIncrementer,AshowFinish+AshowIncrementer).slideDown('fast');
+                return;
+            }
+        });
+        jQuery('.avsGuides div.paginate button').click(function () {
+            if (AshowFinish <= AitemCount) {
+                AVSItems.slice(AshowStart + AshowIncrementer, AshowFinish + AshowIncrementer).slideDown('fast');
                 AshowStart += AshowIncrementer;
                 AshowFinish += AshowIncrementer;
+
+                if (AshowFinish == aAjaxPointer) {
+                    jQuery.ajax({
+                        method: 'POST',
+                        url: "<?php echo Mage::getUrl('guideindexer') ?>",
+                        data: {
+                            categoryId: '34896',
+                            currentPointer: AshowFinish,
+                            loadTill: aDefaultLoad
+                        },
+                        success: function (data) {
+                            jQuery(".avsGuides .item").last().after(data);
+                            AVSItems = jQuery('.avsGuides div.item');
+                            AitemCount = AVSItems.length;
+                            aAjaxPointer = aAjaxPointer + aDefaultLoad;
+                        }
+                    });
+                }
             } else {
-               return;
-           }
-       });
+                return;
+            }
+        });
+
+        jQuery('.guides .guide-listing .item h3 a').click(function (event) {
+            event.preventDefault();
+            var productId = jQuery(this).children('.product-id').val();
+
+            var downloadUrl = jQuery(this).attr('href');
+            jQuery.ajax({
+                method: 'POST',
+                url: "<?php echo Mage::getUrl('guideindexer/index/updatesheetcnt') ?>",
+                data: {productId: productId},
+                error: function () {
+                    window.open(downloadUrl);
+                },
+                success: function () {
+                    window.open(downloadUrl);
+                }
+            });
+        });
     });
 </script>
 
-<section class="clearfix lundGuides">
-    <h2 class="title"><?php echo $this->__('Lund') ?></h2>
-    <?php foreach ($lundGuides as $_lundGuide): ?>
-        <?php //if ($lundCnt > 12) break; ?>
-        <div class="item">
-            <h3><a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_lundGuide . ".pdf" ?>"><?php echo $_lundGuide ?></a></h3>
-        </div>
-    <?php endforeach; ?>
-           <div class="paginate">
-               <button class="button"><?php echo $this->__('Load More') ?></button>
-           </div>
-</section>
-
-<section class="clearfix avsGuides">
-    <h2 class="title"><?php echo $this->__('AVS') ?></h2>
-    <?php foreach ($avsGuides as $_avsGuide): ?>
-        <div class="item">
-            <h3><a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_avsGuide .".pdf" ?>"><?php echo $_avsGuide ?></a></h3>
-        </div>
-    <?php endforeach; ?>
+<?php if ($lundProducts->count() > 0): ?>
+    <section class="clearfix lundGuides guide-listing">
+        <h2 class="title"><?php echo $this->__('Lund') ?></h2>
+        <?php echo $this->getLayout()->createBlock('core/template')->setData('guideCollection', $lundProducts)->setTemplate('lund/parseguides.phtml')->toHtml(); ?>
         <div class="paginate">
             <button class="button"><?php echo $this->__('Load More') ?></button>
         </div>
-</section>
+    </section>
+<?php endif; ?>
+
+<?php if ($avsProducts->count() > 0): ?>
+    <section class="clearfix avsGuides guide-listing">
+        <h2 class="title"><?php echo $this->__('AVS') ?></h2>
+        <?php echo $this->getLayout()->createBlock('core/template')->setData('guideCollection', $avsProducts)->setTemplate('lund/parseguides.phtml')->toHtml(); ?>
+        <div class="paginate">
+            <button class="button"><?php echo $this->__('Load More') ?></button>
+        </div>
+    </section>
+<?php endif; ?>

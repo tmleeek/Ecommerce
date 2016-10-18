@@ -39,22 +39,14 @@
              {/exp:channel:entries}
 
            <div class="guides">
-            <div class="find-guide">
-               <h2>Find Your Guide</h2>
-               {exp:search:simple_form channel="guides" form_id="guide-search" form_class="clearfix" result_page="guides/search" search_in="everywhere"  results="50"}
-                <input type="text" name="keywords" id="keywords" class="textbox" value="" placeholder="Search by keyword or part #..." />
-                <button type="submit"><span class="fa fa-search"></span></button>
-              {/exp:search:simple_form}
 
-              <h3>Popular Downloads</h3>
-                 <ul>
-                 {exp:channel:entries channel="guides" category="18" dynamic="no" limit="6"}
-                    <li><a href="{guide}" target="_blank">{title}</a></li>
-                 {/exp:channel:entries}
-                 </ul>
-           {exp:channel:entries channel="guide_page"}
-              <h3>Newest Products</h3>
-                 {newest_products}
+            <div class="find-guide">
+
+              {mage:search-guides} 
+
+            {mage:newest-products-guides}
+            
+            {exp:channel:entries channel="guide_page"}
               <h3>Related Information</h3>
                  {related_information}
             {/exp:channel:entries}

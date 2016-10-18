@@ -1366,3 +1366,15 @@ div.block-layered-nav dd a.amshopby-attr-selected { padding-left:22px;}
 .product-navigation .menu-right-block a.learn-more{ margin:30px 40px 0px 0px; float:right; background:#e90e2b; border-radius:5px; display:inline-block; padding:0 17px; height:28px; line-height:28px; color:#FFF; text-transform:uppercase; font-family: "Lato",sans-serif; font-weight:700;}
 .navbar.navbar-default .nav-width-fixed > ul li.our-brand-topnavi ul li a{ background:#fff;}
 }
+
+.select-field-options .select-style {
+	position: relative;
+}
+.select-field-options.active .select-style:before {
+	width: 24px;
+	height: 17px;
+	display: block;
+	content: " ";
+	position: absolute;
+	background-image: url('/skin/frontend/boilerplate/default/images/right-ribbon.png');
+}

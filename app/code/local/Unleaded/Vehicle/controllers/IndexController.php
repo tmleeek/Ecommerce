@@ -16,6 +16,9 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         if ($brands = Mage::app()->getRequest()->getParam('brands'))
             $block->setData('brands', $brands);
 
+        if ($brand = Mage::app()->getRequest()->getParam('brand'))
+            $block->setData('brand', $brand);
+        
         echo $block->toHtml();
     }
 
@@ -106,19 +109,50 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         $year             = $request->getParam('year');
         $make             = str_replace('-', '_', $request->getParam('make'));
         $model            = str_replace('-', '_', $request->getParam('model'));
+
         $targetCategoryId = $request->getParam('targetCategoryId');
         $brands           = $request->getParam('brands');      
         $brand            = $request->getParam('brand');
         
-        $_vehicle = Mage::getModel("vehicle/ulymm")
-                ->getCollection()
-                ->addFieldToFilter('year', $year)
-                ->addFieldToFilter('make', $make)
-                ->addFieldToFilter('model', $model)
-                ->getFirstItem();
+        $_vehicle         = $this->getVehicleModel($year, $make, $model);
 
-        $vehicleId = $_vehicle->getId();
+        $this->addVehicleToCurrentCustomerGarage($_vehicle->getId());
 
+        $this->setVehicleCookie($year, $make, $model);
+
+        $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
+
+        if ($brand) {
+            $redirectUrl .= '?brand=' . $brand;
+        }
+        
+        if ($targetCategoryId) {
+            $targetCategory = Mage::getSingleton('catalog/category')->load($targetCategoryId);
+            if ($brand) {
+                $redirectUrl = '/' . $targetCategory->getUrlKey() . '?brand=' . $brand;
+            }
+        }
+
+        echo str_replace("/?", "?", $redirectUrl);
+    }
+
+    public function addVehicleAction()
+    {
+        $request = $this->getRequest();
+
+        $year             = $request->getParam('year');
+        $make             = str_replace('-', '_', $request->getParam('make'));
+        $model            = str_replace('-', '_', $request->getParam('model'));
+        
+        $_vehicle         = $this->getVehicleModel($year, $make, $model);
+
+        $this->addVehicleToCurrentCustomerGarage($_vehicle->getId());
+
+        $this->setVehicleCookie($year, $make, $model);
+    }
+
+    private function addVehicleToCurrentCustomerGarage($vehicleId)
+    {
         if (Mage::getSingleton('customer/session')->isLoggedIn()) {
             $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
         } else {
@@ -128,36 +162,6 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
         $garageModel = Mage::getModel('vehicle/ulgarage')
                         ->getCollection()
                         ->addFieldToFilter('customer_id', $customerId);
-       
-        $vehicleBlock = $this->getLayout()->getBlockSingleton('vehicle/vehicle');
-
-        // Set cookie for vehicle
-        $cookie = Mage::getSingleton('core/cookie');
-        $cookie->set(
-                'currentVehicle', 
-                Mage::helper('unleaded_ymm')->getVehicleSegment($year, $make, $model),
-                (60 * 60 * 24 * 30), 
-                '/'
-        );
-
-        $redirectUrl = Mage::helper('unleaded_ymm')->getVehicleUrl($year, $make, $model);
-
-        if ($targetCategoryId) {
-            $targetCategory = Mage::getSingleton('catalog/category')->load($targetCategoryId);
-            // If this target category exists in more than one brand, there will be no brand query param
-            if ($brands) {
-                $brands = explode(',', $brands);
-                if (count($brands) === 2) {
-                    $redirectUrl = '/' . $targetCategory->getUrlKey();
-                } else {
-                    $redirectUrl = '/' . $targetCategory->getUrlKey() . '?brand=' . $brands[0];
-                }
-            }
-        }
-        
-        if($brand){
-            $redirectUrl .= '?brand=' . $brand;
-        }
 
         if ($garageModel->count() == 1) {
             $garageData = $garageModel->getFirstItem();
@@ -168,18 +172,15 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
                     $garageData->setVehicles(json_encode(array_values($garage)));
                     $garageData->setSelectedVehicle($vehicleId);
                     $garageData->save();
-                    echo str_replace("/?", "?", $redirectUrl);
                 } else {
                     $garageData->setSelectedVehicle($vehicleId);
                     $garageData->save();
-                    echo str_replace("/?", "?", $redirectUrl);
                 }
             } else {
                 $garage = [$vehicleId];
                 $garageData->setVehicles(json_encode(array_values($garage)));
                 $garageData->setSelectedVehicle($vehicleId);
                 $garageData->save();
-                echo str_replace("/?", "?", $redirectUrl);
             }
         } else {
             $newGarage = Mage::getModel('vehicle/ulgarage');
@@ -187,8 +188,29 @@ class Unleaded_Vehicle_IndexController extends Mage_Core_Controller_Front_Action
             $newGarage->setVehicles(json_encode([$vehicleId]));
             $newGarage->setSelectedVehicle($vehicleId);
             $newGarage->save();
-            echo str_replace("/?", "?", $redirectUrl);
         }
+    }
+
+    private function getVehicleModel($year, $make, $model)
+    {
+        return Mage::getModel("vehicle/ulymm")
+                ->getCollection()
+                ->addFieldToFilter('year', $year)
+                ->addFieldToFilter('make', $make)
+                ->addFieldToFilter('model', $model)
+                ->getFirstItem();
+    }
+
+    private function setVehicleCookie($year, $make, $model)
+    {
+        // Set cookie for vehicle
+        $cookie = Mage::getSingleton('core/cookie');
+        $cookie->set(
+            'currentVehicle', 
+            Mage::helper('unleaded_ymm')->getVehicleSegment($year, $make, $model),
+            (60 * 60 * 24 * 30), 
+            '/'
+        );
     }
 
     public function getMakeByYearAction()

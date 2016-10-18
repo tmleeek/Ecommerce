@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unleaded_PIMS>
-            <version>0.0.5</version>
+            <version>0.0.9</version>
         </Unleaded_PIMS>
     </modules>
 
@@ -28,6 +28,11 @@
             <catalog>
                 <rewrite>
                     <product_attribute_backend_media>Unleaded_PIMS_Model_Product_Attribute_Backend_Media</product_attribute_backend_media>
+                </rewrite>
+            </catalog>
+            <catalog>
+                <rewrite>
+                    <resource_eav_attribute>Unleaded_PIMS_Model_Resource_Eav_Attribute</resource_eav_attribute>
                 </rewrite>
             </catalog>
         </models>

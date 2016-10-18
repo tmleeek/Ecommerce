@@ -1,0 +1,32 @@
+<?php $productGuides = $this->getData('guideCollection'); ?>
+<?php foreach ($productGuides as $_productGuide): ?>
+    <?php
+    if ($keyword = Mage::app()->getRequest()->getParam('keywords')):
+        if (stripos($_productGuide->getAttributeText('i_sheet'), $keyword) === false
+            && (stripos($_productGuide->getName(), $keyword) === false)):
+            continue;
+        endif;
+    endif;
+    ?>
+    <div class="item">
+        <div class="table1">
+            <div class="image">
+                <img src="<?php echo Mage::helper('catalog/image')->init($_productGuide, 'small_image')->resize(190, 127); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_productGuide, 'name'), null, true) ?>" />
+            </div>
+
+            <h3>
+                <a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_productGuide->getAttributeText('i_sheet') . ".pdf" ?>">
+                    <input type="hidden" class='product-id' value="<?php echo $_productGuide->getId() ?>" />
+                    <?php if (strlen($_productGuide->getName()) > 25): ?>
+                        <?php echo substr($_productGuide->getName(), 0, 25) . " ..." ?>
+                    <?php else: ?>
+                        <?php echo $_productGuide->getName() ?>
+                    <?php endif; ?>
+                </a>
+            </h3>
+            <div class="short-description">
+                <?php echo Mage::getModel('unleaded_productline/productline')->load($_productGuide->getProductLine())->getShortDescription() ?>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>

@@ -1,0 +1,19 @@
+<?php
+$products = Mage::getResourceModel('catalog/product_collection')
+        ->addAttributeToSelect('i_sheet')
+        ->addAttributeToSelect('name')
+        ->addAttributeToSort('updated_at', 'desc')
+        ->setStoreId(Mage::app()->getStore()->getId())
+        ->setPage(0, 6);
+?>
+
+<h3>Newest Products</h3>
+<ul>
+    <?php foreach ($products as $_productGuide): ?>
+        <li>
+            <a target="_blank" href="<?php echo Mage::getBaseUrl() . "media/isheets/" . $_productGuide->getAttributeText('i_sheet') . ".pdf" ?>">
+                    <?php echo $_productGuide->getName() ?>
+            </a>
+        </li>
+    <?php endforeach; ?>
+</ul>

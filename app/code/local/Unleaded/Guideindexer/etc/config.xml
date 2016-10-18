@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Unleaded_Guideindexer>
-            <version>0.1.0</version>
+            <version>0.3.0</version>
         </Unleaded_Guideindexer>
     </modules>
     <global>
@@ -29,6 +29,7 @@
             <guideindexer_setup>
                 <setup>
                     <module>Unleaded_Guideindexer</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
                 </setup>
                 <connection>
                     <use>core_setup</use>
@@ -53,4 +54,15 @@
             </indexer>
         </index>
     </global>
+    <frontend>
+        <routers>
+            <guideindexer>
+                <use>standard</use>
+                <args>
+                    <module>Unleaded_Guideindexer</module>
+                    <frontName>guideindexer</frontName>
+                </args>
+            </guideindexer>
+        </routers>
+    </frontend>
 </config>
