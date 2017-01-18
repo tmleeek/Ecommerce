@@ -1,11 +1,65 @@
 <?xml version="1.0"?>
 <layout version="0.0.1">
 	<adminhtml_system_config_edit>
-		<update handle="editor" />
+		<update handle="editor"/>
 		<reference name="head">
 			<action method="setCanLoadTinyMce">
 				<load>1</load>
 			</action>
 		</reference>
 	</adminhtml_system_config_edit>
+
+	<unleaded_pims_adminhtml_index_index>
+		<reference name="content">
+			<block type="unleaded_pims/adminhtml_dashboard" name="dashboard" template="unleaded_pims/dashboard.phtml"/>
+		</reference>
+	</unleaded_pims_adminhtml_index_index>
+
+	<unleaded_pims_adminhtml_imports_index>
+		<reference name="content">
+			<block type="unleaded_pims/adminhtml_imports" name="pims_imports" />
+		</reference>
+	</unleaded_pims_adminhtml_imports_index>
+
+	<unleaded_pims_adminhtml_imports_edit>
+		<reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadRulesJs"><flag>1</flag></action>
+        </reference>
+		<reference name="left">
+			<block type="unleaded_pims/adminhtml_imports_edit_tabs" name="adminhtml_imports_edit_tabs">
+				<block type="unleaded_pims/adminhtml_imports_edit_tab_information" name="adminhtml_imports_edit_tab_information"/>
+				<action method="addTab">
+					<name>form_section</name>
+					<block>adminhtml_imports_edit_tab_information</block>
+				</action>
+				<block type="unleaded_pims/adminhtml_imports_edit_tab_events" name="adminhtml_imports_edit_tab_events"/>
+				<action method="addTab">
+					<name>events_section</name>
+					<block>adminhtml_imports_edit_tab_events</block>
+				</action>
+				<block type="unleaded_pims/adminhtml_imports_edit_tab_messages" name="adminhtml_imports_edit_tab_messages"/>
+				<action method="addTab">
+					<name>messages_section</name>
+					<block>adminhtml_imports_edit_tab_messages</block>
+				</action>
+			</block>
+		</reference>
+		<reference name="content">
+            <block type="unleaded_pims/adminhtml_imports_edit" name="adminhtml_imports_edit"/>
+        </reference>
+	</unleaded_pims_adminhtml_imports_edit>
+
+	<unleaded_pims_adminhtml_events_index>
+		<reference name="content">
+			<block type="unleaded_pims/adminhtml_events" name="pims_events" />
+		</reference>
+	</unleaded_pims_adminhtml_events_index>
+	
+	<unleaded_pims_adminhtml_messages_index>
+		<reference name="content">
+			<block type="unleaded_pims/adminhtml_messages" name="pims_messages" />
+		</reference>
+	</unleaded_pims_adminhtml_messages_index>
+
 </layout>

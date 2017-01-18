@@ -1,17 +1,32 @@
 <?xml version="1.0"?>
 <config>
 	<menu>
-		<unleaded module="unleaded_pims">
-                    <title>PIMS Dashboard</title>
-                    <sort_order>100</sort_order>
+		<unleaded_pims module="unleaded_pims">
+            <title>PIMS Dashboard</title>
+            <sort_order>100</sort_order>
 			<children>
-				<pims_import module="unleaded_pims">
+				<pims_dashboard module="unleaded_pims">
 					<title>PIMS Dashboard</title>
-					<sort_order>20</sort_order>
+					<sort_order>10</sort_order>
 					<action>unleaded_pims/adminhtml_index</action>
-				</pims_import>
+				</pims_dashboard>
+				<pims_imports module="unleaded_pims">
+					<title>Imports</title>
+					<sort_order>20</sort_order>
+					<action>unleaded_pims/adminhtml_imports</action>
+				</pims_imports>
+				<pims_events module="unleaded_pims">
+					<title>Events</title>
+					<sort_order>30</sort_order>
+					<action>unleaded_pims/adminhtml_events</action>
+				</pims_events>
+				<pims_messages module="unleaded_pims">
+					<title>Messages</title>
+					<sort_order>40</sort_order>
+					<action>unleaded_pims/adminhtml_messages</action>
+				</pims_messages>
 			</children>
-		</unleaded>
+		</unleaded_pims>
 	</menu>
 	<acl>
 		<resources>

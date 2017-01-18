@@ -7,6 +7,9 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 	const FTP_PARTS_ROOT      = 'parts/';
 	const FTP_CATEGORIES_ROOT = 'product_categories/';
 
+	const LUND_DATA_DIRECTORY      = 'Data/';
+	const LUND_PROCESSED_DIRECTORY = 'Data/processed/';
+
 	private $_connection;
 
 	private $host;
@@ -62,6 +65,23 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 
 		$this->error('Could not set FTP to passive mode');
 		return $this;
+	}
+
+	public function getDataDirectoryListing()
+	{
+		if (!$this->_connection)
+			$this->ftpConnect();
+
+		if (!$listing = ftp_nlist($this->_connection, self::LUND_DATA_DIRECTORY)) {
+			$this->error('Unable to get FTP listing for directory: ' . self::LUND_DATA_DIRECTORY);
+			return $listing;
+		}
+
+		$listing = array_map(function($value) {
+			return str_replace(self::LUND_DATA_DIRECTORY, '', $value);
+		}, $listing);
+
+		return $listing;
 	}
 
 	public function getPartsImage($fileName)
@@ -123,8 +143,6 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 			// Check if file exists locally, if it does then just return it's path
 			if (file_exists($localPath)) {
                 return $localPath;
-            } else {
-                $localPath = ftp_get($this->_connection, $localPath, $ftpPath, FTP_BINARY);
             }
 
 			// First check that this file exists in ftp
@@ -148,6 +166,41 @@ class Unleaded_PIMS_Helper_Ftp extends Unleaded_PIMS_Helper_Data
 		} catch (Exception $e) {
 			return $this->error($e->getMessage());
 		}
+	}
+
+	public function downloadPIMSFile($type, $filename)
+	{
+		if (!$this->_connection)
+			$this->ftpConnect();
+
+		$base = Mage::getBaseDir('var') . '/';
+
+		switch ($type) {
+			case 'parts';
+				$localPath = $base . Unleaded_PIMS_Helper_Import::PARTS_PENDING_CSV_DIR . $filename;
+				break;
+			case 'brands';
+				$localPath = $base . Unleaded_PIMS_Helper_Import::BRANDS_PENDING_CSV_DIR . $filename;
+				break;
+			default;
+				throw new Exception('Incorrect type supplied: ' . $type);
+		}
+
+		$ftpPath = self::LUND_DATA_DIRECTORY . $filename;
+
+		$this->getFile($ftpPath, $localPath);
+	}
+
+	public function movePIMSFileToProcessing($filename)
+	{
+		if (!$this->_connection)
+			$this->ftpConnect();
+
+		$oldPath = self::LUND_DATA_DIRECTORY . $filename;
+		$newPath = self::LUND_PROCESSED_DIRECTORY . $filename;
+
+		if (!ftp_rename($this->_connection, $oldPath, $newPath))
+			throw new Exception('Unable to move file to processing folder: ' . $filename);
 	}
 
 	private function deleteTempImages($dirPath = null)

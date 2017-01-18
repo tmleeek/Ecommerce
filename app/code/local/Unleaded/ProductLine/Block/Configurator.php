@@ -55,6 +55,25 @@ class Unleaded_ProductLine_Block_Configurator extends Mage_Core_Block_Template
 					<select name="<?php echo $attributeCode; ?>">
 						<option value="false"></option>
 					</select>
+                                        <?php
+                                        switch ($attributeCode):
+                                            case "sub_model":
+                                                ?>
+                                                <a class="measure-link" target="blank" href="<?php echo Mage::getBaseUrl('media') . 'measurements/Nomenclature Guide_Chart_101016.pdf' ?>"><?php echo $this->__("How To Measure") ?></a>
+                                                <?php
+                                                break;
+                                            case "bed_length":
+                                                ?>
+                                                <a class="measure-link" target="blank" href="<?php echo Mage::getBaseUrl('media') . 'measurements/Nomenclature Guide_bedLenght_Chart_101016.pdf' ?>"><?php echo $this->__("How To Measure") ?></a>
+                                                <?php
+                                                break;
+                                            case "box_style":
+                                                ?>
+                                                <a class="measure-link" target="blank" href="<?php echo Mage::getBaseUrl('media') . 'measurements/Lund Storage Boxes_Style_Fitment Guide.pdf' ?>"><?php echo $this->__("How To Measure") ?></a>
+                                                <?php
+                                                break;
+                                        endswitch;
+                                        ?>
 				</div>
 			</div>
 		<?php

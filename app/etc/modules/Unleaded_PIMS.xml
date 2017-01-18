@@ -4,7 +4,7 @@
 		<Unleaded_PIMS>
 			<active>true</active>
 			<codePool>local</codePool>
-			<version>0.0.9</version>
+			<version>0.1.1</version>
 		</Unleaded_PIMS>
 	</modules>
 </config>

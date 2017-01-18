@@ -3,11 +3,6 @@
 class Unleaded_PIMS_Helper_Import_ProductLine_Adapter 
 	extends Unleaded_PIMS_Helper_Data
 {
-	public function __construct()
-	{
-
-	}
-
 	public function getMappedValue($attribute, $row)
 	{
 		switch ($attribute) {

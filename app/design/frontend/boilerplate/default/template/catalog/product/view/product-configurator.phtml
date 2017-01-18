@@ -134,6 +134,22 @@
 			$.each(attributeOrder, listenAttribute);
 		}
 
+		function updateProduct(response) {
+			console.log(response);
+			// Replace compatible vehicles and price
+			$('#compatible-vehicle-list').html(response.compatibleVehicles);
+			$('span.price').html(response.price);
+
+			// Now we need to update the product's attributes
+			$('.attribute-sku td:nth-child(2)').html(response.sku);
+			$.each(response.attributes, function(key, value) {
+				// console.log(key);console.log(value);
+				var selector = '.attribute-' + key.replace(/_/g, '-') + ' td:nth-child(2)';
+				// console.log(selector);
+				$(selector).html(value);
+			});
+		}
+
 		function listenAttribute(index, attributeToListen) {
 			$attributeSelects[attributeToListen].on('change', function() {
 				// console.log(index);
@@ -152,12 +168,7 @@
 							method: 'GET',
 							url: '/productline/part?sku=' + currentObject[0],
 							dataType: 'json',
-							success: function(response) {
-								// console.log(response);
-								// Replace compatible vehicles and price
-								$('#compatible-vehicle-list').html(response.compatibleVehicles);
-								$('span.price').html(response.price);
-							}
+							success: updateProduct
 						});
 					}
 				} else {
@@ -168,7 +179,7 @@
 				}
 
 				// Check if this was the 'model' attribute, if it was, we need to save this vehicle
-				console.log(_autoTrigger);
+				// console.log(_autoTrigger);
 				if (!_autoTrigger && attributeToListen === 'model') {
 					$.ajax({
 						method: 'POST',

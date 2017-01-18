@@ -6,6 +6,18 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 	const LINE_LENGTH    = 10000;
 	const DELIMITER      = ',';
 
+	const PIMS_DIRECTORY = 'pims';
+
+	const PARTS_PENDING_CSV_DIR  = 'pims/parts/pending/';
+	const PARTS_ACTIVE_CSV_DIR   = 'pims/parts/active/';
+	const PARTS_REJECTED_CSV_DIR = 'pims/parts/rejected/';
+
+	const BRANDS_PENDING_CSV_DIR    = 'pims/brands/pending/';
+	const BRANDS_ACTIVE_CSV_DIR     = 'pims/brands/active/';
+	const BRANDS_REJECTED_CSV_DIR   = 'pims/brands/rejected/';
+
+	const ROLLBACK_DIR = 'pims/rollbacks/';
+
 	public $handle;
 	public $headers;
 	public $entity;
@@ -14,13 +26,13 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 	public $errors = [];
 	public $info   = [];
 
-	public $categoryFile;
-	public $categoryHandle;
-	public $categoryHeaders;
+	public $brandsFile;
+	public $brandsHandle;
+	public $brandsHeaders;
 
-	public $productFile;
-	public $productHandle;
-	public $productHeaders;
+	public $partsFile;
+	public $partsHandle;
+	public $partsHeaders;
 
     public $storeCategories = [];
 
@@ -37,24 +49,53 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 
 		$this->entity     = new Mage_Eav_Model_Entity_Setup('core_setup');
 		$this->connection = $this->entity->getConnection('core_read');
+
+		// Make sure our directories exist
+		$this->checkDirectories();
+	}
+
+	private function checkDirectories()
+	{
+		$base = Mage::getBaseDir('var') . '/';
+
+		// First check that the pims directory exists
+		$fullPimsDir = $base . self::PIMS_DIRECTORY;
+		if (!file_exists($fullPimsDir)) {
+			mkdir($fullPimsDir, 0777, true);
+			if (!file_exists($fullPimsDir))
+				throw new Exception('Unabled to create PIMS directory');
+		}
+
+		// Now check each csv directory
+		foreach ([
+			self::PARTS_PENDING_CSV_DIR, self::PARTS_ACTIVE_CSV_DIR, self::PARTS_REJECTED_CSV_DIR,
+			self::BRANDS_PENDING_CSV_DIR, self::BRANDS_ACTIVE_CSV_DIR, self::BRANDS_REJECTED_CSV_DIR, self::ROLLBACK_DIR
+		] as $directory) {
+			$fullDir = $base . $directory;
+			if (!file_exists($fullDir)) {
+				mkdir($fullDir, 0777, true);
+				if (!file_exists($fullPimsDir))
+					throw new Exception('Unabled to create directory: ' . $fullDir);
+			}
+		}
 	}
 
 	public function __destruct()
 	{
-		if ($this->productHandle)
-			fclose($this->productHandle);
-		if ($this->categoryHandle)
-			fclose($this->categoryHandle);
+		if ($this->partsHandle)
+			fclose($this->partsHandle);
+		if ($this->brandsHandle)
+			fclose($this->brandsHandle);
 	}
 
-	public function setCategoryFile($fileName)
+	public function setBrandsFile($fileName)
 	{
-		return $this->setFile($fileName, 'category');
+		return $this->setFile($fileName, 'brands');
 	}
 
-	public function setProductFile($fileName)
+	public function setPartsFile($fileName)
 	{
-		return $this->setFile($fileName, 'product');		
+		return $this->setFile($fileName, 'parts');		
 	}
 
 	public function setFile($fileName, $type)
@@ -63,7 +104,18 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		$handleName  = $type . 'Handle';
 		$headersName = $type . 'Headers';
 
-		$this->$fileVar = $fileName;
+		$this->$fileVar = Mage::getBaseDir('var') . '/';
+		switch ($type) {
+			case 'parts';
+				$this->$fileVar .= self::PARTS_PENDING_CSV_DIR;
+				break;
+			case 'brands';
+				$this->$fileVar .= self::BRANDS_PENDING_CSV_DIR;
+				break;
+			default;
+				throw new Exception('File type not supported: ' . $type);
+		}
+		$this->$fileVar .= $fileName;
 
 		if ($this->$handleName)
 			fclose($this->$handleName);
@@ -80,9 +132,9 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 	{
 		$skus = [];
 		try {
-			while (($_row = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
-				$row = array_combine($this->productHeaders, $_row);
-				$skus[] = Mage::helper('unleaded_pims/import_product_adapter')->getMappedValue('sku', $row);
+			while (($_row = fgetcsv($this->partsHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
+				$row = array_combine($this->partsHeaders, $_row);
+				$skus[] = Mage::helper('unleaded_pims/import_parts_adapter')->getMappedValue('sku', $row);
 			}
 		} catch (Exception $e) {
 			$this->error($e->getMessage());
@@ -92,14 +144,14 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		$skus = array_unique($skus);
 
 		echo strtoupper($store) . ' has ' . count($skus) . ' unique SKUs in file:' . PHP_EOL 
-			. $this->productFile . PHP_EOL . PHP_EOL;
+			. $this->partsFile . PHP_EOL . PHP_EOL;
 
 		return $this;
 	}
 
-	public function products($store)
+	public function parts($store)
 	{
-		$importer = Mage::helper('unleaded_pims/import_product');
+		$importer = Mage::helper('unleaded_pims/import_parts');
 		Mage::app()->setCurrentStore(self::ADMIN_STORE_ID);
         $importer->setStore($store);
 
@@ -108,27 +160,27 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 
         $storeCount = 0;
 		try {
-			while (($_row = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
+			while (($_row = fgetcsv($this->partsHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
 				/// Sku will be just part number and upc code
 				// We need to grab every row, in order, that matches the s ku
 				// This becomes one product
 				// We then need to make sure that each vehicle configuration exists in the YMM
 				// Then attach those vehicles to the product
 
-				$row = array_combine($this->productHeaders, $_row);
+				$row = array_combine($this->partsHeaders, $_row);
 				// First get the sku
-				$sku = Mage::helper('unleaded_pims/import_product_adapter')->getMappedValue('sku', $row);
+				$sku = Mage::helper('unleaded_pims/import_parts_adapter')->getMappedValue('sku', $row);
 				// Check if this is a new sku
 				if ($importer->isNewSku($sku)) {
 					$this->debug('#' . ++$this->count . ' - ' . strtoupper($store) . ' Product #' . ++$storeCount);
 					// If this is a new sku, we need to reference the next row because it has the data
 					// But we need to save the vehicle data from this row because
 					// this is the only place it exists
-					if (!$_dataRow = fgetcsv($this->productHandle, self::LINE_LENGTH, self::DELIMITER)) {
+					if (!$_dataRow = fgetcsv($this->partsHandle, self::LINE_LENGTH, self::DELIMITER)) {
 						// If we don't have another row, the import is complete
 						break;
 					}
-					$dataRow  = array_combine($this->productHeaders, $_dataRow);
+					$dataRow  = array_combine($this->partsHeaders, $_dataRow);
 					// We need to add this vehicle
 					$importer->newProduct($sku, $dataRow, $row['Vehicle Type']);
 					$importer->addVehicle(
@@ -153,14 +205,14 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 			return $this;
 		}
 
-		Mage::helper('unleaded_pims/import_product_configurables')->checkConfigurables();
+		Mage::helper('unleaded_pims/import_parts_configurables')->checkConfigurables();
 
 		return $this;
 	}
 
-	public function categories($storeCode = 'admin')
+	public function brands($storeCode = 'admin')
 	{
-		$importer = Mage::helper('unleaded_pims/import_category');
+		$importer = Mage::helper('unleaded_pims/import_brands');
 		
 		if (!$importer->setStore($storeCode)) {
 			$this->canImport = false;
@@ -169,9 +221,9 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		}
 
 		try {
-			while (($_row = fgetcsv($this->categoryHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
+			while (($_row = fgetcsv($this->brandsHandle, self::LINE_LENGTH, self::DELIMITER)) !== false) {
 
-				$row = array_combine($this->categoryHeaders, $_row);
+				$row = array_combine($this->brandsHeaders, $_row);
 
 				$importer->import($row);
 			}
@@ -184,5 +236,10 @@ class Unleaded_PIMS_Helper_Import extends Unleaded_PIMS_Helper_Data
 		$importer->saveCategoryBrands();
 		
 		return $this;
+	}
+
+	public function getRollbackDir()
+	{
+		return Mage::getBaseDir('var') . '/' . self::ROLLBACK_DIR;		
 	}
 }

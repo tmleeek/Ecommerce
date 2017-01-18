@@ -221,6 +221,7 @@ div.block-layered-nav dd a.amshopby-attr-selected:after{ content: "X"; font-weig
 .product-configurator .select-field-options .select-style{ width:285px; float:left; font-size:14px; color:#424952; font-family:"Lato",sans-serif; font-weight:400; line-height:24px;}
 .product-configurator .select-field-options .select-style select{ width:100%; font-size:14px; color:#424952; font-family:"Lato",sans-serif; font-weight:400; line-height:24px; border:solid 1px #abadb3; border-color:#abadb3 #dbdfe6 #e3e9ef #e2e3ea; border-radius:2px; background:#FFF; max-width:210px; padding:2px; height:24px;}
 .product-configurator .select-field-options .select-style select:disabled { background: #EEE;}
+.product-configurator .select-field-options .select-style .measure-link{display: table;}
 .select-field-options.active .select-style:before {right: 35px;top: 3px;}
 
 @media (min-width: 1200px) {

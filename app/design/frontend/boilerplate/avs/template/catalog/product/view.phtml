@@ -256,120 +256,113 @@ foreach ($categoryIds as $id) {
                         <div class="pro-tech-second">
                             <div class="pro-tech-table">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                    <tr>
+                                    <tr class="attribute-sku">
                                         <td><?php echo $this->__("Part Number") ?></td>
                                         <td><?php echo $_helper->productAttribute($_product, $_product->getSku(), 'sku') ?></td>
                                     </tr>          
 
                                     <?php if ($_product->getData('brand_short_code')): ?>
-                                        <tr>
+                                        <tr class="attribute-brand-short-code">
                                             <td><?php echo $this->__("Brand Name") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('brand_short_code')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getUpcCode()): ?>
-                                        <tr>
+                                        <tr class="attribute-upc-code">
                                             <td><?php echo $this->__("UPC Code") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getUpcCode(), 'upc_code') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getWarranty()): ?>
-                                        <tr>
+                                        <tr class="attribute-warranty">
                                             <td><?php echo $this->__("Warranty") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getWarranty(), 'Warranty') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getSoldAs()): ?>
-                                        <tr>
+                                        <tr class="attribute-sold-as">
                                             <td><?php echo $this->__("Sold As") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getSoldAs(), 'sold_as') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getFlareHeight() && $_product->getResource()->getAttribute('flare_height')->getFrontend()->getValue($_product) != "0.00"): ?>
-                                        <tr>
+                                        <tr class="attribute-flare-height">
                                             <td><?php echo $this->__("Flare Height") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('flare_height')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getFlareTireCoverage() && $_product->getResource()->getAttribute('flare_tire_coverage')->getFrontend()->getValue($_product) != "0.00"): ?>
-                                        <tr>
+                                        <tr class="attribute-flare-tire-coverage">
                                             <td><?php echo $this->__("Flare Tire Coverage") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('flare_tire_coverage')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getData('tube_shape')): ?>
-                                        <tr>
+                                        <tr class="attribute-tube-shape">
                                             <td><?php echo $this->__("Tube Shape") ?></td>
                                             <td><?php echo $_product->getResource()->getAttribute('tube_shape')->getFrontend()->getValue($_product) ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getTubeSize()): ?>
-                                        <tr>
+                                        <tr class="attribute-tube-size">
                                             <td><?php echo $this->__("Tube Size") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getTubeSize(), 'tube_size') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getFinish()): ?>
-                                        <tr>
+                                        <tr class="attribute-finish">
                                             <td><?php echo $this->__("Finish") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getFinish(), 'finish') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getStyle()): ?>
-                                        <tr>
+                                        <tr class="attribute-style">
                                             <td><?php echo $this->__("Style") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getStyle(), 'style') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getMaterial()): ?>
-                                        <tr>
+                                        <tr class="attribute-material">
                                             <td><?php echo $this->__("Material") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getMaterial(), 'material') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
                                     <?php if ($_product->getMaterialThickness()): ?>
-                                        <tr>
+                                        <tr class="attribute-material-thickness">
                                             <td><?php echo $this->__("Material Thickness") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getMaterialThickness(), 'material_thickness') ?></td>
                                         </tr>
                                     <?php endif; ?>        
 
                                     <?php if ($_product->getLightPowerRating()): ?>
-                                        <tr>
+                                        <tr class="attribute-light-power-rating">
                                             <td><?php echo $this->__("Light Power Rating") ?></td>
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getLightPowerRating(), 'light_power_rating') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getgetLiquidStorageCapacityn()): ?>
-                                        <tr>
-                                            <td><?php echo $this->__("Liquid Storage Capacityn") ?></td>
-                                            <td><?php echo $_helper->productAttribute($_product, $_product->getLiquidStorageCapacityn(), 'liquid_storage_capacityn') ?></td>
+                                    <?php if ($_product->getLiquidStorageCapacity()): ?>
+                                        <tr class="attribute-liquid-storage-capacity">
+                                            <td><?php echo $this->__("Liquid Storage Capacity") ?></td>
+                                            <td><?php echo $_helper->productAttribute($_product, $_product->getLiquidStorageCapacity(), 'liquid_storage_capacity') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
-                                    <?php if ($_product->getLiquidStorageCapacityn()): ?>
-                                        <tr>
-                                            <td><?php echo $this->__("Liquid Storage Capacityn") ?></td>
-                                            <td><?php echo $_helper->productAttribute($_product, $_product->getLiquidStorageCapacityn(), 'liquid_storage_capacityn') ?></td>
-                                        </tr>
-                                    <?php endif; ?>
-
-                                    <?php if ($_product->getUscountryOrigin()): ?>
-                                        <tr>
-                                            <td><?php echo $this->__("USCountry Of Origin") ?></td>
-                                            <td><?php echo $_helper->productAttribute($_product, $_product->getUscountryOrigin(), 'uscountry_origin') ?></td>
+                                    <?php if ($_product->getCountryOfManufacture()): ?>
+                                        <tr class="attribute-country-of-manufacture">
+                                            <td><?php echo $this->__("Country of Origin") ?></td>
+                                            <td><?php echo $_helper->productAttribute($_product, $_product->getCountryOfManufacture(), 'country_of_manufacture') ?></td>
                                         </tr>
                                     <?php endif; ?>
 
@@ -396,7 +389,7 @@ foreach ($categoryIds as $id) {
                                     <?php endif; ?>
 
                                     <?php if ($_product->getBoxStyle()): ?>
-                                        <tr>
+                                        <tr class="attribute-box-style">
                                             <td><?php echo $this->__("Box Style") ?></td>
 
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getBoxStyle(), 'box_style') ?></td>
@@ -404,7 +397,7 @@ foreach ($categoryIds as $id) {
                                     <?php endif; ?>
 
                                     <?php if ($_product->getBoxOpeningType()): ?>
-                                        <tr>
+                                        <tr class="attribute-box-opening-type">
                                             <td><?php echo $this->__("Box Opening Type") ?></td>
 
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getBoxOpeningType(), 'box_opening_type') ?></td>
@@ -412,7 +405,7 @@ foreach ($categoryIds as $id) {
                                     <?php endif; ?>
 
                                     <?php if ($_product->getInteriorBoxDimensions()): ?>
-                                        <tr>
+                                        <tr class="attribute-interior-box-dimensions">
                                             <td><?php echo $this->__("Interior Box Dimensions") ?></td>
 
                                             <td><?php echo $_helper->productAttribute($_product, $_product->getInteriorBoxDimensions(), 'interior_box_dimensions') ?></td>
@@ -438,47 +431,47 @@ foreach ($categoryIds as $id) {
                                             <td class="padding-none">
                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                         <?php if ($_product->getDimA() && $_product->getDimA() != "0.00"): ?>
-                                                            <tr class="border-main-bottom">
+                                                            <tr class="border-main-bottom attribute-dim-a">
                                                                 <td><?php echo $this->__("DIM_A") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimA(), 'dim_a') ?></td>
                                                             </tr>
                                                         <?php endif; ?>
 
                                                         <?php if ($_product->getDimB() && $_product->getDimB() != "0.00"): ?>
-                                                            <tr class="border-main-bottom">
+                                                            <tr class="border-main-bottom attribute-dim-b">
                                                                 <td><?php echo $this->__("DIM_B") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimB(), 'dim_b') ?></td>
                                                             </tr>
                                                         <?php endif; ?>
 
                                                         <?php if ($_product->getDimC() && $_product->getDimC() != "0.00"): ?>
-                                                            <tr class="border-main-bottom">
+                                                            <tr class="border-main-bottom attribute-dim-c">
                                                                 <td><?php echo $this->__("DIM_C") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimC(), 'dim_c') ?></td>
                                                             </tr>
                                                         <?php endif; ?>
 
                                                         <?php if ($_product->getDimD() && $_product->getDimD() != "0.00"): ?>
-                                                            <tr class="border-main-bottom">
+                                                            <tr class="border-main-bottom attribute-dim-d">
                                                                 <td><?php echo $this->__("DIM_D") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimD(), 'dim_d') ?></td>
                                                             </tr>
                                                         <?php endif; ?>
                                                         <?php if ($_product->getDimE() && $_product->getDimE() != "0.00"): ?>
-                                                            <tr class="border-main-bottom">
+                                                            <tr class="border-main-bottom attribute-dim-e">
                                                                 <td><?php echo $this->__("DIM_E") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimE(), 'dim_e') ?></td>
                                                             </tr>
                                                         <?php endif; ?>
 
                                                         <?php if ($_product->getDimF() && $_product->getDimF() != "0.00"): ?>
-                                                            <tr class="border-main-bottom">
+                                                            <tr class="border-main-bottom attribute-dim-f">
                                                                 <td><?php echo $this->__("DIM_F") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimF(), 'dim_f') ?></td>
                                                             </tr>
                                                         <?php endif; ?>
                                                         <?php if ($_product->getDimG() && $_product->getDimG() != "0.00"): ?>
-                                                            <tr>
+                                                            <tr class="attribute-dim-g">
                                                                 <td><?php echo $this->__("DIM_G") ?></td>
                                                                 <td><?php echo $_helper->productAttribute($_product, $_product->getDimG(), 'dim_G') ?></td>
                                                             </tr>
@@ -489,14 +482,14 @@ foreach ($categoryIds as $id) {
                                         <td class="padding-none left-border-section"><table width="100%" border="0" cellspacing="0" cellpadding="0">
 
                                                 <?php if ($_product->getWeight()): ?>
-                                                    <tr class="border-main-bottom">
+                                                    <tr class="border-main-bottom attribute-weight">
                                                         <td class="border-left-bottom"><?php echo $this->__("Weight") ?></td>
                                                         <td><?php echo $_helper->productAttribute($_product, $_product->getWeight(), 'weight') ?></td>
                                                     </tr> 
                                                 <?php endif; ?>
 
                                                 <?php if ($_product->getHeight()): ?>     
-                                                    <tr class="border-main-bottom">
+                                                    <tr class="border-main-bottom attribute-height">
                                                         <td class="border-left-bottom"><?php echo $this->__("Height") ?></td>
                                                         <td><?php echo $_product->getResource()->getAttribute('height')->getFrontend()->getValue($_product) ?></td>
                                                     </tr>
@@ -504,14 +497,14 @@ foreach ($categoryIds as $id) {
 
 
                                                 <?php if ($_product->getWidth()): ?>   
-                                                    <tr class="border-main-bottom">
+                                                    <tr class="border-main-bottom attribute-width">
                                                         <td class="border-left-bottom"><?php echo $this->__("Width") ?></td>
                                                         <td><?php echo $_product->getResource()->getAttribute('width')->getFrontend()->getValue($_product) ?></td>
                                                     </tr>
                                                 <?php endif; ?>  
 
                                                 <?php if ($_product->getLength()): ?>  
-                                                    <tr class="border-main-bottom">
+                                                    <tr class="border-main-bottom attribute-length">
                                                         <td class="border-left-bottom"><?php echo $this->__("Length") ?></td>
                                                         <td><?php echo $_product->getResource()->getAttribute('length')->getFrontend()->getValue($_product) ?></td>
                                                     </tr>

@@ -1,0 +1,20 @@
+<?php
+	$url = 'unleaded_pims/adminhtml_imports/import/id/' . $this->getImportId();
+	$actionUrl = Mage::helper('adminhtml')->getUrl($url, [
+		'_secure' => true
+	]);
+?>
+<script>
+    function confirmImport() {
+        var confirm = "When you click OK: \n" +
+        	"1) A rollback of this site's current database will be taken \n" + 
+        	"2) This import will be processed \n" + 
+        	"3) The site will be inoperable while the import is processing \n" + 
+        	"4) You will receive an email when it is ready for review \n" + 
+        	"Are you sure you want to do this?";
+        if (window.confirm(confirm))
+            window.location = "<?php echo $actionUrl; ?>";
+        else
+            window.alert("User did not confirm");
+    }
+</script>
